@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheet.css">
+    <title>Search Engine</title>
+</head>
+
+<body>
+<div style="display: block;">
+
+        <h1>Search Engine</h1>
+        <div id="SearchBody" style="display: inline-block; ">
+            <div id="Search">
+                <input type="search" id="searchbar" placeholder="Search for file">
+                <select name="fileTypes" id="fileTypeSelector">
+                    <option value="txt">txt</option>
+                    <option value="png">png</option>
+                    <option value="jpg">jpg</option>
+                    <option value="other">Other</option>
+                </select>
+                <button id="inlineCommands">inline Commands</button>
+
+            </div>
+
+            <div class="Filter">
+                <div id="buttons">
+                    <div>
+                        <input type="radio" name="filter" id="Mail">
+                        <label id="Mail">Mail </label>
+                    </div>
+                    <div>
+                        <input type="radio" name="filter" id="docs">
+                        <label>Documents </label>
+                    </div>
+                    <div>
+                        <input type="radio" name="filter" id="Folders">
+                        <label>Folders</label>
+                    </div>
+
+                </div>
+
+                <div id="datetime">
+                    <div>
+                        <label>Start Date:</label>
+                        <input type="date" id="startDate" />
+                    </div>
+
+                    <div>
+                        <label>End Date:</label>
+                        <input type="date" id="endDate" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="commandsPopup" >
+            <fieldset>
+                <h1> detter er popup</h1>
+            </fieldset>
+        </div>
+    
+</div>
+    
+
+
+
+
+    <div id="Results">
+        <h3>Results</h3>
+        <fieldset id="ResField">
+
+        </fieldset>
+
+    </div>
+
+
+
+
+
+    <script>
+        let displayBool = true;
+
+        document.getElementById('inlineCommands').addEventListener("click", displayShit)
+
+        function displayShit() {
+            if (displayBool) {
+                document.getElementById("commandsPopup").style.display = "block";
+                displayBool = !displayBool
+
+            } else {
+                document.getElementById("commandsPopup").style.display = "none";
+                displayBool = !displayBool
+            }
+        }
+
+        function closeForm() {
+        }
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+#ResField {
+    margin: 10px;
+    border-radius: 24px;
+    border-color: black;
+    height: 100%;
+    width: 100%;
+}
+
+#Results {
+    height: 400px;
+    width: 500px;
+    clear: both;
+}
+
+#SearchBody {
+
+    margin: 10px;
+    border: 1px solid #0000;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 12px;
+    width: 50%;
+    display: inline-block;
+
+}
+
+#FileTypeSelector {
+    display: inline;
+}
+
+#datetime {
+    display: grid;
+    padding-left: 20%;
+}
+
+#buttons {
+    display: flex;
+    flex-direction: column;
+    vertical-align: middle;
+}
+
+.Filter {
+    display: flex;
+    margin-right: 20px;
+    width: auto;
+}
+
+#searchbar {
+    margin: 10px;
+    border: 1px solid #0000;
+    border-radius: 10px;
+    border-color: black;
+    width: 75%;
+}
+
+label {
+    margin: 10px;
+}
+
+#input {
+    margin: 10px;
+}
+
+#commandsPopup {
+    width: 50%;
+    background-color: white;
+    border-width: 2px;
+    border-radius: 15px;
+    border-color: black;
+    display: none;
+    height: 100px;
+}
