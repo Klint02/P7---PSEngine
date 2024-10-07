@@ -8,8 +8,9 @@
 
 #Results {
     height: 400px;
-    width: 500px;
-    clear: both;
+    width: 1000px;
+    position: absolute;
+    bottom: 100px;
 }
 
 #SearchBody {
@@ -20,7 +21,8 @@
     border-width: 1px;
     border-radius: 12px;
     width: 50%;
-    display: inline-block;
+    display: flex;
+    max-height: 180px;
 
 }
 
@@ -62,11 +64,20 @@ label {
 }
 
 #commandsPopup {
-    width: 50%;
+    margin: 10px;
     background-color: white;
-    border-width: 2px;
-    border-radius: 15px;
-    border-color: black;
     display: none;
-    height: 100px;
+    height: 500px;
 }
+table {
+    border: 2px solid rgb(140 140 140);
+    display: block;
+    overflow: auto;
+
+  }
+  
+  th,
+  td {
+    padding: 5px;
+    border: 1px solid rgb(160 160 160);
+  }

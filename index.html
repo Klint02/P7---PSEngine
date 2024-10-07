@@ -9,10 +9,11 @@
 </head>
 
 <body>
-<div style="display: block;">
+    <div style="display: flex;">
 
-        <h1>Search Engine</h1>
+
         <div id="SearchBody" style="display: inline-block; ">
+            <h1>Search Engine</h1>
             <div id="Search">
                 <input type="search" id="searchbar" placeholder="Search for file">
                 <select name="fileTypes" id="fileTypeSelector">
@@ -56,14 +57,26 @@
             </div>
 
         </div>
-        <div id="commandsPopup" >
-            <fieldset>
-                <h1> detter er popup</h1>
-            </fieldset>
+        <div id="commandsPopup">
+            <table>
+                <tr>
+                    <th>Keyword</th>
+                    <th>Explenation</th>
+                </tr>
+                <tr>
+                    <td>contains</td>
+                    <td>Returns documents that have the exact phrase. e.g. <em></em>"contains 'Hello World'"</td>
+                </tr>
+                <tr>
+                    <td>folder.name:</td>
+                    <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                </tr>
+                
+            </table>
         </div>
-    
-</div>
-    
+
+    </div>
+
 
 
 
@@ -87,7 +100,7 @@
 
         function displayShit() {
             if (displayBool) {
-                document.getElementById("commandsPopup").style.display = "block";
+                document.getElementById("commandsPopup").style.display = "flex";
                 displayBool = !displayBool
 
             } else {
