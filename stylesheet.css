@@ -1,83 +1,90 @@
-#ResField {
-    margin: 10px;
-    border-radius: 24px;
-    border-color: black;
-    height: 100%;
-    width: 100%;
+#container {
+    display: inline-grid;
+    grid-template-columns: 30vw 30vw auto;
+    grid-template-rows: 30vh 70vh;
+    height: 100vh;
+    width: 100vw;
+    gap: 10px 10px;
 }
 
-#Results {
-    height: 400px;
-    width: 1000px;
-    position: absolute;
-    bottom: 100px;
-}
-
-#SearchBody {
-
-    margin: 10px;
+#SearchBodyContainer {
     border: 1px solid #0000;
     border-color: black;
-    border-width: 1px;
+    border-width: 2px;
     border-radius: 12px;
-    width: 50%;
-    display: flex;
-    max-height: 180px;
-
-}
-
-#FileTypeSelector {
-    display: inline;
-}
-
-#datetime {
+    background-color: white;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 2;
     display: grid;
-    padding-left: 20%;
+    grid-template-rows: 20% 20% 20% auto;
 }
 
-#buttons {
-    display: flex;
-    flex-direction: column;
-    vertical-align: middle;
+h1 {
+    grid-row-start: 1;
+    grid-row-end: 2;
+
 }
 
-.Filter {
-    display: flex;
-    margin-right: 20px;
-    width: auto;
+#Search {
+    grid-row-start: 2;
+    grid-row-end: 3;
 }
 
 #searchbar {
-    margin: 10px;
-    border: 1px solid #0000;
-    border-radius: 10px;
+    border-radius: 12px;
     border-color: black;
-    width: 75%;
+    width: 50%;
 }
 
-label {
-    margin: 10px;
+#Filter {
+    grid-row-start: 3;
+    grid-row-end: 4;
+    display: grid;
+    grid-template-columns: 20% 20% auto;
 }
 
-#input {
-    margin: 10px;
-}
-
-#commandsPopup {
-    margin: 10px;
-    background-color: white;
+#commandspopup {
     display: none;
-    height: 500px;
-}
-table {
-    border: 2px solid rgb(140 140 140);
-    display: block;
+    height: 30vh;
     overflow: auto;
 
-  }
-  
-  th,
-  td {
+}
+
+#inlinehelp {
+    background-color: white;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 2;
+    grid-column-end: 3;
+
+}
+
+#Results {
+    background-color: grey;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+#Recently {
+    background-color: lightblue;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
+
+
+table {
+    border: 2px solid rgb(140 140 140);
+
+}
+
+th,
+td {
     padding: 5px;
     border: 1px solid rgb(160 160 160);
-  }
+}

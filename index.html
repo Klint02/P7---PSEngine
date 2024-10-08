@@ -9,12 +9,12 @@
 </head>
 
 <body>
-    <div style="display: flex;">
+    <div id="container">
 
-
-        <div id="SearchBody" style="display: inline-block; ">
+        <div id="SearchBodyContainer">
             <h1>Search Engine</h1>
             <div id="Search">
+                
                 <input type="search" id="searchbar" placeholder="Search for file">
                 <select name="fileTypes" id="fileTypeSelector">
                     <option value="txt">txt</option>
@@ -22,16 +22,16 @@
                     <option value="jpg">jpg</option>
                     <option value="other">Other</option>
                 </select>
-                <button id="inlineCommands">inline Commands</button>
+                <button id="inlineCommands">Inline Commands</button>
 
             </div>
 
-            <div class="Filter">
+            <div id="Filter">
                 <div id="buttons">
-                    <div>
-                        <input type="radio" name="filter" id="Mail">
-                        <label id="Mail">Mail </label>
-                    </div>
+
+                    <input type="radio" name="filter" id="Mail">
+                    <label id="Mail">Mail </label>
+
                     <div>
                         <input type="radio" name="filter" id="docs">
                         <label>Documents </label>
@@ -57,37 +57,115 @@
             </div>
 
         </div>
-        <div id="commandsPopup">
-            <table>
-                <tr>
-                    <th>Keyword</th>
-                    <th>Explenation</th>
-                </tr>
-                <tr>
-                    <td>contains</td>
-                    <td>Returns documents that have the exact phrase. e.g. <em></em>"contains 'Hello World'"</td>
-                </tr>
-                <tr>
-                    <td>folder.name:</td>
-                    <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                </tr>
-                
-            </table>
+        <div id="inlinehelp">
+            <div id="commandspopup">
+                <table>
+                    <tr>
+                        <th>Keyword</th>
+                        <th>Explenation</th>
+                    </tr>
+                    <tr>
+                        <td>contains</td>
+                        <td>Returns documents that have the exact phrase. e.g. <em></em>"contains 'Hello World'"</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                    <tr>
+                        <td>folder.name:</td>
+                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                    </tr>
+                </table>
+            </div>
+
         </div>
+        <div id="Results">
+            <h3>Results</h3>
+            <fieldset id="ResField">
 
+            </fieldset>
+
+        </div>
+        <div id="Recently">
+            <h1>Recently used</h1>
+
+        </div>
     </div>
 
 
 
 
 
-    <div id="Results">
-        <h3>Results</h3>
-        <fieldset id="ResField">
 
-        </fieldset>
-
-    </div>
 
 
 
@@ -96,15 +174,16 @@
     <script>
         let displayBool = true;
 
-        document.getElementById('inlineCommands').addEventListener("click", displayShit)
+        document.getElementById("inlineCommands").addEventListener("click", displayShit)
 
         function displayShit() {
+            console.log('wuydfgwe')
             if (displayBool) {
-                document.getElementById("commandsPopup").style.display = "flex";
+                document.getElementById("commandspopup").style.display = "block";
                 displayBool = !displayBool
 
             } else {
-                document.getElementById("commandsPopup").style.display = "none";
+                document.getElementById("commandspopup").style.display = "none";
                 displayBool = !displayBool
             }
         }
