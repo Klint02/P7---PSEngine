@@ -1,8 +1,14 @@
+using P7_PSEngine.Data;
+using System.Security.Cryptography.X509Certificates;
+
 namespace Routing;
 public class Router
 {
-    public Router(WebApplication app) 
+    private readonly TodoDb _db;
+    public Router(WebApplication app, TodoDb db) 
     {
+        this._db = db;
+
         string static_path = "/app/wwwroot";
 
         //Lets you send files from wwwroot folder
