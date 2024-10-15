@@ -38,54 +38,74 @@ namespace P7_PSEngine.API
                         ? Results.Ok(todo)
                         : Results.NotFound());
 
-            //app.MapPost("/api/products", async (Todos todos) =>
-            //{
-            //    db.Products.Add(product);
-            //    await db.SaveChangesAsync();
-            //    return Results.Created($"/api/products/{product.Id}", product);
-            //});
+            app.MapPost("/api/products", async (Todo todos, TodoDb db) =>
+            {
+                db.Todos.Add(todos);
+                await db.SaveChangesAsync();
+                return Results.Created($"/api/products/{todos.Id}", todos);
+            });
 
-            //app.MapPut("/api/products/{id}", async (int id, Product product) =>
-            //{
-            //    if (id != product.Id)
-            //    {
-            //        return Results.BadRequest();
-            //    }
+            app.MapPut("/api/products/{id}", async (int id, Todo todo, TodoDb db) =>
+            {
+                if (id != todo.Id)
+                {
+                    return Results.BadRequest();
+                }
 
-            //    db.Entry(product).State = EntityState.Modified;
+                db.Entry(todo).State = EntityState.Modified;
 
-            //    try
-            //    {
-            //        await db.SaveChangesAsync();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (await db.Products.FindAsync(id) == null)
-            //        {
-            //            return Results.NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
+                try
+                {
+                    await db.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (await db.Todos.FindAsync(id) == null)
+                    {
+                        return Results.NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
 
-            //    return Results.NoContent();
-            //});
+                return Results.NoContent();
+            });
 
-            //app.MapDelete("/api/products/{id}", async (int id) =>
-            //{
-            //    var product = await db.Products.FindAsync(id);
-            //    if (product == null)
-            //    {
-            //        return Results.NotFound();
-            //    }
+            app.MapDelete("/api/products/{id}", async (int id, TodoDb db) =>
+            {
+                var product = await db.Todos.FindAsync(id);
+                if (product == null)
+                {
+                    return Results.NotFound();
+                }
 
-            //    db.Products.Remove(product);
-            //    await db.SaveChangesAsync();
+                db.Todos.Remove(product);
+                await db.SaveChangesAsync();
 
-            //    return Results.NoContent();
-            //});
+                return Results.NoContent();
+            });
+
+            string static_path = "/app/wwwroot";
+
+            //Lets you send files from wwwroot folder
+            app.UseStaticFiles();
+
+            //examples on how you can send data or pages
+            //Send html page from wwwroot folder
+            app.MapGet("/", () => Results.Content(File.ReadAllText($"{static_path}/index.html"), "text/html"));
+
+            //Send a JSON object
+            app.MapGet("/api/test", () => new { hmm = "wow", bab = 12345 });
+
+            //Send a string
+            app.MapGet("/api/test2", () => "test2");
+
+            //Use variables from URL
+            app.MapGet("/api/repeat/{message}", (string message) => $"{message}");
+
+            app.Run();
         }
     }
 }
