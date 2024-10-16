@@ -1,9 +1,9 @@
 #container {
     display: inline-grid;
     grid-template-columns: 30vw 30vw auto;
-    grid-template-rows: 30vh 70vh;
-    height: 100vh;
-    width: 100vw;
+    grid-template-rows: 30vh 65vh;
+    max-height: 70vh;
+    width: 97vw;
     gap: 10px 10px;
 }
 
@@ -16,7 +16,7 @@
     grid-row-start: 1;
     grid-row-end: 2;
     grid-column-start: 1;
-    grid-column-end: 2;
+    grid-column-end: 4;
     display: grid;
     grid-template-rows: 20% 20% 20% auto;
     padding-left: 10px;
@@ -48,19 +48,20 @@ h1 {
 }
 
 #commandspopup {
-    display: none;
-    height: 30vh;
-    overflow: auto;
+    height: 400px;
+    width: 400px;
+    overflow: scroll;
 
 }
 
-#inlinehelp {
+#inlineHelp {
+    display: none;
     background-color: white;
-    grid-row-start: 1;
-    grid-row-end: 2;
-    grid-column-start: 2;
-    grid-column-end: 3;
-
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 400px;
+    width: 400px;
 }
 
 #Results {

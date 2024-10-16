@@ -22,7 +22,7 @@
                     <option value="jpg">jpg</option>
                     <option value="other">Other</option>
                 </select>
-                <button id="inlineCommands">Inline Commands</button>
+                <button id="inlineCommands" onclick="displayCommands()">Inline Commands</button>
 
             </div>
 
@@ -64,21 +64,22 @@
             </div>
 
         </div>
-        <div id="inlinehelp">
-            <div id="commandspopup">
-                <table>
-                    <tr>
-                        <th>Keyword</th>
-                        <th>Explenation</th>
-                    </tr>
-                    <tr>
-                        <td>contains</td>
-                        <td>Returns documents that have the exact phrase. e.g. <em></em>"contains 'Hello World'"</td>
-                    </tr>
-                    <tr>
-                        <td>folder.name:</td>
-                        <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                    </tr>
+        
+            <div id="inlineHelp">
+                <div id="commandspopup">
+                    <table>
+                        <tr>
+                            <th>Keyword</th>
+                            <th>Explenation</th>
+                        </tr>
+                        <tr>
+                            <td>contains</td>
+                            <td>Returns documents that have the exact phrase. e.g. <em></em>"contains 'Hello World'"</td>
+                        </tr>
+                        <tr>
+                            <td>folder.name:</td>
+                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
+                        </tr>
                     <tr>
                         <td>folder.name:</td>
                         <td>Returns folders with names equal to the search: folder.name: dogs</td>
@@ -153,8 +154,11 @@
                     </tr>
                 </table>
             </div>
-
+            
         </div>
+        
+        
+
         <div id="Results">
             <h3>Results</h3>
             <fieldset id="ResField">
@@ -168,30 +172,16 @@
         </div>
     </div>
 
-
-
-
-
-
-
-
-
-
-
     <script>
-        let displayBool = true;
-
-        document.getElementById("inlineCommands").addEventListener("click", displayShit)
-
-        function displayShit() {
-            console.log('wuydfgwe')
-            if (displayBool) {
-                document.getElementById("commandspopup").style.display = "block";
-                displayBool = !displayBool
+        const element = document.getElementById("inlineHelp");
+        
+        function displayCommands() {
+            console.log(element.style.display);
+            if (element.style.display != "block") {
+                element.style.display = "block";
 
             } else {
-                document.getElementById("commandspopup").style.display = "none";
-                displayBool = !displayBool
+                element.style.display = "none";
             }
         }
 
