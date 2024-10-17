@@ -11,7 +11,7 @@
 <body>
     <div id="container">
 
-        <div id="SearchBodyContainer">
+        <div id="SearchBodyContainer" class="Block">
             <h1>Search Engine</h1>
             <div id="Search">
                 
@@ -25,50 +25,74 @@
                 <button id="inlineCommands" onclick="displayCommands()">Inline Commands</button>
 
             </div>
+            <div id="advancedOptions">
 
-            <div id="Filter">
-                <div id="buttons">
-
-                    <input type="radio" name="filter" id="Mail">
-                    <label id="Mail">Mail </label>
-
-                    <div>
-                        <input type="radio" name="filter" id="docs">
-                        <label>Documents </label>
+                <div id="Filter">
+                    <div id="searchOptions">
+                        <div>
+                            <input type="checkbox" name="filenameOption">
+                            <label for="filenameOption" class="ContainsText">Search by filename</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="contentOption">
+                            <label for="contentOption" class="ContainsText">Search by content</label>
+                        </div>
                     </div>
-                    <div>
-                        <input type="radio" name="filter" id="Folders">
-                        <label>Folders</label>
+                    <div id="buttons">
+                        <div>
+                            <input type="checkbox" name="filter1" id="Mail">
+                            <label for="filter1" id="Mail" class="ContainsText">Mail </label>
+                        </div>
+                        
+                        <div>
+                            <input type="checkbox" name="filter2" id="Docs">
+                            <label for="filter2" class="ContainsText">Documents </label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="filter3" id="Folders">
+                            <label for="filter3" class="ContainsText">Folders</label>
+                        </div>
+                        
                     </div>
-
+                    
+                    <div id="datetime">
+                        <div>
+                            <input type="checkbox" name="searchInterval" id="searchInterval">
+                            <label for="searchInterval" class="ContainsText">From </label>
+                        </div>
+                        <div>
+                            <label for="startDate" class="ContainsText">Start Date:</label>
+                            <input type="date" name="startDate" id="startDate" />
+                        </div>
+                        <div>
+                            <input type="checkbox" name="searchInterval" id="searchInterval">
+                            <label for="searchInterval" class="ContainsText">Before</label>
+                        </div>
+                        <div>
+                            <label for="endDate" class="ContainsText">End Date:</label>
+                            <input type="date" id="endDate" />
+                        </div>
                 </div>
-
-                <div id="datetime">
+                <div id="dateButtons">
                     <div>
-                        <label>Start Date:</label>
-                        <input type="date" id="startDate" />
+                        <input type="radio" name="dateCreated" id="dateCreated">
+                        <label for="dateCreated" class="ContainsText">Creation Date </label>
                     </div>
-
                     <div>
-                        <label>End Date:</label>
-                        <input type="date" id="endDate" />
-                    </div>
-                </div>
-
-                <div id="keywords">
-                    <div>
-                        <label>Keywords</label>
-                        <input type="text" id="keywordsInput">
+                        <input type="radio" name="dateCreated" id="lastModified">
+                        <label for="lastModified" class="ContainsText">Last Modified</label>
                     </div>
                 </div>
             </div>
-
+                
+        </div>
+        <button id="advancedOptionsButton" onclick="showOptions(this)">Show Advanced Options</button>
         </div>
         
-            <div id="inlineHelp">
-                <div id="commandspopup">
-                    <table>
-                        <tr>
+        <div id="inlineHelp">
+            <div id="commandspopup">
+                <table>
+                    <tr>
                             <th>Keyword</th>
                             <th>Explenation</th>
                         </tr>
@@ -159,14 +183,14 @@
         
         
 
-        <div id="Results">
-            <h3>Results</h3>
+        <div id="Results" class="Block">
+            <h1>Results</h1>
             <fieldset id="ResField">
 
             </fieldset>
 
         </div>
-        <div id="Recently">
+        <div id="Recently" class="Block">
             <h1>Recently used</h1>
 
         </div>
@@ -187,6 +211,19 @@
 
         function closeForm() {
         }
+
+        const optionsBlock = document.getElementById("advancedOptions");
+        let showOptions = button => {
+            console.log(optionsBlock.hidden);
+            if(optionsBlock.hidden){
+                optionsBlock.removeAttribute("hidden");
+                button.innerText="Show Advanced Options";
+            } else {
+                optionsBlock.setAttribute("hidden", "hidden");
+                button.innerText="Hide Advanced Options";
+            }
+        }
+
     </script>
 
 
