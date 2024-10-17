@@ -8,23 +8,20 @@ namespace P7_PSEngine.API
     {
         public static void MapProductEndpoints(this WebApplication app)
         {
-            app.MapGet("/api/products", async (TodoDb db) =>
+            app.MapGet("/api/products", async (ITodoRepository repo) =>
             {
-                var products = await db.Todos.ToListAsync();
-                return products;
+                var products = await repo.GetAllTodosAsync();
+                return Results.Ok(products);
             });
 
-            app.MapGet("/todoitems", async (TodoDb db) =>
-                await db.Todos.ToListAsync());
-
-            app.MapGet("/api/products/{id}", async (HttpContext context, TodoDb db) =>
+            app.MapGet("/api/products/{id}", async (HttpContext context, ITodoRepository repo) =>
             {
                 if (!int.TryParse(context.Request.RouteValues["id"]?.ToString(), out var id))
                 {
                     return Results.BadRequest("Invalid product ID");
                 }
 
-                var product = await db.Todos.FindAsync(id);
+                var product = await repo.GetTodoByIdAsync(id);
                 if (product == null)
                 {
                     return Results.NotFound();
@@ -32,8 +29,8 @@ namespace P7_PSEngine.API
                 return Results.Ok(product);
             });
 
-            app.MapGet("/todoitems/{id}", async (int id, TodoDb db) =>
-                await db.Todos.FindAsync(id)
+            app.MapGet("/todoitems/{id}", async (int id, ITodoRepository repo) =>
+                await repo.GetTodoByIdAsync(id)
                     is Todo todo
                         ? Results.Ok(todo)
                         : Results.NotFound());
@@ -87,14 +84,14 @@ namespace P7_PSEngine.API
                 return Results.NoContent();
             });
 
-            string static_path = "/app/wwwroot";
+            //string static_path = "/app/wwwroot";
 
             //Lets you send files from wwwroot folder
             app.UseStaticFiles();
 
             //examples on how you can send data or pages
             //Send html page from wwwroot folder
-            app.MapGet("/", () => Results.Content(File.ReadAllText($"{static_path}/index.html"), "text/html"));
+            //app.MapGet("/", () => Results.Content(File.ReadAllText($"{static_path}/index.html"), "text/html"));
 
             //Send a JSON object
             app.MapGet("/api/test", () => new { hmm = "wow", bab = 12345 });

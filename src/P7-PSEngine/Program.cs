@@ -11,6 +11,8 @@ builder.Services.AddDbContext<TodoDb>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Sorry, Your connectionstring is not found"));
 });
 
+builder.Services.AddScoped<ITodoRepository, TodoRepository>();
+
 var app = builder.Build();
 
 app.MapProductEndpoints();
