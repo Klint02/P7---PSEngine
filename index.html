@@ -14,19 +14,11 @@
         <div id="SearchBodyContainer" class="Block">
             <h1>Search Engine</h1>
             <div id="Search">
-                
                 <input type="search" id="searchbar" placeholder="Search for file">
-                <select name="fileTypes" id="fileTypeSelector">
-                    <option value="txt">txt</option>
-                    <option value="png">png</option>
-                    <option value="jpg">jpg</option>
-                    <option value="other">Other</option>
-                </select>
+                <button id="searchButton">Search</button>
                 <button id="inlineCommands" onclick="displayCommands()">Inline Commands</button>
-
             </div>
             <div id="advancedOptions">
-
                 <div id="Filter">
                     <div id="searchOptions">
                         <div>
@@ -40,19 +32,25 @@
                     </div>
                     <div id="buttons">
                         <div>
-                            <input type="checkbox" name="filter1" id="Mail">
+                            <input type="checkbox" name="filter" id="Mail">
                             <label for="filter1" id="Mail">Mail </label>
                         </div>
-                        
                         <div>
-                            <input type="checkbox" name="filter2" id="Docs">
+                            <input type="checkbox" name="filter" id="Docs">
                             <label for="filter2">Documents </label>
                         </div>
                         <div>
-                            <input type="checkbox" name="filter3" id="Folders">
+                            <input type="checkbox" name="filter" id="Folders">
                             <label for="filter3">Folders</label>
                         </div>
-                        
+                        <div>
+                            <input type="checkbox" name="filter" id="Folders">
+                            <label for="filter34">Images</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="filter" id="Folders">
+                            <label for="filter5">Miscellaneous</label>
+                        </div>
                     </div>
                     
                     <div id="datetime">
@@ -181,14 +179,11 @@
             
         </div>
         
-        
-
         <div id="Results" class="Block">
             <h1>Results</h1>
             <fieldset id="ResField">
 
             </fieldset>
-
         </div>
         
     </div>
