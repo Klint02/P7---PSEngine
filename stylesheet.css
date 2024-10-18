@@ -1,4 +1,7 @@
-body {background-color: lightgrey;}
+body {
+    background-color: lightgrey;
+    font-family: sans-serif;
+}
 
 #container {
     display: inline-grid;
@@ -23,7 +26,6 @@ body {background-color: lightgrey;}
 h1 {
     grid-row-start: 1;
     grid-row-end: 2;
-    font-family: 'Segoe UI'
 }
 
 #Search {
@@ -96,10 +98,6 @@ h1 {
     border-radius: 10px;
 }
 
-.ContainsText{
-    font-family: 'Segoe UI';
-}
-
 table {
     border: 2px solid rgb(0, 0, 0);
 
@@ -109,5 +107,4 @@ th,
 td {
     padding: 5px;
     border: 1px solid rgb(160 160 160);
-    font-family: 'Segoe UI';
 }
