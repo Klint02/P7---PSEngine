@@ -1,0 +1,69 @@
+version: '3'
+
+services:
+  backend:
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    networks:
+      P7Net:
+        ipv4_address: 192.122.0.2
+      
+    command: dotnet watch --project /app
+    volumes:
+      - ./src/P7-PSEngine:/app
+    environment:
+      - HTTP_PORTS=8070
+      - DOTNET_WATCH_RESTART_ON_RUDE_EDIT=true
+    ports:
+      - 8070:8070
+
+  db:
+    image: mysql:5.7
+    networks:
+      P7Net:
+        ipv4_address: 192.122.0.3
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'p7'
+      MYSQL_USER: 'engine'
+      MYSQL_PASSWORD: '1234'
+      MYSQL_ROOT_PASSWORD: '1234'
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      networks:
+        P7Net:
+          ipv4_address: 192.122.0.4
+      links:
+        - db
+      environment:
+        PMA_HOST: db
+        PMA_PORT: 3306
+        PMA_ARBITRARY: 1
+      restart: always
+      ports:
+        - 8071:80
+
+  node-server:
+    image: "node:21-alpine"
+    restart: unless-stopped
+    networks:
+      P7Net:
+        ipv4_address: 192.122.0.5
+
+    command: "node --watch --trace-warnings index.js"
+    working_dir: /app
+    volumes:
+      - ./src/Endpoint-Tester:/app
+    ports:
+      - 8072:8072
+
+networks:
+  P7Net:
+    driver: bridge
+    ipam:
+          driver: default
+          config:
+              - subnet: "192.122.0.0/24"
+                gateway: "192.122.0.1"
