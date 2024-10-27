@@ -12,63 +12,68 @@
     <div id="container">
 
         <div id="SearchBodyContainer" class="Block">
-            <h1>Search Engine</h1>
+            <h1 id="title">Search Engine</h1>
             <div id="Search">
                 <input type="search" id="searchbar" placeholder="Search for file">
                 <button id="searchButton">Search</button>
                 <button id="inlineCommands" onclick="displayCommands()">Inline Commands</button>
+                <button id="login" >Login</button>
             </div>
             <div id="advancedOptions">
                 <div id="Filter">
                     <div id="searchOptions">
                         <div>
-                            <input type="checkbox" name="filenameOption">
-                            <label for="filenameOption">Search by filename</label>
+                            <input type="checkbox" name="filenameOption" id="searchByFilename">
+                            <label for="searchByFilename">Search by filename</label>
                         </div>
                         <div>
-                            <input type="checkbox" name="contentOption">
-                            <label for="contentOption">Search by content</label>
+                            <input type="checkbox" name="contentOption" id="searchByContent">
+                            <label for="searchByContent">Search by content</label>
                         </div>
                     </div>
                     <div id="buttons">
+
                         <div>
-                            <input type="checkbox" name="filter" id="Mail">
-                            <label for="filter1" id="Mail">Mail </label>
+                            <input type="checkbox" name="filter1" id="Mail">
+                            <label for="Mail" id="Mail"> Mail </label>
+                        </div>
+
+                        <div>
+                            <input type="checkbox" name="filter2" id="Docs">
+                            <label for="Docs"> Documents </label>
+
                         </div>
                         <div>
-                            <input type="checkbox" name="filter" id="Docs">
-                            <label for="filter2">Documents </label>
+                            <input type="checkbox" name="filter3" id="Folders">
+                            <label for="Folders"> Folders</label>
                         </div>
                         <div>
-                            <input type="checkbox" name="filter" id="Folders">
-                            <label for="filter3">Folders</label>
+                            <input type="checkbox" name="filter4" id="Images">
+                            <label for="Images"> Images</label>
                         </div>
-                        <div>
-                            <input type="checkbox" name="filter" id="Folders">
-                            <label for="filter34">Images</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" name="filter" id="Folders">
-                            <label for="filter5">Miscellaneous</label>
-                        </div>
+                        <!-- <div>
+                            <input type="checkbox" name="filter5" id="Folders">
+                            <label for="Folders"> Miscellaneous</label>
+                        </div> -->
                     </div>
 
                     <div id="datetime">
                         <div>
-                            <input type="checkbox" name="searchInterval" id="searchInterval">
-                            <label for="searchInterval">From </label>
+                            <input type="checkbox" name="searchIntervalStart" id="searchIntervalStart">
+                            <label for="searchIntervalStart">  From </label>
                         </div>
-                        <div>
-                            <label for="startDate">Start Date:</label>
+                        <div class="spaceBetweenDates">
+                            <label for="startDate">Start Date: </label>
                             <input type="date" name="startDate" id="startDate" />
                         </div>
                         <div>
-                            <input type="checkbox" name="searchInterval" id="searchInterval">
-                            <label for="searchInterval">Before</label>
+                            <input type="checkbox" name="searchIntervalEnd" id="searchIntervalEnd"> 
+                            <label for="searchIntervalEnd"> Before</label>
                         </div>
                         <div>
-                            <label for="endDate">End Date:</label>
+                            <label for="endDate">End Date: </label>
                             <input type="date" id="endDate" />
+                            
                         </div>
                     </div>
                     <div id="dateButtons">
@@ -95,7 +100,8 @@
                         </tr>
                         <tr>
                             <td>contains</td>
-                            <td>Returns documents that have the exact phrase. e.g. <em></em>"contains 'Hello World'"
+                            <td>Returns documents that have the exact phrase. e.g."contains 'Hello
+                                World'"
                             </td>
                         </tr>
                         <tr>
@@ -179,11 +185,202 @@
 
             </div>
         </div>
-        <div id="Results" class="Block">
+        <div id="Results">
             <h1>Results</h1>
-            <fieldset id="ResField">
+            <div id="resTable">
+                <table>
+                    <th>
+                        File
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Path
+                    </th>
+                    <tr>
+                        <td>Cell 1</td>
+                        <td>Cell 2</td>
+                        <td>Cell 3</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 4</td>
+                        <td>Cell 5</td>
+                        <td>Cell 6</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 7</td>
+                        <td>Cell 8</td>
+                        <td>Cell 9</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 1</td>
+                        <td>Cell 2</td>
+                        <td>Cell 3</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 4</td>
+                        <td>Cell 5</td>
+                        <td>Cell 6</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 7</td>
+                        <td>Cell 8</td>
+                        <td>Cell 9</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 1</td>
+                        <td>Cell 2</td>
+                        <td>Cell 3</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 4</td>
+                        <td>Cell 5</td>
+                        <td>Cell 6</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 7</td>
+                        <td>Cell 8</td>
+                        <td>Cell 9</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 1</td>
+                        <td>Cell 2</td>
+                        <td>Cell 3</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 4</td>
+                        <td>Cell 5</td>
+                        <td>Cell 6</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 7</td>
+                        <td>Cell 8</td>
+                        <td>Cell 9</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 1</td>
+                        <td>Cell 2</td>
+                        <td>Cell 3</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 4</td>
+                        <td>Cell 5</td>
+                        <td>Cell 6</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 7</td>
+                        <td>Cell 8</td>
+                        <td>Cell 9</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 1</td>
+                        <td>Cell 2</td>
+                        <td>Cell 3</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 4</td>
+                        <td>Cell 5</td>
+                        <td>Cell 6</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 7</td>
+                        <td>Cell 8</td>
+                        <td>Cell 9</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 1</td>
+                        <td>Cell 2</td>
+                        <td>Cell 3</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 4</td>
+                        <td>Cell 5</td>
+                        <td>Cell 6</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 7</td>
+                        <td>Cell 8</td>
+                        <td>Cell 9</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 1</td>
+                        <td>Cell 2</td>
+                        <td>Cell 3</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 4</td>
+                        <td>Cell 5</td>
+                        <td>Cell 6</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 7</td>
+                        <td>Cell 8</td>
+                        <td>Cell 9</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 1</td>
+                        <td>Cell 2</td>
+                        <td>Cell 3</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 4</td>
+                        <td>Cell 5</td>
+                        <td>Cell 6</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 7</td>
+                        <td>Cell 8</td>
+                        <td>Cell 9</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 1</td>
+                        <td>Cell 2</td>
+                        <td>Cell 3</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 4</td>
+                        <td>Cell 5</td>
+                        <td>Cell 6</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 7</td>
+                        <td>Cell 8</td>
+                        <td>Cell 9</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 1</td>
+                        <td>Cell 2</td>
+                        <td>Cell 3</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 4</td>
+                        <td>Cell 5</td>
+                        <td>Cell 6</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 7</td>
+                        <td>Cell 8</td>
+                        <td>Cell 9</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 1</td>
+                        <td>Cell 2</td>
+                        <td>Cell 3</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 4</td>
+                        <td>Cell 5</td>
+                        <td>Cell 6</td>
+                      </tr>
+                      <tr>
+                        <td>Cell 7</td>
+                        <td>Cell 8</td>
+                        <td>Cell 9</td>
+                      </tr>
 
-            </fieldset>
+                </table>
+            </div>
         </div>
 
     </div>
@@ -201,6 +398,8 @@
             }
         }
 
+        //Funktion til dialog button
+        const loginButton = document.getElementById("login");
         function closeForm() {
         }
 
@@ -210,9 +409,12 @@
             if (optionsBlock.hidden) {
                 optionsBlock.removeAttribute("hidden");
                 button.innerText = "Hide Advanced Options";
+                document.getElementById("Results").style.height="70%";
             } else {
                 optionsBlock.setAttribute("hidden", "hidden");
                 button.innerText = "Show Advanced Options";
+                document.getElementById("Results").style.height="82%"
+
             }
         }
 

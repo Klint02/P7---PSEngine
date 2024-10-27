@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1B3CE06C-3CFF-4BD0-A2D8-E1D062D6FFC3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7-PSEngine", "src\P7-PSEngine\P7-PSEngine.csproj", "{CA2BDF2E-B186-4981-90E0-88D620388E8A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA2BDF2E-B186-4981-90E0-88D620388E8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA2BDF2E-B186-4981-90E0-88D620388E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA2BDF2E-B186-4981-90E0-88D620388E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA2BDF2E-B186-4981-90E0-88D620388E8A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CA2BDF2E-B186-4981-90E0-88D620388E8A} = {1B3CE06C-3CFF-4BD0-A2D8-E1D062D6FFC3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7FDF6FD7-D864-4A56-9907-29AD110D1690}
+	EndGlobalSection
+EndGlobal
