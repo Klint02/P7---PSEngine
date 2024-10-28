@@ -9,6 +9,8 @@
 </head>
 
 <body>
+    <a id="auth-link" href="">connect onedrive</a>
+
     <div id="container">
 
         <div id="SearchBodyContainer" class="Block">
@@ -221,4 +223,17 @@
 
 </body>
 
+<script>
+    let user = "klint"
+    let tenant = "69ba7116-c3b3-44a4-9a15-69e541023514";
+    let client_id = "1cbff542-d06d-4d84-8302-fda352d2b1f2";
+    let redirect_url = `http://localhost:8070/api/connect/onedrive`;
+    let scope = `Files.Read.All`;
+
+    document.cookie = `username=${user}`;
+
+    document.getElementById("auth-link").href = `https://login.microsoftonline.com/${tenant}/oauth2/v2.0/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect_url}&response_mode=query&scope=${scope}&state=12345`;
+</script>
+
 </html>
+
