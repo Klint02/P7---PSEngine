@@ -1,4 +1,4 @@
- function saveSearch(){
+async function saveSearch(){
     console.log("Searching");
 
     const formData = {
@@ -16,5 +16,19 @@
     }
 
     console.log(formData);
+
+    fetch ("/api/searchRequest", {
+        method: "post",
+        headers: {
+            'Accept': "application/json",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(function(response) { return response.json();})
+    .then(function(data) {
+        console.log(data);
+    }
+    );
  }
 
