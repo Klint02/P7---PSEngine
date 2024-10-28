@@ -92,6 +92,8 @@ namespace P7_PSEngine.API
             //Send html page from wwwroot folder
             app.MapGet("/", () => Results.Content(File.ReadAllText($"{static_path}/index.html"), "text/html"));
 
+            app.MapGet("/linkuser", () => Results.Content(File.ReadAllText($"{static_path}/html/auth.html"), "text/html"));
+
             //Send a JSON object
             app.MapGet("/api/test", () => new { hmm = "wow", bab = 12345 });
 
