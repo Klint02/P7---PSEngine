@@ -8,7 +8,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 95vh;
-    width: 97vw;
+    width: 99vw;
     gap: 10px 10px;
 }
 
@@ -127,13 +127,16 @@ body {
 
 #Results {
     background-color: grey;
-    height: 82%;
+    height: 70%;
     width: 100%;
-    border: 1px solid black;
+    border: 3px solid black;
     border-radius: 10px;
     
 }
 
+#Results h1 {
+    padding-left: 10px;
+}
 
 
 
@@ -188,7 +191,7 @@ input[type="checkbox"]:hover {
 
 
 tbody tr:nth-child(even){
-    background-color: lightblue;
+    background-color: rgb(234, 155, 155);
     border-color:black;
 }
 tbody tr:nth-child(odd){
@@ -196,8 +199,9 @@ tbody tr:nth-child(odd){
     border-color:black;
 }
 
-tbody tr:nth-child(even):hover, tbody tr:nth-child(odd):hover {
+tbody tr:nth-child(odd):hover,tbody tr:nth-child(even):hover{
     filter: brightness(0.9);
+
 }
 table {
     width: 100%;
@@ -223,4 +227,33 @@ tr {
 td {
     border-inline: 3px solid black ;
     padding: 5px;
+}
+
+#loginForm {
+    border-radius: 12px;
+    border:none;
+    outline: none;
+    flex-direction: column  ;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}
+
+dialog div {
+    padding: 5px;
+    text-align: left;
+}
+
+dialog input {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border: none;
+    border-radius: 12px;
+    outline: none;
+    width: 60%;
+    height: 2rem;
+    background-color: rgb(221, 221, 221);
+    padding: 5px;
+}
+
+dialog::backdrop {
+    background-color: rgba(34, 33, 33, 0.5);
 }

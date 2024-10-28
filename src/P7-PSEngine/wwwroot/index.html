@@ -17,7 +17,19 @@
                 <input type="search" id="searchbar" placeholder="Search for file">
                 <button id="searchButton">Search</button>
                 <button id="inlineCommands" onclick="displayCommands()">Inline Commands</button>
-                <button id="login" >Login</button>
+                <button id="login" >Login</button>  
+                <dialog id="loginForm">
+                  <div>
+                    <label for="username">Username:</label>
+                    <input type="search" id="username" placeholder="Username">
+                  </div>
+                  <div>
+                    <label for="password">Password:</label>
+                    <input type="search" id="password" placeholder="Password">
+                  </div>
+                  <button id="closeLogin">close </button>
+                  <button id="submit">Login</button>
+                </dialog>
             </div>
             <div id="advancedOptions">
                 <div id="Filter">
@@ -89,7 +101,7 @@
                 </div>
 
             </div>
-            <button id="advancedOptionsButton" onclick="showOptions(this)">Show Advanced Options</button>
+            <button id="advancedOptionsButton" onclick="showOptions(this)">Hide Advanced Options</button>
 
             <div id="inlineHelp">
                 <div id="commandspopup">
@@ -399,9 +411,24 @@
         }
 
         //Funktion til dialog button
-        const loginButton = document.getElementById("login");
-        function closeForm() {
-        }
+        const loginbutton = document.getElementById("login");
+        const loginform = document.getElementById("loginForm");
+        const closeLogin = document.getElementById("closeLogin");
+        const submitbtn = document.getElementById("submit");
+        loginbutton.addEventListener("click" , ()=> {
+          loginform.showModal();
+        })
+
+        closeLogin.addEventListener("click",()=>{
+          loginform.close();
+        })
+
+        submitbtn.addEventListener("click",()=>{
+          document.cookie = `username=${document.getElementById("username").value}`;
+          loginform.close();
+        })
+
+
 
         const optionsBlock = document.getElementById("advancedOptions");
         let showOptions = button => {
@@ -414,7 +441,6 @@
                 optionsBlock.setAttribute("hidden", "hidden");
                 button.innerText = "Show Advanced Options";
                 document.getElementById("Results").style.height="82%"
-
             }
         }
 
