@@ -1,0 +1,48 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using P7_PSEngine.Data;
+using P7_PSEngine.Model;
+
+namespace P7_PSEngine.API
+{
+    public static class FrontendEndpointsExt
+    {
+        //Declare en struct eller class, der svarer til din request body
+        public struct ServiceCreationDetails 
+        {
+            public string searchwords {get; set;}
+            public bool filenameOption {get; set;}
+            public bool contentOption {get; set;}
+            public bool mailOption {get; set;}
+            public bool docOption {get; set;}
+            public bool folderOption {get; set;}
+            public bool imageOption {get; set;}
+            public bool miscOption {get; set;}
+            public DateTime? startDate {get; set;}
+            public DateTime? endDate {get; set;}
+        }
+
+        public struct Command
+        {
+            public string keyword {get; set;}
+            public string explanation {get; set;}
+        }
+        public static void MapFrontendEndpoints(this WebApplication app)
+        {
+            string static_path = "/app/wwwroot";
+
+            app.MapGet("/linkuser", () => Results.Content(File.ReadAllText($"{static_path}/html/auth.html"), "text/html"));
+
+            //Brug structen som er declared tidligere
+            app.MapPost("/api/search", (ServiceCreationDetails Details) => {
+                //Tag fat i dens field
+                Console.WriteLine(Details.searchwords);
+                var response = new {name = "test", path = "/test/", date = DateTime.Now};
+                Console.WriteLine(response);
+                return response;
+            });
+
+            //app.MapGet("/frontend/commands", () => )
+        }
+    }
+}

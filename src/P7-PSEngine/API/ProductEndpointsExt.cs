@@ -103,14 +103,6 @@ namespace P7_PSEngine.API
             //Use variables from URL
             app.MapGet("/api/repeat/{message}", (string message) => $"{message}");
 
-            app.MapPost("/api/searchRequest/", (HttpContext context) => {
-                //context.Request.Body
-                var response = new {name = "test", path = "/test/test", date = DateTime.Now};
-                Console.WriteLine(response);
-                return response;
-            });
-
-            app.Run();
         }
     }
 }

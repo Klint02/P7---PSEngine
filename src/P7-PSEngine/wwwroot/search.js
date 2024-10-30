@@ -17,7 +17,7 @@ async function saveSearch(){
 
     console.log(formData);
 
-    fetch ("/api/searchRequest", {
+    fetch ("/api/search", {
         method: "post",
         headers: {
             'Accept': "application/json",
@@ -27,8 +27,26 @@ async function saveSearch(){
     })
     .then(function(response) { return response.json();})
     .then(function(data) {
+
         console.log(data);
-    }
-    );
+        const files = [];
+        files.push(data);
+        console.log(files);
+        var tablebody = "";
+        for (let i = 0; i<files.length; i++){
+            console.log(files[i]);
+            console.log(files[i]["name"]);
+            tablebody += `
+            <tr style="z-index: 1">
+                <th>${files[i]["name"]}</th>
+                <th>${files[i]["path"]}</th>
+                <th>${files[i]["date"]}</th>
+            </tr>  
+            `
+        }
+        
+
+        document.getElementById("ResField").innerHTML=tablebody;
+    });
  }
 
