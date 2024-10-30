@@ -92,17 +92,8 @@
       <button id="advancedOptionsButton" onclick="showOptions(this)">Hide Advanced Options</button>
       <div id="inlineHelp">
         <div id="commandspopup">
-          <table>
-            <tr>
-              <th>Keyword</th>
-              <th>Explanation</th>
-            </tr>
-            <tr>
-              <td>contains</td>
-              <td>Returns documents that have the exact phrase. e.g."contains 'Hello
-                World'"
-              </td>
-            </tr>
+          <table id="mock2">
+            
 
           </table>
         </div>
@@ -137,24 +128,12 @@
     <div id="Results">
       <h1>Results</h1>
       <div id="resTable">
-        <table>
-          <th>
-            File
-          </th>
-          <th>
-            Date
-          </th>
-          <th>
-            Path
-          </th>
-          <tr>
-            <td>Cell 1</td>
-            <td>Cell 2</td>
-            <td>Cell 3</td>
-          </tr>
+          <table id="mock">
+
+          </table>
 
 
-        </table>
+        
       </div>
     </div>
 
@@ -178,12 +157,45 @@
     const loginform = document.getElementById("loginForm");
     const closeLogin = document.getElementById("closeLogin");
     const submitbtn = document.getElementById("submit");
+    const showpassw = document.getElementById("showPassword");
+    const passw = document.getElementById("password");
+    const usern = document.getElementById("username");
+    const mock = document.getElementById("mock");
+    const mock2 = document.getElementById("mock2");
+    mock2.innerHTML=`<tr>
+              <th>Keyword</th>
+              <th>Explanation</th>
+            </tr>
+            ` + `<tr>
+              <td>contains</td>
+              <td>Returns documents that have the exact phrase. e.g."contains 'Hello
+                World'"
+              </td>
+            </tr>`.repeat(20)
+  mock.innerHTML = `
+          <th>
+            File
+          </th>
+          <th>
+            Date
+          </th>
+          <th>
+            Path
+          </th>` + `<tr>
+            <td>Cell 1</td>
+            <td>Cell 2</td>
+            <td>Cell 3</td>
+          </tr>`.repeat(40)
+
     loginbutton.addEventListener("click", () => {
+      usern.value ='';
+      passw.value='';
       loginform.showModal();
     })
 
     closeLogin.addEventListener("click", () => {
       loginform.close();
+      
     })
 
     submitbtn.addEventListener("click", () => {
@@ -199,16 +211,13 @@
       if (optionsBlock.hidden) {
         optionsBlock.removeAttribute("hidden");
         button.innerText = "Hide Advanced Options";
-        document.getElementById("Results").style.height = "70%";
       } else {
         optionsBlock.setAttribute("hidden", "hidden");
         button.innerText = "Show Advanced Options";
-        document.getElementById("Results").style.height = "82%"
       }
     }
 
-    const showpassw = document.getElementById("showPassword");
-    const passw = document.getElementById("password");
+    
 
     showpassw.addEventListener("click", () => {
       const type = passw.getAttribute('type') == 'password' ? 'text' :'password';
