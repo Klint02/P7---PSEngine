@@ -91,92 +91,12 @@
 
             <div id="inlineHelp">
                 <div id="commandspopup">
-                    <table>
+                    <table id="commandsTable">
                         <tr>
                             <th>Keyword</th>
                             <th>Explanation</th>
                         </tr>
-                        <tr>
-                            <td>contains</td>
-                            <td>Returns documents that have the exact phrase. e.g. <em></em>"contains 'Hello World'"
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
-                        <tr>
-                            <td>folder.name:</td>
-                            <td>Returns folders with names equal to the search: folder.name: dogs</td>
-                        </tr>
+                        
                     </table>
                 </div>
 
@@ -191,15 +111,16 @@
     </div>
 
     <script>
-        const element = document.getElementById("inlineHelp");
+        const commandsBlock = document.getElementById("inlineHelp");
+        getCommands();
 
         function displayCommands() {
-            console.log(element.style.display);
-            if (element.style.display != "block") {
-                element.style.display = "block";
+                
+            if (commandsBlock.style.display != "block") {
+                commandsBlock.style.display = "block";
 
             } else {
-                element.style.display = "none";
+                commandsBlock.style.display = "none";
             }
         }
 
@@ -219,10 +140,6 @@
         }
         
     </script>
-    <script src="s">
-
-    </script>
-
 </body>
 
 <script>
