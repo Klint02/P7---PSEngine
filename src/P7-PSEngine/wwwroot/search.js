@@ -31,16 +31,16 @@ async function saveSearch(){
         
         
         const files = data.slice(0);
-        
+        console.log(files);
         var tablebody = "";
-        for (let i = 0; i<=files.length; i++){
+        for (let i = 0; i<files.length; i++){
             console.log(files[i]);
             
             tablebody += `
             <tr style="z-index: 1">
-                <th>${files[0][i]["name"]}</th>
-                <th>${files[0][i]["path"]}</th>
-                <th>${files[0][i]["date"]}</th>
+                <th>${files[i]["name"]}</th>
+                <th>${files[i]["path"]}</th>
+                <th>${files[i]["date"]}</th>
             </tr>  
             `
         }
