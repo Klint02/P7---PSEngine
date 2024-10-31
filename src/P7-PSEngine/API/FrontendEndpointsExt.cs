@@ -37,7 +37,10 @@ namespace P7_PSEngine.API
             app.MapPost("/api/search", (ServiceCreationDetails Details) => {
                 //Tag fat i dens field
                 Console.WriteLine(Details.searchwords);
-                var response = new {name = "test", path = "/test/", date = DateTime.Now};
+
+                
+                object[] response = [new {name = "test", path = "/test/", date = DateTime.Now}, new {name = "test2", path = "/test2/", date = DateTime.Now}];
+                //var response = new {name = "test", path = "/test/", date = DateTime.Now};
                 Console.WriteLine(response);
                 return response;
             });

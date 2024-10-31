@@ -15,7 +15,7 @@ async function saveSearch(){
         "dateType": document.getElementById("dateCreated").checked ? "created" : "modified"
     }
 
-    console.log(formData);
+    //console.log(formData);
 
     fetch ("/api/search", {
         method: "post",
@@ -28,25 +28,28 @@ async function saveSearch(){
     .then(function(response) { return response.json();})
     .then(function(data) {
 
-        console.log(data);
-        const files = [];
-        files.push(data);
-        console.log(files);
+        
+        
+        const files = data.slice(0);
+        
         var tablebody = "";
-        for (let i = 0; i<files.length; i++){
+        for (let i = 0; i<=files.length; i++){
             console.log(files[i]);
-            console.log(files[i]["name"]);
+            
             tablebody += `
             <tr style="z-index: 1">
-                <th>${files[i]["name"]}</th>
-                <th>${files[i]["path"]}</th>
-                <th>${files[i]["date"]}</th>
+                <th>${files[0][i]["name"]}</th>
+                <th>${files[0][i]["path"]}</th>
+                <th>${files[0][i]["date"]}</th>
             </tr>  
             `
         }
         
-
         document.getElementById("ResField").innerHTML=tablebody;
     });
+ }
+
+ async function getCommands(){
+
  }
 
