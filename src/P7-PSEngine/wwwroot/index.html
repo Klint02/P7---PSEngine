@@ -13,7 +13,6 @@
     <a id="auth-link" href="">connect onedrive</a>
 
     <div id="container">
-
         <div id="SearchBodyContainer" class="Block">
             <h1>Search Engine</h1>
             <div id="Search">
@@ -55,7 +54,6 @@
                             <label for="miscOption">Miscellaneous</label>
                         </div>
                     </div>
-
                     <div id="datetime">
                         <div>
                             <input type="checkbox" name="searchInterval" id="startDateOption">
@@ -85,8 +83,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+
             <button id="advancedOptionsButton" onclick="showOptions(this)">Show Advanced Options</button>
 
             <div id="inlineHelp">
@@ -96,10 +94,8 @@
                             <th>Keyword</th>
                             <th>Explanation</th>
                         </tr>
-                        
                     </table>
                 </div>
-
             </div>
         </div>
         <div id="Results" class="Block">
@@ -107,7 +103,6 @@
             <table id="ResField" style="z-index: 1;">
             </table>
         </div>
-
     </div>
 
     <script>
@@ -123,9 +118,6 @@
             }
         }
 
-        function closeForm() {
-        }
-
         const optionsBlock = document.getElementById("advancedOptions");
         let showOptions = button => {
             console.log(optionsBlock.hidden);
@@ -137,7 +129,6 @@
                 button.innerText = "Show Advanced Options";
             }
         }
-        
     </script>
 </body>
 

@@ -15,9 +15,7 @@ async function saveSearch(){
         "dateType": document.getElementById("dateCreated").checked ? "created" : "modified"
     }
 
-    //console.log(formData);
-
-    fetch ("/api/search", {
+    fetch ("/frontend/search", {
         method: "post",
         headers: {
             'Accept': "application/json",

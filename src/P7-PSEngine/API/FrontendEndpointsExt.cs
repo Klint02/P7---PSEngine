@@ -36,9 +36,8 @@ namespace P7_PSEngine.API
             string static_path = "/app/wwwroot";
 
             app.MapGet("/linkuser", () => Results.Content(File.ReadAllText($"{static_path}/html/auth.html"), "text/html"));
-
             
-            app.MapPost("/api/search", (ServiceCreationDetails Details) => {
+            app.MapPost("/frontend/search", (ServiceCreationDetails Details) => {
                 
                 object[] response = [
                                     new {name = "test", path = "/test/", date = DateTime.Now}, 
