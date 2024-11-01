@@ -7,7 +7,6 @@ namespace P7_PSEngine.API
 {
     public static class FrontendEndpointsExt
     {
-        //Declare en struct eller class, der svarer til din request body
         public struct ServiceCreationDetails 
         {
             public string searchwords {get; set;}
@@ -38,18 +37,26 @@ namespace P7_PSEngine.API
 
             app.MapGet("/linkuser", () => Results.Content(File.ReadAllText($"{static_path}/html/auth.html"), "text/html"));
 
-            //Brug structen som er declared tidligere
+            
             app.MapPost("/api/search", (ServiceCreationDetails Details) => {
-                //Tag fat i dens field
-                Console.WriteLine(Details.searchwords);
                 
-                object[] response = [new {name = "test", path = "/test/", date = DateTime.Now}, new {name = "test2", path = "/test2/", date = DateTime.Now}];
-                //var response = new {name = "test", path = "/test/", date = DateTime.Now};
+                object[] response = [
+                                    new {name = "test", path = "/test/", date = DateTime.Now}, 
+                                    new {name = "test2", path = "/test2/", date = DateTime.Now}];
                 
                 return response;
             });
             
-            Command[] Commands = [new Command("Contains:", "Search contains a certain keyword"), new Command("Test", "A command for testing whether this works or not")];
+            Command[] Commands = [
+                                    new Command("Contains:", "Search contains a certain keyword"), 
+                                    new Command("Test", "A command for testing whether this works or not"),
+                                    new Command("Test", "A command for testing whether this works or not"),
+                                    new Command("Test", "A command for testing whether this works or not"),
+                                    new Command("Test", "A command for testing whether this works or not"),
+                                    new Command("Test", "A command for testing whether this works or not"),
+                                    new Command("Test", "A command for testing whether this works or not"),
+                                    new Command("Test", "A command for testing whether this works or not"),
+                                ];
 
             app.MapGet("/frontend/commands", () => { return Commands;});
         }
