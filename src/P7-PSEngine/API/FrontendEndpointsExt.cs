@@ -24,8 +24,13 @@ namespace P7_PSEngine.API
 
         public struct Command
         {
-            public string keyword {get; set;}
-            public string explanation {get; set;}
+            public string Keyword {get; set;}
+            public string Explanation {get; set;}
+            public Command(string keyword, string explanation)
+            {
+                Keyword = keyword;
+                Explanation = explanation;
+            }
         }
         public static void MapFrontendEndpoints(this WebApplication app)
         {
@@ -37,15 +42,16 @@ namespace P7_PSEngine.API
             app.MapPost("/api/search", (ServiceCreationDetails Details) => {
                 //Tag fat i dens field
                 Console.WriteLine(Details.searchwords);
-
                 
                 object[] response = [new {name = "test", path = "/test/", date = DateTime.Now}, new {name = "test2", path = "/test2/", date = DateTime.Now}];
                 //var response = new {name = "test", path = "/test/", date = DateTime.Now};
-                Console.WriteLine(response);
+                
                 return response;
             });
+            
+            Command[] Commands = [new Command("Contains:", "Search contains a certain keyword"), new Command("Test", "A command for testing whether this works or not")];
 
-            //app.MapGet("/frontend/commands", () => )
+            app.MapGet("/frontend/commands", () => { return Commands;});
         }
     }
 }

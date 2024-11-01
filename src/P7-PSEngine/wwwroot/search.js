@@ -27,9 +27,6 @@ async function saveSearch(){
     })
     .then(function(response) { return response.json();})
     .then(function(data) {
-
-        
-        
         const files = data.slice(0);
         console.log(files);
         var tablebody = "";
@@ -50,6 +47,24 @@ async function saveSearch(){
  }
 
  async function getCommands(){
+    fetch("/frontend/commands").then(response => {return response.json();})
+    .then(data => {
+        console.log(data)
+        const commands = data.slice(0);
 
+        var tablebody = "";
+        for (let i = 0; i<commands.length; i++){
+            console.log(files[i]);
+            
+            tablebody += `
+            <tr style="z-index: 1">
+                <th>${files[i]["Keyword"]}</th>
+                <th>${files[i]["Explanation"]}</th>
+            </tr>  
+            `
+        }
+
+        document.getElementById("commandsTable").innerHTML=tablebody;
+    });
  }
 
