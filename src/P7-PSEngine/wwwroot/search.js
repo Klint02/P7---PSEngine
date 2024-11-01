@@ -30,10 +30,10 @@ async function saveSearch(){
         var tablebody = "";
         for (let i = 0; i<files.length; i++){
             tablebody += `
-            <tr style="z-index: 1">
-                <th>${files[i]["name"]}</th>
-                <th>${files[i]["path"]}</th>
-                <th>${files[i]["date"]}</th>
+            <tr class="resultsCell">
+                <th class="resultsCell">${files[i]["name"]}</th>
+                <th class="resultsCell">${files[i]["path"]}</th>
+                <th class="resultsCell">${files[i]["date"]}</th>
             </tr>  
             `
         }
@@ -50,10 +50,8 @@ async function saveSearch(){
 
         var tablebody = "";
         for (let i = 0; i<commands.length; i++){
-            console.log(commands[i]);
-            
             tablebody += `
-            <tr style="z-index: 1">
+            <tr class="commandsCell">
                 <th>${commands[i]["keyword"]}</th>
                 <th>${commands[i]["explanation"]}</th>
             </tr>  

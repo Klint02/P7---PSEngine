@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <a id="auth-link" href="">connect onedrive</a>
+    <a id="auth-link" href="">Connect onedrive</a>
 
     <div id="container">
         <div id="SearchBodyContainer" class="Block">
@@ -98,9 +98,9 @@
                 </div>
             </div>
         </div>
-        <div id="Results" class="Block">
+        <div id="Results" class="Block resultsCell">
             <h1>Results</h1>
-            <table id="ResField" style="z-index: 1;">
+            <table id="ResField" class="Block resultsCell">
             </table>
         </div>
     </div>
@@ -120,7 +120,6 @@
 
         const optionsBlock = document.getElementById("advancedOptions");
         let showOptions = button => {
-            console.log(optionsBlock.hidden);
             if (optionsBlock.hidden) {
                 optionsBlock.removeAttribute("hidden");
                 button.innerText = "Hide Advanced Options";
