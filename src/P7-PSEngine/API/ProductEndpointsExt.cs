@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using P7_PSEngine.Data;
+﻿using P7_PSEngine.Data;
 using P7_PSEngine.Model;
 
 namespace P7_PSEngine.API
@@ -42,33 +41,33 @@ namespace P7_PSEngine.API
                 return Results.Created($"/api/products/{todos.Id}", todos);
             });
 
-            app.MapPut("/api/products/{id}", async (int id, Todo todo, TodoDb db) =>
-            {
-                if (id != todo.Id)
-                {
-                    return Results.BadRequest();
-                }
+            // app.MapPut("/api/products/{id}", async (int id, Todo todo, TodoDb db) =>
+            // {
+            //     if (id != todo.Id)
+            //     {
+            //         return Results.BadRequest();
+            //     }
 
-                db.Entry(todo).State = EntityState.Modified;
+            //     db.Entry(todo).State = EntityState.Modified;
 
-                try
-                {
-                    await db.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (await db.Todos.FindAsync(id) == null)
-                    {
-                        return Results.NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+            //     try
+            //     {
+            //         await db.SaveChangesAsync();
+            //     }
+            //     catch (DbUpdateConcurrencyException)
+            //     {
+            //         if (await db.Todos.FindAsync(id) == null)
+            //         {
+            //             return Results.NotFound();
+            //         }
+            //         else
+            //         {
+            //             throw;
+            //         }
+            //     }
 
-                return Results.NoContent();
-            });
+            //     return Results.NoContent();
+            // });
 
             app.MapDelete("/api/products/{id}", async (int id, TodoDb db) =>
             {
@@ -104,7 +103,6 @@ namespace P7_PSEngine.API
             //Use variables from URL
             app.MapGet("/api/repeat/{message}", (string message) => $"{message}");
 
-            app.Run();
         }
     }
 }

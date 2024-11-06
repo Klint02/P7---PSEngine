@@ -12,6 +12,7 @@ builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 var app = builder.Build();
 
 app.MapProductEndpoints();
+app.MapFrontendEndpoints();
 
 
 app.Run();
