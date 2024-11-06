@@ -57,6 +57,7 @@ body {
 
 h1 {
     grid-area: 1/1/2/2;
+
     background: linear-gradient(to right,#3c92af,blue);
     -webkit-background-clip: text;
     font-size: 3rem;
@@ -69,7 +70,6 @@ h1 {
 #datetime {
     display: flex;
     flex-direction: column;
-    
 }
 .spaceBetweenDates{
     margin-bottom: 10px;
@@ -196,6 +196,7 @@ input[type="checkbox"]:hover, input[type="radio"]:hover {
     height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
+    z-index: 10;
 }
 
 #inlineHelp {
@@ -237,6 +238,7 @@ input[type="checkbox"]:hover, input[type="radio"]:hover {
     padding-left: 10px;
     color: white;
 }
+
 
 #resTable {
     height:  86.5%;
@@ -295,8 +297,8 @@ tr {
 td {
     border-inline: 3px solid black ;
     padding: 5px;
+    border: 1px solid rgb(160 160 160);
 }
-
 /* DIALOG (LOGIN) */
 dialog {
     border-radius: 12px;

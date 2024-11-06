@@ -2,15 +2,17 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/stylesheet.css">
-  <title>Search Engine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/stylesheet.css">
+    <script type="text/javascript" src="search.js"></script>
+    <title>Search Engine</title>
 </head>
 
 <body>
   <div id="container">
-
+    <a id="auth-link" href="">Connect onedrive</a>
     <div id="SearchBodyContainer" class="Block">
       <h1 id="title">Search Engine</h1>
       <div id="Search">
@@ -73,7 +75,6 @@
             <div>
               <label for="endDate">End Date: </label>
               <input type="date" id="endDate" />
-
             </div>
           </div>
           <div id="dateButtons">
@@ -87,6 +88,7 @@
             </div>
           </div>
         </div>
+
 
       </div>
       <button id="advancedOptionsButton" onclick="showOptions(this)">Hide Advanced Options</button>
@@ -140,17 +142,17 @@
   </div>
 
   <script>
-    const element = document.getElementById("inlineHelp");
+    const commandsBlock = document.getElementById("inlineHelp");
 
-    function displayCommands() {
-      console.log(element.style.display);
-      if (element.style.display != "block") {
-        element.style.display = "block";
+        function displayCommands() {
+                
+            if (commandsBlock.style.display != "block") {
+                commandsBlock.style.display = "block";
 
-      } else {
-        element.style.display = "none";
-      }
-    }
+            } else {
+                commandsBlock.style.display = "none";
+            }
+        }
 
     //Funktion til dialog button
     const loginbutton = document.getElementById("login");
@@ -160,34 +162,6 @@
     const showpassw = document.getElementById("showPassword");
     const passw = document.getElementById("password");
     const usern = document.getElementById("username");
-    const mock = document.getElementById("mock");
-    const mock2 = document.getElementById("mock2");
-    mock2.innerHTML = `<tr>
-              <th>Keyword</th>
-              <th>Explanation</th>
-            </tr>
-            ` + `<tr>
-              <td>contains</td>
-              <td>Returns documents that have the exact phrase. e.g."contains 'Hello
-                World'"
-              </td>
-            </tr>`.repeat(20)
-    mock.innerHTML = `
-          <th>
-            File
-          </th>
-          <th>
-            Date
-          </th>
-          <th>
-            Path
-          </th>`
-      +
-      `<tr>
-            <td>Cell 1</td>
-            <td>Cell 2</td>
-            <td>Cell 3</td>
-          </tr>`.repeat(40)
 
     loginbutton.addEventListener("click", () => {
       usern.value = '';
@@ -227,8 +201,22 @@
     })
 
   </script>
-
-
+   
 </body>
 
+
+<script>
+    let user = "klint"
+    let tenant = "69ba7116-c3b3-44a4-9a15-69e541023514";
+    let client_id = "1cbff542-d06d-4d84-8302-fda352d2b1f2";
+    let redirect_url = `http://localhost:8070/api/connect/onedrive`;
+    let scope = `Files.Read.All`;
+
+    document.cookie = `username=${user}`;
+
+    document.getElementById("auth-link").href = `https://login.microsoftonline.com/${tenant}/oauth2/v2.0/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect_url}&response_mode=query&scope=${scope}&state=12345`;
+</script>
+
+
 </html>
+
