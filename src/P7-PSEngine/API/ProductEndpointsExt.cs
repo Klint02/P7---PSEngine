@@ -95,6 +95,8 @@ namespace P7_PSEngine.API
 
             app.MapGet("/linkuser", () => Results.Content(File.ReadAllText($"{static_path}/html/auth.html"), "text/html"));
 
+            app.MapGet("/googleuser", () => Results.Content(File.ReadAllText($"{static_path}/html/drive.html"), "text/html"));
+
             //Send a JSON object
             app.MapGet("/api/test", () => new { hmm = "wow", bab = 12345 });
 

@@ -10,6 +10,7 @@
 
 <body>
     <a id="auth-link" href="">connect onedrive</a>
+    <a id="googleauth" href="">connect Google drive</a>
 
     <div id="container">
 
@@ -233,6 +234,18 @@
     document.cookie = `username=${user}`;
 
     document.getElementById("auth-link").href = `https://login.microsoftonline.com/${tenant}/oauth2/v2.0/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect_url}&response_mode=query&scope=${scope}&state=12345`;
+</script>
+
+<script>
+    let user2 = "Daniel"
+    let client_id2 = "375636146496-iftgkjb37ffoi4ubq95mef3shrnjetos.apps.googleusercontent.com";
+    let redirect_url2 = `http://localhost:8070/googleuser`;
+    let scope2 = `https%3A//www.googleapis.com/auth/drive.metadata.readonly`;
+
+    document.cookie = `username=${user2}`;
+
+    //document.getElementById("googleauth").href = `https://login.microsoftonline.com/oauth2/v2.0/authorize?client_id=${client_id2}&response_type=code&redirect_uri=${redirect_url2}&response_mode=query&scope=${scope2}&state=12345`;
+    document.getElementById("googleauth").href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_id2}&response_type=code&redirect_uri=${redirect_url2}&response_mode=query&scope=${scope2}&state=12345`;
 </script>
 
 </html>

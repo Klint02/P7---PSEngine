@@ -1,0 +1,11 @@
+<html>
+    <body>
+        cookie Daniel   
+    </body>
+    <script>
+        console.log(document.cookie);
+        console.log(window.location.href)
+        let search_params = new URLSearchParams(window.location.href.split("?")[1]);
+        console.log(search_params.get("code"));
+    </script>
+</html>
