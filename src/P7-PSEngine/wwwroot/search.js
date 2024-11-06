@@ -3,15 +3,15 @@ async function saveSearch(){
 
     const formData = {
         "Query": document.getElementById("searchbar").value,
-        "filenameOption": document.getElementById("filenameOption").checked,
-        "contentOption": document.getElementById("contentOption").checked,
+        "filenameOption": document.getElementById("searchByFilename").checked,
+        "contentOption": document.getElementById("searchByContent").checked,
         "mailOption": document.getElementById("mailOption").checked,
         "docOption": document.getElementById("docOption").checked,
         "folderOption": document.getElementById("folderOption").checked,
         "imageOption": document.getElementById("imageOption").checked,
         "miscOption": document.getElementById("miscOption").checked,
-        "startDate": document.getElementById("startDateOption").checked ? document.getElementById("startDate").value : null,
-        "endDate": document.getElementById("endDateOption").checked ? document.getElementById("endDate").value : null,
+        "startDate": document.getElementById("searchIntervalStart").checked ? document.getElementById("startDate").value : null,
+        "endDate": document.getElementById("searchIntervalEnd").checked ? document.getElementById("endDate").value : null,
         "dateType": document.getElementById("dateCreated").checked ? "created" : "modified"
     }
 
@@ -30,15 +30,15 @@ async function saveSearch(){
         var tablebody = "";
         for (let i = 0; i<files.length; i++){
             tablebody += `
-            <tr class="resultsCell">
-                <th class="resultsCell">${files[i]["name"]}</th>
-                <th class="resultsCell">${files[i]["path"]}</th>
-                <th class="resultsCell">${files[i]["date"]}</th>
+            <tr>
+                <th>${files[i]["name"]}</th>
+                <th>${files[i]["path"]}</th>
+                <th>${files[i]["date"]}</th>
             </tr>  
             `
         }
         
-        document.getElementById("ResField").innerHTML=tablebody;
+        document.getElementById("resultsTable").innerHTML=tablebody;
     });
  }
 
@@ -51,7 +51,7 @@ async function saveSearch(){
         var tablebody = "";
         for (let i = 0; i<commands.length; i++){
             tablebody += `
-            <tr class="commandsCell">
+            <tr>
                 <th>${commands[i]["keyword"]}</th>
                 <th>${commands[i]["explanation"]}</th>
             </tr>  
