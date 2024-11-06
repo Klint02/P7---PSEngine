@@ -51,10 +51,10 @@
               <input type="checkbox" name="filter4" id="Images">
               <label for="Images"> Images</label>
             </div>
-            <!-- <div>
-                            <input type="checkbox" name="filter5" id="Folders">
-                            <label for="Folders"> Miscellaneous</label>
-                        </div> -->
+            <div>
+              <input type="checkbox" name="filter5" id="Miscellaneous">
+              <label for="Miscellaneous"> Miscellaneous</label>
+            </div>
           </div>
 
           <div id="datetime">
@@ -93,7 +93,7 @@
       <div id="inlineHelp">
         <div id="commandspopup">
           <table id="mock2">
-            
+
 
           </table>
         </div>
@@ -128,12 +128,12 @@
     <div id="Results">
       <h1>Results</h1>
       <div id="resTable">
-          <table id="mock">
+        <table id="mock">
 
-          </table>
+        </table>
 
 
-        
+
       </div>
     </div>
 
@@ -162,7 +162,7 @@
     const usern = document.getElementById("username");
     const mock = document.getElementById("mock");
     const mock2 = document.getElementById("mock2");
-    mock2.innerHTML=`<tr>
+    mock2.innerHTML = `<tr>
               <th>Keyword</th>
               <th>Explanation</th>
             </tr>
@@ -172,7 +172,7 @@
                 World'"
               </td>
             </tr>`.repeat(20)
-  mock.innerHTML = `
+    mock.innerHTML = `
           <th>
             File
           </th>
@@ -181,21 +181,23 @@
           </th>
           <th>
             Path
-          </th>` + `<tr>
+          </th>`
+      +
+      `<tr>
             <td>Cell 1</td>
             <td>Cell 2</td>
             <td>Cell 3</td>
           </tr>`.repeat(40)
 
     loginbutton.addEventListener("click", () => {
-      usern.value ='';
-      passw.value='';
+      usern.value = '';
+      passw.value = '';
       loginform.showModal();
     })
 
     closeLogin.addEventListener("click", () => {
       loginform.close();
-      
+
     })
 
     submitbtn.addEventListener("click", () => {
@@ -217,11 +219,11 @@
       }
     }
 
-    
+
 
     showpassw.addEventListener("click", () => {
-      const type = passw.getAttribute('type') == 'password' ? 'text' :'password';
-      passw.setAttribute('type',type)
+      const type = passw.getAttribute('type') == 'password' ? 'text' : 'password';
+      passw.setAttribute('type', type)
     })
 
   </script>

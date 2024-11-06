@@ -264,7 +264,7 @@ p {
 
 /* TABLES */
 tbody tr:nth-child(even){
-    background-color: rgb(234, 155, 155);
+    background-color: rgb(115, 115, 115);
     border-color:black;
 }
 tbody tr:nth-child(odd){
@@ -358,9 +358,12 @@ dialog::backdrop {
 ::-webkit-scrollbar-thumb{
     background-color:#9999998a;
     border-radius: 0px 7px 7px 0px;
-
+    cursor: pointer;
 }
 
+::-webkit-scrollbar-thumb:hover {
+    filter: brightness(0.5) !important;
+}
 ::-webkit-scrollbar-track{
     border-radius: 12px;
     background-color: white;
