@@ -1,5 +1,220 @@
-<html>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/stylesheet.css">
+    <script type="text/javascript" src="search.js"></script>
+    <title>Search Engine</title>
+</head>
+
+<body>
+    <div id="container">
+
+        <div id="SearchBodyContainer" class="Block">
+            <h1 id="title">Search Engine</h1>
+            <div id="Search">
+
+                <input type="search" id="searchbar" placeholder="Search for file">
+                <button id="searchButton" onclick="saveSearch()">Search</button>
+                <button id="inlineCommands" onclick="displayCommands()">Inline Commands</button>
+                <button id="login">Login</button>
+                <a id="auth-link" href="">Connect onedrive</a>
+            </div>
+            <div id="advancedOptions">
+                <div id="Filter">
+                    <div id="searchOptions">
+                        <div>
+                            <input type="checkbox" name="filenameOption" id="searchByFilename">
+                            <label for="searchByFilename">Search by filename</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="contentOption" id="searchByContent">
+                            <label for="searchByContent">Search by content</label>
+                        </div>
+                    </div>
+                    <div id="buttons">
+
+                        <div>
+                            <input type="checkbox" name="filter1" id="mailOption">
+                            <label for="mailOption" id="Mail"> Mail </label>
+                        </div>
+
+                        <div>
+                            <input type="checkbox" name="filter2" id="docOption">
+                            <label for="docOption"> Documents </label>
+
+                        </div>
+                        <div>
+                            <input type="checkbox" name="filter3" id="folderOption">
+                            <label for="folderOption"> Folders</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="filter4" id="imageOption">
+                            <label for="imageOption"> Images</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" name="filter5" id="miscOption">
+                            <label for="miscOption"> Miscellaneous</label>
+                        </div>
+                    </div>
+
+                    <div id="datetime">
+                        <div>
+                            <input type="checkbox" name="searchIntervalStart" id="searchIntervalStart">
+                            <label for="searchIntervalStart"> From </label>
+                        </div>
+                        <div class="spaceBetweenDates">
+                            <label for="startDate">Start Date: </label>
+                            <input type="date" name="startDate" id="startDate" />
+                        </div>
+                        <div>
+                            <input type="checkbox" name="searchIntervalEnd" id="searchIntervalEnd">
+                            <label for="searchIntervalEnd"> Before</label>
+                        </div>
+                        <div>
+                            <label for="endDate">End Date: </label>
+                            <input type="date" id="endDate" />
+                        </div>
+                    </div>
+                    <div id="dateButtons">
+                        <div>
+                            <input type="radio" name="dateCreated" id="dateCreated">
+                            <label for="dateCreated">Creation Date </label>
+                        </div>
+                        <div>
+                            <input type="radio" name="dateCreated" id="lastModified">
+                            <label for="lastModified">Last Modified</label>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <button id="advancedOptionsButton" onclick="showOptions(this)">Hide Advanced Options</button>
+            <div id="inlineHelp">
+                <div id="commandspopup">
+                    <table id="commandsTable">
+
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <dialog id="loginForm">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" placeholder="Username">
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="Password">
+            </div>
+            <div id="display-start">
+                <input type="checkbox" id="showPassword">
+                <label for="showPassword">Show password</label>
+            </div>
+
+            <div class="dia-btns">
+                <button id="closeLogin">Cancel</button>
+                <button id="submit">Login</button>
+            </div>
+
+        </dialog>
+
+
+        <!-- Results box -->
+        <div id="Results">
+            <h1>Results</h1>
+            <div id="resTable">
+                <table id="resultsTable">
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const commandsBlock = document.getElementById("inlineHelp");
+
+        function displayCommands() {
+
+            if (commandsBlock.style.display != "block") {
+                commandsBlock.style.display = "block";
+
+            } else {
+                commandsBlock.style.display = "none";
+            }
+        }
+
+        //Funktion til dialog button
+        const loginbutton = document.getElementById("login");
+        const loginform = document.getElementById("loginForm");
+        const closeLogin = document.getElementById("closeLogin");
+        const submitbtn = document.getElementById("submit");
+        const showpassw = document.getElementById("showPassword");
+        const passw = document.getElementById("password");
+        const usern = document.getElementById("username");
+
+        loginbutton.addEventListener("click", () => {
+            usern.value = '';
+            passw.value = '';
+            loginform.showModal();
+        })
+
+        closeLogin.addEventListener("click", () => {
+            loginform.close();
+
+        })
+
+        submitbtn.addEventListener("click", () => {
+            document.cookie = `username=${document.getElementById("username").value}`;
+            loginform.close();
+        })
+
+
+
+        const optionsBlock = document.getElementById("advancedOptions");
+        let showOptions = button => {
+            console.log(optionsBlock.hidden);
+            if (optionsBlock.hidden) {
+                optionsBlock.removeAttribute("hidden");
+                button.innerText = "Hide Advanced Options";
+            } else {
+                optionsBlock.setAttribute("hidden", "hidden");
+                button.innerText = "Show Advanced Options";
+            }
+        }
+
+
+
+        showpassw.addEventListener("click", () => {
+            const type = passw.getAttribute('type') == 'password' ? 'text' : 'password';
+            passw.setAttribute('type', type)
+        })
+
+    </script>
+
+</body>
+
+
+<script>
+    let user = "klint"
+    let tenant = "69ba7116-c3b3-44a4-9a15-69e541023514";
+    let client_id = "1cbff542-d06d-4d84-8302-fda352d2b1f2";
+    let redirect_url = `http://localhost:8070/api/connect/onedrive`;
+    let scope = `Files.Read.All`;
+
+    document.cookie = `username=${user}`;
+
+    document.getElementById("auth-link").href = `https://login.microsoftonline.com/${tenant}/oauth2/v2.0/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect_url}&response_mode=query&scope=${scope}&state=12345`;
+</script>
+
+
 </html>

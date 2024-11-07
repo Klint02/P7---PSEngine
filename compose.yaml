@@ -2,6 +2,7 @@ version: '3'
 
 services:
   backend:
+    platform: linux/amd64
     image: mcr.microsoft.com/dotnet/sdk:8.0
     networks:
       P7Net:
@@ -17,6 +18,7 @@ services:
       - 8070:8070
 
   db:
+    platform: linux/amd64
     image: mysql:5.7
     networks:
       P7Net:
@@ -31,6 +33,7 @@ services:
       - 3306:3306
 
   phpmyadmin:
+      platform: linux/amd64
       image: phpmyadmin/phpmyadmin
       networks:
         P7Net:
@@ -46,6 +49,7 @@ services:
         - 8071:80
 
   node-server:
+    platform: linux/amd64
     image: "node:21-alpine"
     restart: unless-stopped
     networks:
