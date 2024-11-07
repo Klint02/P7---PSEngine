@@ -3,25 +3,28 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using CloudFileIndexer;
+using Microsoft.VisualBasic;
+using System.Reflection.Metadata.Ecma335;
 
 namespace CloudSearcher
 
 {
     // This class will be responsible for conducting a boolean search on the inverted index
-    public class BooleanSearch
+    public class BooleanSearch(InvertedIndex invertedIndex)
     {
-        private InvertedIndex invertedIndex;
-        
-        public BooleanSearch(InvertedIndex invertedIndex)
-        {
-            this.invertedIndex = invertedIndex;
-        }
-        
+        private readonly InvertedIndex _invertedIndex = invertedIndex;
+
         // This method will take a query string and return a list of document IDs that contain the query terms
-        public SearchResult BooleanSearch(string SearchTerm, InvertedIndex invertedIndex)
+        public SearchResult BSearch(string SearchTerm)
         {
-            _invertedIndex = invertedIndex;
+            // Store the inverted index
+            // This will be used to get the term info for each term in the search query
+
+
+
             // Split the search query into terms
+            //Dictionary<string, string> finalResults = null;
+            
             var searchTerms = Regex.Split(SearchTerm.ToLower(), @"\W+"); // Splitting by non-word characters
             
             // Create a list to store the search results
@@ -34,26 +37,33 @@ namespace CloudSearcher
             foreach (var term in searchTerms)
             {
                 var termInfo = _invertedIndex.GetTermInfo(term);
-                if (termInfo != null)
+            
+            
+                // If the term is not in the inverted index, continue to the next term
+                if (termInfo == null)
                 {
-                    searchResults.AddRange(termInfo.Keys);
+                    continue;
                 }
-            }
 
-            var result = new SearchResult();
+            var currentresults = termInfo.ToDictionary(entry => entry.Key, entry => entry.Value);
 
-            result.DocumentIds = searchResults;
+            
 
-            result.TotalResults = searchResults.Count;
-
-            return result;
-
+            finalResults = finalResults == null
+                ? currentresults
+                : finalResults.Keys.Intersect(currentresults.Keys)
+                    .ToDictionary(docID => docID, docID => currentresults[docID]);
         }
 
+        var searchResults = finalResults.Select(kv => new Dictionary<string, string> {{"DocID", kv.Key}, {"Filename", kv.Value}}).ToList();
 
+        return new SearchResult
+        {
+            TotalResults = searchResults.Count ?? 0,
+            SearchResults = searchResults ?? new List<Dictionary<string, string>>()
+        };
     }
-
-
+}
 
     public class SearchResult
     {
@@ -61,7 +71,7 @@ namespace CloudSearcher
         // It should contain a dictionary of document IDs and filenames as well as the total number of results
 
         public int TotalResults { get; set; }
-        public List<Dictionary<string, string>> SearchResult { get; set; }
+        public List<Dictionary<string, string>> SearchResults { get; set; }
  
     }
 
