@@ -245,7 +245,7 @@
     document.cookie = `username=${user2}`;
 
     //document.getElementById("googleauth").href = `https://login.microsoftonline.com/oauth2/v2.0/authorize?client_id=${client_id2}&response_type=code&redirect_uri=${redirect_url2}&response_mode=query&scope=${scope2}&state=12345`;
-    document.getElementById("googleauth").href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_id2}&response_type=code&redirect_uri=${redirect_url2}&response_mode=query&scope=${scope2}&state=12345`;
+    document.getElementById("googleauth").href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_id2}&response_type=code&redirect_uri=${redirect_url2}&response_mode=query&scope=${scope2}&state=12345&prompt=consent&access_type=offline`;
 </script>
 
 </html>
