@@ -8,8 +8,31 @@ namespace CloudFileIndexer
 {
     public class InvertedIndex
     {
+        // Dictionary to store the inverted index
+        // Key: term, Value: dictionary of document IDs and term info
         private Dictionary<string, Dictionary<string, TermInfo>> invertedIndex = new Dictionary<string, Dictionary<string, TermInfo>>();
+        // Dictionary to store the document frequency of each term
         private Dictionary<string, int> documentFrequency = new Dictionary<string, int>();
+        // Dictionary to store metadata of each document
+        private Dictionary<string, DocumentMetadata> documentMetadata = new Dictionary<string, DocumentMetadata>();
+
+        // Method to add Metadata
+        public void AddMetadata(string docId, string fileName)
+        {
+            if (!documentMetadata.ContainsKey(docId))
+            {
+                documentMetadata[docId] = new DocumentMetadata
+                {
+                    DocID = docId,
+                    Filename = fileName
+                };
+            }
+        }
+
+        public string GetFileName(string docId)
+        {
+            return documentMetadata.TryGetValue(docId, out var metadata) ? metadata.Filename : null;
+        }
 
         public void AddTerm(string term, string docId, int position)
         {
@@ -42,6 +65,7 @@ namespace CloudFileIndexer
                 if (!string.IsNullOrEmpty(token))
                 {
                     AddTerm(token, docId, i); // Use the position in the document as `i`
+                    AddMetadata(docId, content); // Add metadata for the document
                 }
             }
         }
@@ -56,7 +80,7 @@ namespace CloudFileIndexer
         {
             foreach (var termEntry in invertedIndex)
             {
-//                Console.WriteLine($"Term: {termEntry.Key}");
+
                 Console.WriteLine($"Term: {termEntry.Key}, Total Frequency: {GetDocumentFrequency(termEntry.Key)}");
                 foreach (var docEntry in termEntry.Value)
                 {

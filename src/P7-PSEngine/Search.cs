@@ -1,48 +1,47 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json;
 using CloudFileIndexer;
-using Microsoft.VisualBasic;
-using System.Reflection.Metadata.Ecma335;
 
 namespace CloudSearcher
 
 {
     // This class will be responsible for conducting a boolean search on the inverted index
-    public class BooleanSearch(InvertedIndex invertedIndex)
+    public class BooleanSearch
     {
-        private readonly InvertedIndex _invertedIndex = invertedIndex;
+        private InvertedIndex _invertedIndex;
+
+        public BooleanSearch(InvertedIndex invertedIndex)
+        {
+            _invertedIndex = invertedIndex;
+        }
 
         // This method will take a query string and return a list of document IDs that contain the query terms
-        public SearchResult BSearch(string SearchTerm)
+        public SearchResult BSearch(string searchTerm)
         {
-            // Store the inverted index
-            // This will be used to get the term info for each term in the search query
-
-
-
             // Split the search query into terms
-            //Dictionary<string, string> finalResults = null;
-            
-            var searchTerms = Regex.Split(SearchTerm.ToLower(), @"\W+"); // Splitting by non-word characters
+            var searchTerms = Regex.Split(searchTerm.ToLower(), @"\W+")
+                .Where(term => !string.IsNullOrEmpty(term))
+                .ToList(); 
             
             // Create a list to store the search results
             // The list should contain the document IDs as well as the filenames
             // This should be a list of dictionaries, where each dictionary contains the document ID and the filename
 
-            var searchResults = new List<Dictionary<string, string>>();
-
+            var searchResults = new HashSet<(string DocID, string Filename)>();
             // For each term in the search query, get the TermInfo from the inverted index
             foreach (var term in searchTerms)
             {
                 var termInfo = _invertedIndex.GetTermInfo(term);
             
-            
                 // If the term is not in the inverted index, continue to the next term
-                if (termInfo == null)
+                if (termInfo != null)
                 {
-                    continue;
+                    foreach (var entry in termInfo)
+                    {
+                        searchResults.Add((entry.Key, entry.TermInfo.Filename));
+                    }
                 }
 
             var currentresults = termInfo.ToDictionary(entry => entry.Key, entry => entry.Value);

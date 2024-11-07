@@ -6,12 +6,15 @@ using System.IO;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
-public class IndexController 
+public class SearchController 
 {
     
-        private readonly InvertedIndex _invertedIndex;
+        private InvertedIndex _invertedIndex;
 
-        public IndexController(InvertedIndex invertedIndex)
+        public bool IndexController(InvertedIndex invertedIndex)
         {
             _invertedIndex = invertedIndex;
+            return true;
         }
+        
+}
