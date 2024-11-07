@@ -1,6 +1,5 @@
 /* BODY */
 body {
-    
     background-color: whitesmoke;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 
@@ -43,8 +42,9 @@ body {
 
 /* SEARCH CONTAINER */
 #SearchBodyContainer {
+    margin: 20px;
     z-index: 2;
-    padding: 5px;
+    padding: 10px;
     padding-bottom: 10px;
     border: none;
     outline: none;
@@ -57,19 +57,19 @@ body {
 
 h1 {
     grid-area: 1/1/2/2;
-
+    margin: 10px;
     background: linear-gradient(to right,#3c92af,blue);
     -webkit-background-clip: text;
     font-size: 3rem;
     -webkit-text-fill-color: transparent;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    margin: 0;
 }
 
 /* DATES */
 #datetime {
     display: flex;
     flex-direction: column;
+    padding: 5px;
 }
 .spaceBetweenDates{
     margin-bottom: 10px;
@@ -98,7 +98,7 @@ input[type="date"]:hover{
     grid-row-start: 2;
     grid-row-end: 3;
     padding-top: 10px;
-
+    margin: 5px;
 }
 
 #searchbar {
@@ -121,27 +121,34 @@ input[type="date"]:hover{
     grid-row-start: 3;
     grid-row-end: 4;
     display: grid;
-    grid-template-columns: 20% 20% 20% auto;
+    grid-template-columns: 9vW 7vw 11vw 9vw;
+}
+
+#Filter div{
+    margin-right: 10px;
 }
 
 #advancedOptionsButton {
     width: 150px;
-    align-self: center;
     margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    align-items: start;
-    justify-content: start;
+    margin-left: 15%;
 }
 
 #advancedOptions {
     grid-area: 3/1/4/2;
+    box-shadow:0 0 .4em rgba(93, 93, 93, 0.553);
+    border-radius: 12px;
+    padding: 10px;
+    width: 75%;
+    margin: 5px;
+    width: 35%;
 }
 #dateButtons {
     display: flex;
     flex-direction: column;
 
 }
+
 
 #dateButtons div {
     display: flex;
@@ -222,11 +229,12 @@ input[type="checkbox"]:hover, input[type="radio"]:hover {
 
 /*RESULT CONTAINER*/
 #Results {
+    margin: 20px;
     position: absolute;
     bottom: 40px;
     background-color:whitesmoke;
     height: 60%;
-    width:98%;
+    width:97%;
     border-radius: 12px;
     border: none;
     outline: none;
