@@ -1,10 +1,11 @@
-/* BODY */
+/*-------------- BODY --------------*/
 body {
     background-color: whitesmoke;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-
+    font-size: 1rem;
 }
-/* CONTAINER */
+
+/*-------------- CONTAINER --------------*/
 #container {
     padding: 5px;
     border-radius: 12px;
@@ -13,7 +14,7 @@ body {
     height: 95vh;
     width: 98.5vw;
     gap: 10px 10px;
-    box-shadow:0 0 .4em rgba(93, 93, 93, 0.553);
+    box-shadow: 0 0 .4em rgba(93, 93, 93, 0.553);
 
 
 }
@@ -24,7 +25,7 @@ body {
     height: 3rem;
     background-color: rgb(126, 187, 240);
     font-family: cursive;
-    box-shadow: 0 6px #999;
+    box-shadow: 0 6px 7px #999;
     border: none;
     text-align: center;
     outline: none;
@@ -36,11 +37,11 @@ body {
 
 #container button:active {
     filter: brightness(1.2);
-    box-shadow: 0 4px #666;
+    box-shadow: 0 4px 7px #666;
     transform: translateY(4px);
 }
 
-/* SEARCH CONTAINER */
+/*-------------- SEARCH CONTAINER --------------*/
 #SearchBodyContainer {
     margin: 20px;
     z-index: 2;
@@ -49,7 +50,7 @@ body {
     border: none;
     outline: none;
     border-radius: 10px;
-    background-color:whitesmoke;
+    background-color: whitesmoke;
     display: grid;
     grid-template-rows: 6vh 6vh auto auto;
 
@@ -58,23 +59,25 @@ body {
 h1 {
     grid-area: 1/1/2/2;
     margin: 10px;
-    background: linear-gradient(to right,#3c92af,blue);
+    background: linear-gradient(to right, #3c92af, blue);
     -webkit-background-clip: text;
     font-size: 3rem;
     -webkit-text-fill-color: transparent;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-/* DATES */
+/*-------------- DATES --------------*/
 #datetime {
     display: flex;
     flex-direction: column;
     padding: 5px;
 }
-.spaceBetweenDates{
+
+.spaceBetweenDates {
     margin-bottom: 10px;
 }
-input[type='date']{
+
+input[type='date'] {
     border-radius: 10px;
     padding: 5px;
     cursor: text;
@@ -82,9 +85,11 @@ input[type='date']{
     border: none;
     outline: none;
 }
-input[type="date"]:hover{
+
+input[type="date"]:hover {
     filter: brightness(1.5);
 }
+
 #datetime div {
     align-items: center;
     display: flex;
@@ -93,7 +98,7 @@ input[type="date"]:hover{
 
 
 
-/* SEARCH BAR */
+/*-------------- SEARCH BAR --------------*/
 #Search {
     grid-row-start: 2;
     grid-row-end: 3;
@@ -111,11 +116,12 @@ input[type="date"]:hover{
     height: 3rem;
     background-color: rgb(221, 221, 221);
 }
-#searchbar:focus{
+
+#searchbar:focus {
     filter: brightness(0.9);
 }
 
-/* ADVANCED SETTINGS */
+/*-------------- ADVANCED SETTINGS --------------*/
 #Filter {
     margin-top: 10px;
     grid-row-start: 3;
@@ -124,7 +130,7 @@ input[type="date"]:hover{
     grid-template-columns: 9vW 7vw 11vw 9vw;
 }
 
-#Filter div{
+#Filter div {
     margin-right: 10px;
 }
 
@@ -136,13 +142,14 @@ input[type="date"]:hover{
 
 #advancedOptions {
     grid-area: 3/1/4/2;
-    box-shadow:0 0 .4em rgba(93, 93, 93, 0.553);
+    box-shadow: 0 0 .4em rgba(93, 93, 93, 0.553);
     border-radius: 12px;
     padding: 10px;
     width: 75%;
     margin: 5px;
     width: 35%;
 }
+
 #dateButtons {
     display: flex;
     flex-direction: column;
@@ -160,24 +167,28 @@ input[type="date"]:hover{
 #buttons {
     display: flex;
     flex-direction: column;
-    
+
 }
-#buttons div{
+
+#buttons div {
     display: flex;
     align-items: center;
     gap: 0.3rem;
 }
+
 #searchOptions {
     display: flex;
     flex-direction: column;
 }
-#searchOptions div{
+
+#searchOptions div {
     align-items: center;
     display: flex;
     gap: 0.3rem;
 }
 
-input[type="checkbox"], input[type="radio"] {
+input[type="checkbox"],
+input[type="radio"] {
     margin-left: 0;
     float: left;
     border-radius: 20%;
@@ -193,11 +204,12 @@ label {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-input[type="checkbox"]:hover, input[type="radio"]:hover {
+input[type="checkbox"]:hover,
+input[type="radio"]:hover {
     filter: brightness(0.9);
 }
 
-/* INLINE COMMANDS */
+/*-------------- INLINE COMMANDS --------------*/
 #commandspopup {
     border-radius: 12px;
     height: 100%;
@@ -216,9 +228,10 @@ input[type="checkbox"]:hover, input[type="radio"]:hover {
     height: 400px;
     width: 400px;
     border-radius: 12px;
-    box-shadow:0 0 .4em rgba(93, 93, 93, 0.553);
+    box-shadow: 0 0 .4em rgba(93, 93, 93, 0.553);
 
 }
+
 #commandspopup table {
     width: 100%;
     border-radius: 10px;
@@ -227,14 +240,14 @@ input[type="checkbox"]:hover, input[type="radio"]:hover {
 }
 
 
-/*RESULT CONTAINER*/
+/*-------------- RESULT CONTAINER --------------*/
 #Results {
     margin: 20px;
     position: absolute;
-    bottom: 40px;
-    background-color:whitesmoke;
+    bottom: 3%;
+    background-color: whitesmoke;
     height: 60%;
-    width:97%;
+    width: 97%;
     border-radius: 12px;
     border: none;
     outline: none;
@@ -249,44 +262,43 @@ input[type="checkbox"]:hover, input[type="radio"]:hover {
 
 
 #resTable {
-    height:  86.5%;
+    height: 86.5%;
     margin: 10px;
     border-radius: 10px;
     background-color: whitesmoke;
     overflow: hidden;
     overflow-y: scroll;
-    box-shadow: 0 0 .4em ;
+    box-shadow: 0 0 .4em;
 }
+
 p {
     overflow-y: scroll;
 }
+
 #Results table {
     width: 100%;
     border-radius: 10px;
     border-collapse: separate;
     border-spacing: 0;
-    box-shadow:0 0 .4em rgba(93, 93, 93, 0.553);
+    box-shadow: 0 0 .4em rgba(93, 93, 93, 0.553);
 }
 
 
-
-
-
-/* TABLES */
-tbody tr:nth-child(even){
+/*-------------- TABLES --------------*/
+tbody tr:nth-child(even) {
     background-color: rgb(115, 115, 115);
-    border-color:black;
+    border-color: black;
 }
-tbody tr:nth-child(odd){
+
+tbody tr:nth-child(odd) {
     background-color: whitesmoke;
-    border-color:black;
+    border-color: black;
 }
 
-tbody tr:nth-child(odd):hover,tbody tr:nth-child(even):hover{
+tbody tr:nth-child(odd):hover,
+tbody tr:nth-child(even):hover {
     filter: brightness(0.9);
-
 }
-
 
 th {
     position: sticky;
@@ -296,21 +308,24 @@ th {
     border: 1px solid black;
     z-index: 1;
 }
+
 tr {
     height: 50px;
-    padding:5px;
-    border-bottom:3px solid black ;
+    padding: 5px;
+    border-bottom: 3px solid black;
     border-top: 3px solid black;
 }
+
 td {
-    border-inline: 3px solid black ;
+    border-inline: 3px solid black;
     padding: 5px;
     border: 1px solid rgb(160 160 160);
 }
-/* DIALOG (LOGIN) */
+
+/*-------------- DIALOG (LOGIN) --------------*/
 dialog {
     border-radius: 12px;
-    border:none;
+    border: none;
     outline: none;
     flex-direction: column;
     height: 200px;
@@ -331,6 +346,7 @@ dialog #closeLogin {
     background-color: rgb(208, 43, 43);
     margin-right: 30px;
 }
+
 .dia-btns {
     position: absolute;
     bottom: 16px;
@@ -354,19 +370,20 @@ dialog::backdrop {
 }
 
 
-/* SCROLLBAR */
+/*-------------- SCROLLBAR --------------*/
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
     border-radius: 12px;
     width: 15px;
 }
 
-::-webkit-scrollbar-button{
+::-webkit-scrollbar-button {
     border-radius: 10px;
     display: none;
 }
-::-webkit-scrollbar-thumb{
-    background-color:#9999998a;
+
+::-webkit-scrollbar-thumb {
+    background-color: #9999998a;
     border-radius: 0px 7px 7px 0px;
     cursor: pointer;
 }
@@ -374,7 +391,8 @@ dialog::backdrop {
 ::-webkit-scrollbar-thumb:hover {
     filter: brightness(0.5) !important;
 }
-::-webkit-scrollbar-track{
+
+::-webkit-scrollbar-track {
     border-radius: 12px;
     background-color: white;
 }
