@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CloudFileIndexer;
+//using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace CloudSearcher
 
@@ -24,57 +26,82 @@ namespace CloudSearcher
             var searchTerms = Regex.Split(searchTerm.ToLower(), @"\W+")
                 .Where(term => !string.IsNullOrEmpty(term))
                 .ToList(); 
+            Console.WriteLine("Running search procedure");
+            Console.WriteLine("Search terms: " + string.Join(", ", searchTerms));
+            Console.WriteLine(_invertedIndex.tester);
+            Console.WriteLine("Test af GetTermInfo:" + _invertedIndex.invertedIndex.Count().ToString());
+            _invertedIndex.DisplayIndex();
+            
             
             // Create a list to store the search results
             // The list should contain the document IDs as well as the filenames
             // This should be a list of dictionaries, where each dictionary contains the document ID and the filename
+            var finalResults = new Dictionary<string, TermInfo>();
 
-            var searchResults = new HashSet<(string DocID, string Filename)>();
+            //var searchResults = new HashSet<(string DocID, string Filename)>();
             // For each term in the search query, get the TermInfo from the inverted index
             foreach (var term in searchTerms)
             {
-                var termInfo = _invertedIndex.GetTermInfo(term);
-            
+                Dictionary<string, TermInfo> termInfo = _invertedIndex.GetTermInfo(term);
+                Console.WriteLine("Term: " + term);
+                Console.WriteLine("TermInfo: " + termInfo.ToString());
                 // If the term is not in the inverted index, continue to the next term
                 if (termInfo != null)
                 {
-                    foreach (var entry in termInfo)
+                    if (finalResults == null)
                     {
-                        searchResults.Add((entry.Key, entry.TermInfo.Filename));
+                        finalResults = new Dictionary<string, TermInfo>(termInfo);
                     }
+                    else
+                    {
+                        // Return all documents that contain one or more of the search terms
+                        finalResults = finalResults
+                            .Where(entry => termInfo.ContainsKey(entry.Key))
+                            .ToDictionary(entry => entry.Key, entry => entry.Value);
+
+                    }
+                    var searchResults = finalResults?.Select(kv => new Dictionary<string, string> 
+                    {
+                        {"DocID", kv.Key}, 
+                        {"Filename", _invertedIndex.GetFileName(kv.Key)}
+                    }).ToList() ?? new List<Dictionary<string, string>>();
+                    // write the search results to the console
+                    foreach (var result in searchResults)
+                    {
+                        Console.WriteLine("DocID: " + result["DocID"] + ", Filename: " + result["Filename"]);
+                    }
+
+                    // return the search results
+                    return new SearchResult
+                        {
+                            TotalResults = searchResults.Count,
+                            SearchResults = searchResults
+                        };
                 }
-
-            var currentresults = termInfo.ToDictionary(entry => entry.Key, entry => entry.Value);
-
-            
-
-            finalResults = finalResults == null
-                ? currentresults
-                : finalResults.Keys.Intersect(currentresults.Keys)
-                    .ToDictionary(docID => docID, docID => currentresults[docID]);
+            }
+            return new SearchResult
+                {
+                    TotalResults = 0,
+                    SearchResults = new List<Dictionary<string, string>>()
+                };
         }
-
-        var searchResults = finalResults.Select(kv => new Dictionary<string, string> {{"DocID", kv.Key}, {"Filename", kv.Value}}).ToList();
-
-        return new SearchResult
-        {
-            TotalResults = searchResults.Count ?? 0,
-            SearchResults = searchResults ?? new List<Dictionary<string, string>>()
-        };
     }
-}
-
-    public class SearchResult
+        public class SearchResult
     {
         // This class will be used to store the results of a search
         // It should contain a dictionary of document IDs and filenames as well as the total number of results
 
         public int TotalResults { get; set; }
-        public List<Dictionary<string, string>> SearchResults { get; set; }
- 
-    }
+        public List<Dictionary<string, string>> SearchResults { get; set; } = new List<Dictionary<string, string>>();
 
-
-
+/*        public void AddResult(string docID, string filename)
+        {
+            SearchResults.Add(new Dictionary<string, string> {{"DocID", docID}, {"Filename", filename}});
+        }
+*/ 
+}
 
 }
+
+
+

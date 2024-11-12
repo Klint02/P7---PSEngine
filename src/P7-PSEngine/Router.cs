@@ -28,7 +28,7 @@ public class Router
         //Use variables from URL
         app.MapGet("/api/repeat/{message}", (string message) => $"{message}");
 
-        app.MapGet("/api/index/", () => Results.Json(_indexcontroller.GetIndexData()));
+        app.MapGet("/api/index", () => Results.Json(_indexcontroller.GetIndexData()));
 
         app.Run();
     }
