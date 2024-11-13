@@ -4,7 +4,7 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/stylesheet.css">
     <script type="text/javascript" src="search.js"></script>
     <title>Search Engine</title>
@@ -13,7 +13,7 @@
 <body>
     <div id="container">
 
-        <div id="SearchBodyContainer" >
+        <div id="SearchBodyContainer">
             <h1>Search Engine</h1>
             <div id="Search">
 
@@ -137,11 +137,11 @@
             <div id="resTable">
                 <table id="resultsTable">
                     <tr>
-                    <th>Filename</th>
-                    <th>Date</th>
-                    <th>Path</th>
+                        <th>Filename</th>
+                        <th>Date</th>
+                        <th>Path</th>
                     </tr>
-                    
+
                 </table>
             </div>
         </div>
@@ -161,7 +161,7 @@
             }
         }
 
-        
+
         const loginbutton = document.getElementById("login");
         const loginform = document.getElementById("loginForm");
         const closeLogin = document.getElementById("closeLogin");
@@ -186,12 +186,12 @@
         //Login button in the login-box
         submitbtn.addEventListener("click", () => {
             document.cookie = `username=${document.getElementById("username").value}`;
-            if(usern.value==''&& passw.value==''){
+            if (usern.value == '' && passw.value == '') {
                 alert('Please enter password and username to continue');
 
-            }else if(passw.value==''){
+            } else if (passw.value == '') {
                 alert('Please enter password to continue');
-            }else if(usern.value==''){
+            } else if (usern.value == '') {
                 alert('Please enter username to continue');
             }
             loginform.close();
