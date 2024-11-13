@@ -3,11 +3,13 @@ using P7_PSEngine.Model;
 
 namespace P7_PSEngine.Data
 {
-    public class TodoDb : DbContext
+    public class PSengineDB : DbContext
     {
-        public TodoDb(DbContextOptions options)
+        public PSengineDB(DbContextOptions options)
         : base(options) { }
 
         public DbSet<Todo> Todos => Set<Todo>();
+        public DbSet<User> Users => Set<User>();
     }
+    
 }
