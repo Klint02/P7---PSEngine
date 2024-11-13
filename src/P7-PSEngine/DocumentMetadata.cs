@@ -1,4 +1,4 @@
-namespace CloudFileIndexer
+/* namespace CloudFileIndexer
 {
     public class DocumentMetadata
     {
@@ -9,4 +9,4 @@ namespace CloudFileIndexer
         public long Size { get; set; }
         public DateTime LastModified { get; set; }
     }
-}
+} */

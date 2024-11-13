@@ -300,18 +300,19 @@ td {
     border: 1px solid rgb(160 160 160);
 }
 /* DIALOG (LOGIN) */
-dialog {
+/*TODO (nkc): Ændre height fra px til fit content, så den er dynamisk*/
+#loginForm {
     border-radius: 12px;
     border:none;
     outline: none;
     flex-direction: column;
-    height: 200px;
+    height: 250px;
     width: 300px;
     justify-content: center;
     align-items: center;
 }
 
-dialog div {
+#loginForm div {
     display: flex;
     padding: 5px;
     text-align: left;
@@ -319,7 +320,7 @@ dialog div {
     align-items: center;
 }
 
-dialog #closeLogin {
+#loginForm #closeLogin {
     background-color: rgb(208, 43, 43);
     margin-right: 30px;
 }
