@@ -16,8 +16,6 @@ body {
     width: 98.5vw;
     gap: 10px 10px;
     box-shadow: 0 0 .4em rgba(93, 93, 93, 0.553);
-
-
 }
 
 #container button {
@@ -44,20 +42,21 @@ body {
 
 /*-------------- SEARCH CONTAINER --------------*/
 #SearchBodyContainer {
-    margin: 20px;
+    margin: 10px;
     z-index: 2;
     padding: 10px;
     padding-bottom: 10px;
     border: none;
     outline: none;
     border-radius: 10px;
-    background-color: whitesmoke;
+    background-color: transparent;
     display: flex;
     flex-direction: column;
+
 }
 
 h1 {
-    margin: 10px;
+    margin: 0;
     background: linear-gradient(to right, #3c92af, blue);
     -webkit-background-clip: text;
     font-size: 3rem;
@@ -126,14 +125,13 @@ input[type="date"]:hover {
 }
 
 #Filter div {
-    margin-left:1em;
     margin-right: 1em;
 }
 
 #advancedOptionsButton {
     width: 150px;
-    margin-top: auto;
-    margin-left: 15%;
+    margin-top: 10px;
+    margin-left: 25%;
 }
 
 #advancedOptions {
@@ -142,7 +140,7 @@ input[type="date"]:hover {
     padding: 5px;
     margin-left: 5px;
     margin-right: auto;
-    
+    position: relative;
 }
 
 
@@ -188,7 +186,7 @@ input[type="radio"] {
     float: left;
     border-radius: 20%;
     cursor: pointer;
-    height: 1.2vh;
+    height: 2vh;
     width: 2vw;
     accent-color: rgb(126, 187, 240);
 }
@@ -236,17 +234,19 @@ input[type="radio"]:hover {
 
 /*-------------- RESULT CONTAINER --------------*/
 #Results {
-    margin: 20px;
     position: absolute;
-    bottom: 3%;
+    bottom: 9vh;
     background-color: whitesmoke;
-    height: 55vh;
-    width: 96.5vw;
+    margin-top: 0.5rem;
+    margin-left:10px;
+    margin-right: 10px;
+    margin-bottom:1rem ;
     border-radius: 12px;
     border: none;
     outline: none;
     scroll-padding: 2px;
     padding: 5px;
+    height: 40vh;
 }
 
 #Results h1 {
@@ -256,13 +256,15 @@ input[type="radio"]:hover {
 
 
 #resTable {
-    height: 47vh;
-    margin: 10px;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
     border-radius: 10px;
     background-color: whitesmoke;
-    overflow: hidden;
+    overflow-x: hidden;
     overflow-y: scroll;
     box-shadow: 0 0 .4em;
+    max-height: 40vh;
+    width: 95vw;
 }
 
 p {
@@ -270,6 +272,7 @@ p {
 }
 
 #Results table {
+    max-height: 20rem;
     width: 100%;
     border-radius: 10px;
     border-collapse: separate;
