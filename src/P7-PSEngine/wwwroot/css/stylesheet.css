@@ -324,7 +324,7 @@ dialog {
     border: none;
     outline: none;
     flex-direction: column;
-    height: 200px;
+    height: 220px;
     width: 300px;
     justify-content: center;
     align-items: center;
@@ -404,4 +404,11 @@ dialog::backdrop {
         height: 45vh;
 
     }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+        height: 1.2vh;
+        width: 1.2vw;
+    }
+
 }

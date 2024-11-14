@@ -122,6 +122,10 @@
                 <input type="checkbox" id="showPassword">
                 <label for="showPassword">Show password</label>
             </div>
+            <div>
+                <input type="checkbox" id="signIn">
+                <label for="signIn">Sign in</label>
+            </div>
 
             <div class="dia-btns">
                 <button id="closeLogin">Cancel</button>
@@ -243,6 +247,17 @@
     </div>
 
     <script>
+        const signIn = document.getElementById("signIn");
+
+        signIn.addEventListener('click', ()=>{
+            if(signIn.checked){
+                //do something
+                console.log('hej')
+            }
+        })
+
+
+
         const commandsBlock = document.getElementById("inlineHelp");
         // shows the list of inline kommands.
         function displayCommands() {
