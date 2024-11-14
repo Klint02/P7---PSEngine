@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿/* using Microsoft.EntityFrameworkCore;
 using P7_PSEngine.Data;
 using P7_PSEngine.Model;
 
@@ -7,9 +7,9 @@ namespace P7_PSEngine.API
 
     public class TodoRepository : ITodoRepository
     {
-        private readonly TodoDb _db;
+        private readonly PSengineDB _db;
 
-        public TodoRepository(TodoDb db)
+        public TodoRepository(PSengineDB db)
         {
             _db = db;
         }
@@ -51,3 +51,4 @@ namespace P7_PSEngine.API
         }
     }
 }
+ */

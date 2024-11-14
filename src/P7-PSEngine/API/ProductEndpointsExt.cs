@@ -1,4 +1,4 @@
-﻿using P7_PSEngine.Data;
+﻿/* using P7_PSEngine.Data;
 using P7_PSEngine.Model;
 
 namespace P7_PSEngine.API
@@ -34,14 +34,14 @@ namespace P7_PSEngine.API
                         ? Results.Ok(todo)
                         : Results.NotFound());
 
-            app.MapPost("/api/products", async (Todo todos, TodoDb db) =>
+            app.MapPost("/api/products", async (Todo todos, PSengineDB db) =>
             {
                 db.Todos.Add(todos);
                 await db.SaveChangesAsync();
                 return Results.Created($"/api/products/{todos.Id}", todos);
             });
 
-            // app.MapPut("/api/products/{id}", async (int id, Todo todo, TodoDb db) =>
+            // app.MapPut("/api/products/{id}", async (int id, Todo todo, PSengineDB db) =>
             // {
             //     if (id != todo.Id)
             //     {
@@ -69,7 +69,7 @@ namespace P7_PSEngine.API
             //     return Results.NoContent();
             // });
 
-            app.MapDelete("/api/products/{id}", async (int id, TodoDb db) =>
+            app.MapDelete("/api/products/{id}", async (int id, PSengineDB db) =>
             {
                 var product = await db.Todos.FindAsync(id);
                 if (product == null)
@@ -83,46 +83,7 @@ namespace P7_PSEngine.API
                 return Results.NoContent();
             });
 
-            //string static_path = "/app/wwwroot";
-
-            //Lets you send files from wwwroot folder
-            app.UseStaticFiles();
-
-            //examples on how you can send data or pages
-            //Send html page from wwwroot folder
-            //app.MapGet("/", () => Results.Content(File.ReadAllText($"{static_path}/index.html"), "text/html"));
-
-            //app.MapGet("/linkuser", () => Results.Content(File.ReadAllText($"{static_path}/html/auth.html"), "text/html"));
-
-            //Send a JSON object
-            app.MapGet("/api/test", () => new { hmm = "wow", bab = 12345 });
-
-            //Send a string
-            app.MapGet("/api/test2", () => "test2");
-
-            //Use variables from URL
-            app.MapGet("/api/repeat/{message}", (string message) => $"{message}");
-
-            // Add the endpoint for IndexController
-            app.MapGet("/api/index", async (HttpContext context) =>
-            {
-                var indexController = context.RequestServices.GetRequiredService<IndexController>();
-                var result = indexController.GetIndexData();
-                return Results.Json(result);
-            });
-
-            app.MapGet("/api/search", async (HttpContext context) =>
-            {
-                var searchController = context.RequestServices.GetRequiredService<SearchController>();
-                var searchTerm = context.Request.Query["q"].ToString();
-                if (string.IsNullOrEmpty(searchTerm))
-                {
-                    return Results.BadRequest("Invalid search term");
-                }
-                var result = searchController.Search(searchTerm);
-                return Results.Json(result);
-            });
-
         }
     }
 }
+ */
