@@ -1,22 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using CloudFileIndexer;
-using System.IO;
-using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
-public class IndexController 
+public class IndexController
 {
 
-        private readonly InvertedIndex _invertedIndex;
+    private readonly InvertedIndex _invertedIndex;
 
-        public IndexController(InvertedIndex invertedIndex)
-        {
-            _invertedIndex = invertedIndex;
-        }
+    public IndexController(InvertedIndex invertedIndex)
+    {
+        _invertedIndex = invertedIndex;
+    }
 
-        public string GetIndexData()
+    public string GetIndexData()
     {
         // Excerpts from file from Google Drive
         string jsonFilePath = "testgoogle.json";
@@ -30,7 +25,7 @@ public class IndexController
             {
                 // Creating dictionary to store inverted index of tokens and file IDs
                 // Key: token, Value: list of file IDs (could probably be stored as an integer instead)
-                var index = new CloudFileIndexer.InvertedIndex();
+                var index = new InvertedIndex();
 
                 // Loop through each file
                 foreach (var file in filelist.Files)
@@ -53,21 +48,21 @@ public class IndexController
 
         throw new InvalidOperationException("File data is empty");
     }
-}  
+}
 
 // Example file data class
-public class FileList 
+public class FileList
 {
-    public string NextPageToken {get; set;} = string.Empty;
-    public string Kind {get; set;} = string.Empty;
-    public bool IncompleteSearch {get; set;} = false;
-        
-    public List<FileData> Files {get; set;} = new List<FileData>();
+    public string NextPageToken { get; set; } = string.Empty;
+    public string Kind { get; set; } = string.Empty;
+    public bool IncompleteSearch { get; set; } = false;
+
+    public List<FileData> Files { get; set; } = new List<FileData>();
 }
 public class FileData
 {
-    public string Kind {get; set;} = string.Empty;
-    public string MimeType {get; set;} = string.Empty;
+    public string Kind { get; set; } = string.Empty;
+    public string MimeType { get; set; } = string.Empty;
     public string Id { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
 }

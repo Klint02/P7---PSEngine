@@ -3,10 +3,10 @@ namespace Routing;
 
 public class Router
 {
-    
+
     private IndexController _indexcontroller;
 
-    public Router(WebApplication app) 
+    public Router(WebApplication app)
     {
         string static_path = "/app/wwwroot";
         var invertedIndex = new InvertedIndex();
@@ -20,7 +20,7 @@ public class Router
         app.MapGet("/", () => Results.Content(File.ReadAllText($"{static_path}/index.html"), "text/html"));
 
         //Send a JSON object
-        app.MapGet("/api/test", () => new {hmm = "wow", bab = 12345});
+        app.MapGet("/api/test", () => new { hmm = "wow", bab = 12345 });
 
         //Send a string
         app.MapGet("/api/test2", () => "test2");

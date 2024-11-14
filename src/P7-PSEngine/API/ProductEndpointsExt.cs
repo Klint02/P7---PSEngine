@@ -83,16 +83,16 @@ namespace P7_PSEngine.API
                 return Results.NoContent();
             });
 
-            string static_path = "/app/wwwroot";
+            //string static_path = "/app/wwwroot";
 
             //Lets you send files from wwwroot folder
             app.UseStaticFiles();
 
             //examples on how you can send data or pages
             //Send html page from wwwroot folder
-            app.MapGet("/", () => Results.Content(File.ReadAllText($"{static_path}/index.html"), "text/html"));
+            //app.MapGet("/", () => Results.Content(File.ReadAllText($"{static_path}/index.html"), "text/html"));
 
-            app.MapGet("/linkuser", () => Results.Content(File.ReadAllText($"{static_path}/html/auth.html"), "text/html"));
+            //app.MapGet("/linkuser", () => Results.Content(File.ReadAllText($"{static_path}/html/auth.html"), "text/html"));
 
             //Send a JSON object
             app.MapGet("/api/test", () => new { hmm = "wow", bab = 12345 });
@@ -103,7 +103,7 @@ namespace P7_PSEngine.API
             //Use variables from URL
             app.MapGet("/api/repeat/{message}", (string message) => $"{message}");
 
-             // Add the endpoint for IndexController
+            // Add the endpoint for IndexController
             app.MapGet("/api/index", async (HttpContext context) =>
             {
                 var indexController = context.RequestServices.GetRequiredService<IndexController>();

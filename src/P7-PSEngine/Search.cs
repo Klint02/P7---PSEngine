@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Frozen;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using CloudFileIndexer;
+using System.Text.RegularExpressions;
 //using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace CloudSearcher
@@ -25,14 +21,14 @@ namespace CloudSearcher
             // Split the search query into terms
             var searchTerms = Regex.Split(searchTerm.ToLower(), @"\W+")
                 .Where(term => !string.IsNullOrEmpty(term))
-                .ToList(); 
+                .ToList();
             Console.WriteLine("Running search procedure");
             Console.WriteLine("Search terms: " + string.Join(", ", searchTerms));
             Console.WriteLine(_invertedIndex.tester);
             Console.WriteLine("Test af GetTermInfo:" + _invertedIndex.invertedIndex.Count().ToString());
             _invertedIndex.DisplayIndex();
-            
-            
+
+
             // Create a list to store the search results
             // The list should contain the document IDs as well as the filenames
             // This should be a list of dictionaries, where each dictionary contains the document ID and the filename
@@ -60,9 +56,9 @@ namespace CloudSearcher
                             .ToDictionary(entry => entry.Key, entry => entry.Value);
 
                     }
-                    var searchResults = finalResults?.Select(kv => new Dictionary<string, string> 
+                    var searchResults = finalResults?.Select(kv => new Dictionary<string, string>
                     {
-                        {"DocID", kv.Key}, 
+                        {"DocID", kv.Key},
                         {"Filename", _invertedIndex.GetFileName(kv.Key)}
                     }).ToList() ?? new List<Dictionary<string, string>>();
                     // write the search results to the console
@@ -73,20 +69,20 @@ namespace CloudSearcher
 
                     // return the search results
                     return new SearchResult
-                        {
-                            TotalResults = searchResults.Count,
-                            SearchResults = searchResults
-                        };
+                    {
+                        TotalResults = searchResults.Count,
+                        SearchResults = searchResults
+                    };
                 }
             }
             return new SearchResult
-                {
-                    TotalResults = 0,
-                    SearchResults = new List<Dictionary<string, string>>()
-                };
+            {
+                TotalResults = 0,
+                SearchResults = new List<Dictionary<string, string>>()
+            };
         }
     }
-        public class SearchResult
+    public class SearchResult
     {
         // This class will be used to store the results of a search
         // It should contain a dictionary of document IDs and filenames as well as the total number of results
@@ -94,12 +90,12 @@ namespace CloudSearcher
         public int TotalResults { get; set; }
         public List<Dictionary<string, string>> SearchResults { get; set; } = new List<Dictionary<string, string>>();
 
-/*        public void AddResult(string docID, string filename)
-        {
-            SearchResults.Add(new Dictionary<string, string> {{"DocID", docID}, {"Filename", filename}});
-        }
-*/ 
-}
+        /*        public void AddResult(string docID, string filename)
+                {
+                    SearchResults.Add(new Dictionary<string, string> {{"DocID", docID}, {"Filename", filename}});
+                }
+        */
+    }
 
 }
 
