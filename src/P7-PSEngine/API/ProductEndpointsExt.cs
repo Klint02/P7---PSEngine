@@ -1,4 +1,4 @@
-﻿/* using P7_PSEngine.Data;
+﻿using P7_PSEngine.Data;
 using P7_PSEngine.Model;
 
 namespace P7_PSEngine.API
@@ -83,7 +83,26 @@ namespace P7_PSEngine.API
                 return Results.NoContent();
             });
 
+            // Add the endpoint for IndexController
+            app.MapGet("/api/index", async (HttpContext context) =>
+            {
+                var indexController = context.RequestServices.GetRequiredService<IndexController>();
+                var result = indexController.GetIndexData();
+                return Results.Json(result);
+            });
+
+            app.MapGet("/api/search", async (HttpContext context) =>
+            {
+                var searchController = context.RequestServices.GetRequiredService<SearchController>();
+                var searchTerm = context.Request.Query["q"].ToString();
+                if (string.IsNullOrEmpty(searchTerm))
+                {
+                    return Results.BadRequest("Invalid search term");
+                }
+                var result = searchController.Search(searchTerm);
+                return Results.Json(result);
+            });
+
         }
     }
 }
- */

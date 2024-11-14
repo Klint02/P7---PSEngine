@@ -2,18 +2,18 @@ using CloudFileIndexer;
 using System.Text.RegularExpressions;
 //using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
-// namespace CloudSearcher
+namespace CloudSearcher
 
-// {
-//     // This class will be responsible for conducting a boolean search on the inverted index
-//     public class BooleanSearch
-//     {
-//         private InvertedIndex _invertedIndex;
+{
+    // This class will be responsible for conducting a boolean search on the inverted index
+    public class BooleanSearch
+    {
+        private InvertedIndex _invertedIndex;
 
-//         public BooleanSearch(InvertedIndex invertedIndex)
-//         {
-//             _invertedIndex = invertedIndex;
-//         }
+        public BooleanSearch(InvertedIndex invertedIndex)
+        {
+            _invertedIndex = invertedIndex;
+        }
 
         // This method will take a query string and return a list of document IDs that contain the query terms
         public SearchResult BSearch(string searchTerm)

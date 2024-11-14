@@ -1,4 +1,4 @@
-/* using System;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using CloudFileIndexer;
@@ -17,7 +17,7 @@ public class IndexController
     public string GetIndexData()
     {
         // Excerpts from file from Google Drive
-        string jsonFilePath = "testgoogle.json";
+        string jsonFilePath = "Files/testgoogle.json";
         string jsonData = File.ReadAllText(jsonFilePath);
 
         if (!string.IsNullOrEmpty(jsonData))
@@ -69,4 +69,3 @@ public class FileData
     public string Id { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
 }
- */

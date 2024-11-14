@@ -22,7 +22,7 @@ public class IndexService
         {
             //        Console.WriteLine(file);
         }
-        string jsonFilePath = "testgoogle.json";
+        string jsonFilePath = "Files/testgoogle.json";
         string jsonData = File.ReadAllText(jsonFilePath);
         //    Console.WriteLine($"File data: {jsonData}");
         FileList filelist = JsonConvert.DeserializeObject<FileList>(jsonData);
