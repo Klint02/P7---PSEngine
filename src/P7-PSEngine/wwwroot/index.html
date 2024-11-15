@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/stylesheet.css">
-    <script type="text/javascript" src="search.js"></script>
+    <script type="text/javascript" src="js/search.js"></script>
     <title>Search Engine</title>
 </head>
 
@@ -21,6 +21,8 @@
                 <button id="searchButton" onclick="saveSearch()">Search</button>
                 <button id="inlineCommands" onclick="displayCommands()">Inline Commands</button>
                 <button id="login">Login</button>
+                <button id="signup">Sign Up</button>
+                
                 <a id="auth-link" href="">Connect onedrive</a>
             </div>
             <div id="advancedOptions">
@@ -110,6 +112,8 @@
         </div>
         <!-- LOGIN FORM -->
         <dialog id="loginForm">
+            <h3 style="margin-top: 0px;" id="sign-header">Login or Sign up</h3>
+
             <div>
                 <label for="username">Username:</label>
                 <input type="text" id="username" placeholder="Username">
@@ -131,6 +135,7 @@
                 <button id="closeLogin">Cancel</button>
                 <button id="submit">Login</button>
             </div>
+            <script src="js/login.js"></script>
         </dialog>
 
 
@@ -270,45 +275,6 @@
             }
         }
 
-
-        const loginbutton = document.getElementById("login");
-        const loginform = document.getElementById("loginForm");
-        const closeLogin = document.getElementById("closeLogin");
-        const submitbtn = document.getElementById("submit");
-        const showpassw = document.getElementById("showPassword");
-        const passw = document.getElementById("password");
-        const usern = document.getElementById("username");
-
-        //login button showing the login-box.
-        loginbutton.addEventListener("click", () => {
-            usern.value = '';
-            passw.value = '';
-            loginform.showModal();
-        })
-
-        //cancel button closing the login-box.
-        closeLogin.addEventListener("click", () => {
-            loginform.close();
-
-        })
-
-        console.log(document.documentElement.clientWidth)
-        //Login button in the login-box
-        submitbtn.addEventListener("click", () => {
-            document.cookie = `username=${document.getElementById("username").value}`;
-            if (usern.value == '' && passw.value == '') {
-                alert('Please enter password and username to continue');
-
-            } else if (passw.value == '') {
-                alert('Please enter password to continue');
-            } else if (usern.value == '') {
-                alert('Please enter username to continue');
-            }
-            loginform.close();
-        })
-
-
-        //Button that shows and hides advanced settings.
         const optionsBlock = document.getElementById("advancedOptions");
         let showOptions = button => {
             console.log(optionsBlock.hidden);
@@ -321,12 +287,6 @@
             }
         }
 
-        //checkbox that shows password when checked
-        showpassw.addEventListener("click", () => {
-            const type = passw.getAttribute('type') == 'password' ? 'text' : 'password';
-            passw.setAttribute('type', type)
-        })
-
     </script>
 
 </body>
@@ -334,14 +294,17 @@
 
 <script>
     let user = "klint"
-    let tenant = "69ba7116-c3b3-44a4-9a15-69e541023514";
-    let client_id = "1cbff542-d06d-4d84-8302-fda352d2b1f2";
-    let redirect_url = `http://localhost:8070/api/connect/onedrive`;
-    let scope = `Files.Read.All`;
-
     document.cookie = `username=${user}`;
+    
+    //let tenant = "69ba7116-c3b3-44a4-9a15-69e541023514";
+    //let client_id = "1cbff542-d06d-4d84-8302-fda352d2b1f2";
+    //let scope = `offline_access Files.Read.All`;
+    //document.getElementById("auth-link").href = `https://login.microsoftonline.com/${tenant}/oauth2/v2.0/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect_url}&response_mode=query&scope=${scope}&state=12345`;
+    
+    let redirect_url = `http://localhost:8070/linkuser`;
+    let client_id = "raub5n9uotgroaz";
 
-    document.getElementById("auth-link").href = `https://login.microsoftonline.com/${tenant}/oauth2/v2.0/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect_url}&response_mode=query&scope=${scope}&state=12345`;
+    document.getElementById("auth-link").href = `https://www.dropbox.com/oauth2/authorize?client_id=${client_id}&token_access_type=offline&response_type=code&redirect_uri=${redirect_url}`;
 </script>
 
 
