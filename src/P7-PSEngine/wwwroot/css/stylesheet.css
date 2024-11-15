@@ -1,11 +1,12 @@
-/* BODY */
+/*-------------- BODY --------------*/
+html,
 body {
-    
     background-color: whitesmoke;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-
+    font-size: 1rem;
 }
-/* CONTAINER */
+
+/*-------------- CONTAINER --------------*/
 #container {
     padding: 5px;
     border-radius: 12px;
@@ -14,9 +15,7 @@ body {
     height: 95vh;
     width: 98.5vw;
     gap: 10px 10px;
-    box-shadow:0 0 .4em rgba(93, 93, 93, 0.553);
-
-
+    box-shadow: 0 0 .4em rgba(93, 93, 93, 0.553);
 }
 
 #container button {
@@ -25,7 +24,7 @@ body {
     height: 3rem;
     background-color: rgb(126, 187, 240);
     font-family: cursive;
-    box-shadow: 0 6px #999;
+    box-shadow: 0 6px 7px #999;
     border: none;
     text-align: center;
     outline: none;
@@ -37,44 +36,46 @@ body {
 
 #container button:active {
     filter: brightness(1.2);
-    box-shadow: 0 4px #666;
+    box-shadow: 0 4px 7px #666;
     transform: translateY(4px);
 }
 
-/* SEARCH CONTAINER */
+/*-------------- SEARCH CONTAINER --------------*/
 #SearchBodyContainer {
+    margin: 10px;
     z-index: 2;
-    padding: 5px;
+    padding: 10px;
     padding-bottom: 10px;
     border: none;
     outline: none;
     border-radius: 10px;
-    background-color:whitesmoke;
-    display: grid;
-    grid-template-rows: 6vh 6vh auto auto;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
 
 }
 
 h1 {
-    grid-area: 1/1/2/2;
-
-    background: linear-gradient(to right,#3c92af,blue);
+    margin: 0;
+    background: linear-gradient(to right, #3c92af, blue);
     -webkit-background-clip: text;
     font-size: 3rem;
     -webkit-text-fill-color: transparent;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    margin: 0;
 }
 
-/* DATES */
+/*-------------- DATES --------------*/
 #datetime {
     display: flex;
     flex-direction: column;
+    padding: 5px;
 }
-.spaceBetweenDates{
-    margin-bottom: 10px;
+
+.spaceBetweenDates {
+    margin-bottom: auto;
 }
-input[type='date']{
+
+input[type='date'] {
     border-radius: 10px;
     padding: 5px;
     cursor: text;
@@ -82,9 +83,11 @@ input[type='date']{
     border: none;
     outline: none;
 }
-input[type="date"]:hover{
+
+input[type="date"]:hover {
     filter: brightness(1.5);
 }
+
 #datetime div {
     align-items: center;
     display: flex;
@@ -93,12 +96,10 @@ input[type="date"]:hover{
 
 
 
-/* SEARCH BAR */
+/*-------------- SEARCH BAR --------------*/
 #Search {
-    grid-row-start: 2;
-    grid-row-end: 3;
     padding-top: 10px;
-
+    margin: 10px;
 }
 
 #searchbar {
@@ -111,37 +112,44 @@ input[type="date"]:hover{
     height: 3rem;
     background-color: rgb(221, 221, 221);
 }
-#searchbar:focus{
+
+#searchbar:focus {
     filter: brightness(0.9);
 }
 
-/* ADVANCED SETTINGS */
+/*-------------- ADVANCED SETTINGS --------------*/
 #Filter {
-    margin-top: 10px;
-    grid-row-start: 3;
-    grid-row-end: 4;
-    display: grid;
-    grid-template-columns: 20% 20% 20% auto;
+    margin-top: auto;
+    display: flex;
+    padding: 5px;
+}
+
+#Filter div {
+    margin-right: 1em;
 }
 
 #advancedOptionsButton {
     width: 150px;
-    align-self: center;
     margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    align-items: start;
-    justify-content: start;
+    margin-left: 25%;
 }
 
 #advancedOptions {
-    grid-area: 3/1/4/2;
+    box-shadow: 0 0 .4em rgba(93, 93, 93, 0.553);
+    border-radius: 12px;
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: auto;
+    position: relative;
 }
+
+
 #dateButtons {
     display: flex;
     flex-direction: column;
 
 }
+
 
 #dateButtons div {
     display: flex;
@@ -153,30 +161,33 @@ input[type="date"]:hover{
 #buttons {
     display: flex;
     flex-direction: column;
-    
 }
-#buttons div{
+
+#buttons div {
     display: flex;
     align-items: center;
     gap: 0.3rem;
 }
+
 #searchOptions {
     display: flex;
     flex-direction: column;
 }
-#searchOptions div{
+
+#searchOptions div {
     align-items: center;
     display: flex;
     gap: 0.3rem;
 }
 
-input[type="checkbox"], input[type="radio"] {
+input[type="checkbox"],
+input[type="radio"] {
     margin-left: 0;
     float: left;
     border-radius: 20%;
     cursor: pointer;
-    height: 20px;
-    width: 20px;
+    height: 2vh;
+    width: 2vw;
     accent-color: rgb(126, 187, 240);
 }
 
@@ -186,32 +197,33 @@ label {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-input[type="checkbox"]:hover, input[type="radio"]:hover {
+input[type="checkbox"]:hover,
+input[type="radio"]:hover {
     filter: brightness(0.9);
 }
 
-/* INLINE COMMANDS */
+/*-------------- INLINE COMMANDS --------------*/
 #commandspopup {
     border-radius: 12px;
-    height: 100%;
+    height: 100vh;
     overflow-y: scroll;
     overflow-x: hidden;
     z-index: 10;
 }
 
 #inlineHelp {
-    height: 100%;
     display: none;
     background-color: white;
     position: absolute;
     top: 0px;
     right: 0px;
-    height: 400px;
-    width: 400px;
+    height: 30vh;
+    width: 15vw;
     border-radius: 12px;
-    box-shadow:0 0 .4em rgba(93, 93, 93, 0.553);
+    box-shadow: 0 0 .4em rgba(93, 93, 93, 0.553);
 
 }
+
 #commandspopup table {
     width: 100%;
     border-radius: 10px;
@@ -220,18 +232,21 @@ input[type="checkbox"]:hover, input[type="radio"]:hover {
 }
 
 
-/*RESULT CONTAINER*/
+/*-------------- RESULT CONTAINER --------------*/
 #Results {
     position: absolute;
-    bottom: 40px;
-    background-color:whitesmoke;
-    height: 60%;
-    width:98%;
+    bottom: 9vh;
+    background-color: whitesmoke;
+    margin-top: 0.5rem;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 1rem;
     border-radius: 12px;
     border: none;
     outline: none;
     scroll-padding: 2px;
     padding: 5px;
+    height: 40vh;
 }
 
 #Results h1 {
@@ -241,44 +256,45 @@ input[type="checkbox"]:hover, input[type="radio"]:hover {
 
 
 #resTable {
-    height:  86.5%;
-    margin: 10px;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
     border-radius: 10px;
     background-color: whitesmoke;
-    overflow: hidden;
+    overflow-x: hidden;
     overflow-y: scroll;
-    box-shadow: 0 0 .4em ;
+    box-shadow: 0 0 .4em;
+    height: 40vh;
+    width: 95vw;
 }
+
 p {
     overflow-y: scroll;
 }
+
 #Results table {
     width: 100%;
     border-radius: 10px;
     border-collapse: separate;
     border-spacing: 0;
-    box-shadow:0 0 .4em rgba(93, 93, 93, 0.553);
+    box-shadow: 0 0 .4em rgba(93, 93, 93, 0.553);
 }
 
 
-
-
-
-/* TABLES */
-tbody tr:nth-child(even){
+/*-------------- TABLES --------------*/
+tbody tr:nth-child(even) {
     background-color: rgb(115, 115, 115);
-    border-color:black;
+    border-color: black;
 }
-tbody tr:nth-child(odd){
+
+tbody tr:nth-child(odd) {
     background-color: whitesmoke;
-    border-color:black;
+    border-color: black;
 }
 
-tbody tr:nth-child(odd):hover,tbody tr:nth-child(even):hover{
+tbody tr:nth-child(odd):hover,
+tbody tr:nth-child(even):hover {
     filter: brightness(0.9);
-
 }
-
 
 th {
     position: sticky;
@@ -288,22 +304,26 @@ th {
     border: 1px solid black;
     z-index: 1;
 }
+
 tr {
-    height: 50px;
-    padding:5px;
-    border-bottom:3px solid black ;
+    height: 2rem;
+    padding: 5px;
+    border-bottom: 3px solid black;
     border-top: 3px solid black;
 }
+
 td {
-    border-inline: 3px solid black ;
+    border-inline: 3px solid black;
     padding: 5px;
     border: 1px solid rgb(160 160 160);
 }
+
+/*-------------- DIALOG (LOGIN) --------------*/
 /* DIALOG (LOGIN) */
 /*TODO (nkc): Ændre height fra px til fit content, så den er dynamisk*/
 #loginForm {
     border-radius: 12px;
-    border:none;
+    border: none;
     outline: none;
     flex-direction: column;
     height: 250px;
@@ -324,6 +344,7 @@ td {
     background-color: rgb(208, 43, 43);
     margin-right: 30px;
 }
+
 .dia-btns {
     position: absolute;
     bottom: 16px;
@@ -347,19 +368,20 @@ dialog::backdrop {
 }
 
 
-/* SCROLLBAR */
+/*-------------- SCROLLBAR --------------*/
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
     border-radius: 12px;
     width: 15px;
 }
 
-::-webkit-scrollbar-button{
+::-webkit-scrollbar-button {
     border-radius: 10px;
     display: none;
 }
-::-webkit-scrollbar-thumb{
-    background-color:#9999998a;
+
+::-webkit-scrollbar-thumb {
+    background-color: #9999998a;
     border-radius: 0px 7px 7px 0px;
     cursor: pointer;
 }
@@ -367,7 +389,28 @@ dialog::backdrop {
 ::-webkit-scrollbar-thumb:hover {
     filter: brightness(0.5) !important;
 }
-::-webkit-scrollbar-track{
+
+::-webkit-scrollbar-track {
     border-radius: 12px;
     background-color: white;
+}
+
+/*------- VIEWPORT -------*/
+
+@media only screen and (width>=1707px) and (height>=898px) {
+    #Results {
+        height: 45vh;
+    }
+
+    #resTable {
+        height: 45vh;
+
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+        height: 1.2vh;
+        width: 1.2vw;
+    }
+
 }

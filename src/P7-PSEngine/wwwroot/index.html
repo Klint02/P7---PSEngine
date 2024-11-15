@@ -13,8 +13,8 @@
 <body>
     <div id="container">
 
-        <div id="SearchBodyContainer" class="Block">
-            <h1 id="title">Search Engine</h1>
+        <div id="SearchBodyContainer">
+            <h1>Search Engine</h1>
             <div id="Search">
 
                 <input type="search" id="searchbar" placeholder="Search for file">
@@ -99,6 +99,10 @@
             <div id="inlineHelp">
                 <div id="commandspopup">
                     <table id="commandsTable">
+                        <tr>
+                            <td>Keyword</td>
+                            <td>Example</td>
+                        </tr>
 
 
                     </table>
@@ -106,7 +110,6 @@
 
             </div>
         </div>
-
         <!-- LOGIN FORM -->
         <dialog id="loginForm">
             <h3 style="margin-top: 0px;" id="sign-header">Login or Sign up</h3>
@@ -123,6 +126,10 @@
                 <input type="checkbox" id="showPassword">
                 <label for="showPassword">Show password</label>
             </div>
+            <div>
+                <input type="checkbox" id="signIn">
+                <label for="signIn">Sign in</label>
+            </div>
 
             <div class="dia-btns">
                 <button id="closeLogin">Cancel</button>
@@ -137,7 +144,7 @@
             <h1>Results</h1>
             <div id="resTable">
                 <table id="resultsTable">
-
+                   
                 </table>
             </div>
         </div>
@@ -145,8 +152,19 @@
     </div>
 
     <script>
-        const commandsBlock = document.getElementById("inlineHelp");
+        const signIn = document.getElementById("signIn");
 
+        signIn.addEventListener('click', ()=>{
+            if(signIn.checked){
+                //do something
+                console.log('hej')
+            }
+        })
+
+
+
+        const commandsBlock = document.getElementById("inlineHelp");
+        // shows the list of inline kommands.
         function displayCommands() {
 
             if (commandsBlock.style.display != "block") {
@@ -168,10 +186,6 @@
                 button.innerText = "Show Advanced Options";
             }
         }
-
-
-
-
 
     </script>
 
