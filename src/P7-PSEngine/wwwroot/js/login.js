@@ -1,5 +1,6 @@
 const loginbutton = document.getElementById("login");
 const signupbutton = document.getElementById("signup");
+const logoutbutton = document.getElementById("logout");
 const loginform = document.getElementById("loginForm");
 const closeLogin = document.getElementById("closeLogin");
 const submitbtn = document.getElementById("submit");
@@ -15,6 +16,9 @@ loginbutton.addEventListener("click", () => {
     passw.value = '';
     signheader.innerText = "Login";
     post_url = "/frontend/signin"
+    loginbutton.setAttribute("hidden", "hidden");
+    signupbutton.setAttribute("hidden", "hidden");
+    logoutbutton.removeAttribute("hidden");
     loginform.showModal();
 });
 
@@ -23,16 +27,22 @@ signupbutton.addEventListener("click", () => {
     passw.value = '';
     signheader.innerText = "Sign Up";
     post_url = "/frontend/signup"
+    loginbutton.setAttribute("hidden", "hidden");
+    signupbutton.setAttribute("hidden", "hidden");
+    logoutbutton.removeAttribute("hidden");
     loginform.showModal();
 });
 
 closeLogin.addEventListener("click", () => {
+    loginbutton.removeAttribute("hidden");
+    signupbutton.removeAttribute("hidden");
+    logoutbutton.setAttribute("hidden", "hidden");
     loginform.close();
 
 });
 
 submitbtn.addEventListener("click", async () => {
-    //document.cookie = `username=${document.getElementById("username").value}`;
+    document.cookie = `username=${document.getElementById("username").value}`;
     console.log(document.cookie)
     
     if (usern.value && passw.value) {
