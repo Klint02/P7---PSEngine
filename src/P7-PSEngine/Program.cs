@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using P7_PSEngine.API;
 using P7_PSEngine.Data;
+using P7_PSEngine.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -14,6 +15,7 @@ builder.Services.AddScoped<IndexController>();
 builder.Services.AddSingleton<SearchController>();
 builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IInvertedIndexService, InvertedIndexService>();
 
 var app = builder.Build();
 

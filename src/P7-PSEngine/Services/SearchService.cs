@@ -7,7 +7,7 @@ namespace P7_PSEngine.Services
 {
     public interface ISearchService
     {
-        Task<IEnumerable<Document>> SearchDocuments(IEnumerable<string> search);
+        Task<IEnumerable<FileInformation>> SearchDocuments(IEnumerable<string> search);
     }
 
     public class SearchService

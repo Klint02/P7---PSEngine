@@ -13,14 +13,14 @@ namespace P7_PSEngine.Data
         public DbSet<FileInformation> FileInformations => Set<FileInformation>();
         public DbSet<IndexInformation> IndexInformations => Set<IndexInformation>();
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<FileInformation>(model =>
-            {
-                model.ToTable("file_information");
-                model.HasMany(p => p.IndexInformations).WithOne(p => p.FileInformation);
-            });
-        }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<FileInformation>(model =>
+        //    {
+        //        model.ToTable("file_information");
+        //        model.HasMany(p => p.IndexInformations).WithOne(p => p.FileInformation);
+        //    });
+        //}
     }
     
 }

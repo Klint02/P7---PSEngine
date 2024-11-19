@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using P7_PSEngine.Data;
 using P7_PSEngine.Model;
 using P7_PSEngine.Services;
@@ -86,13 +87,14 @@ namespace P7_PSEngine.API
             //});
 
             // Add the endpoint for IndexController
-            app.MapGet("/api/index", async (IInvertedIndexService invertedIndexService) =>
+            app.MapGet("/api/index", async (HttpContext context, [FromServices] IInvertedIndexService invertedIndexService) =>
             {
+                //var indexService = context.RequestServices.GetRequiredService<InvertedIndexService>;
                 await invertedIndexService.IndexFiles();
                 return Results.Ok();
             });
 
-            app.MapGet("/api/search", async (HttpContext context, ISearchService searchService) =>
+            app.MapGet("/api/search", async (HttpContext context,[FromServices] ISearchService searchService) =>
             {
                 var searchTerm = context.Request.Query["q"].ToString();
                 if (string.IsNullOrEmpty(searchTerm))
