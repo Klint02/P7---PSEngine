@@ -24,7 +24,7 @@ namespace P7_PSEngine.Services
 
         public async Task IndexFiles()
         {
-            string currentDirectory = "D:\\Projects\\github\\InvertedIndexStuff\\FileStorage\\Files";
+            string currentDirectory = "C:\\Users\\DJBer\\OneDrive\\Desktop\\Uni\\P7\\P7-PSEngine\\src\\P7-PSEngine\\Files\\";
             var files = Directory.GetFiles(currentDirectory);
             foreach (var fileName in files)
             {

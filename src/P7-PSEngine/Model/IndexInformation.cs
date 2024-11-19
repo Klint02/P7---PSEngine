@@ -18,8 +18,8 @@ namespace P7_PSEngine.Model
         public int Id { get; set; }
         [Required]
         public string Word { get; set; }
-        [Required]
-        public float Frequency { get; set; }
+        //[Required]
+        //public float Frequency { get; set; }
         [Required]
         public int Positions { get; set; }
         public FileInformation FileInformation { get; set; }

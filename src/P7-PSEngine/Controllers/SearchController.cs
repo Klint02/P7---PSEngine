@@ -13,7 +13,7 @@ public class SearchController
     public SearchResult Search(string searchTerm)
     {
         var invertedIndex = _indexService.GetInvertedIndex();
-        Console.WriteLine(invertedIndex.tester);
+        //Console.WriteLine(invertedIndex.tester);
         var test = invertedIndex.GetIndexData();
         //            Console.WriteLine("Display index: ");
         //            Console.WriteLine(test);

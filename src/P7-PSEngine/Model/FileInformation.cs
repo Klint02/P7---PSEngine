@@ -6,14 +6,14 @@ namespace P7_PSEngine.Model
     {
         [Key]
         public int Id { get; set; }
-        [Required]
-        public string FileId { get; set; }
+        //[Required]
+        //public string FileId { get; set; }
         [Required]
         public string FileName { get; set; }
-        [Required]
-        public string FilePath { get; set; }
-        [Required]
-        public string FileType { get; set; }
+        //[Required]
+        //public string FilePath { get; set; }
+        //[Required]
+        //public string FileType { get; set; }
         public ICollection<IndexInformation> IndexInformations { get; set; }
         //public DateTime ChangedDate { get; set; }
         //public DateTime CreationDate { get; set; }
