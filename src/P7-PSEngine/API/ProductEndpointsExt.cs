@@ -36,12 +36,12 @@ namespace P7_PSEngine.API
                         ? Results.Ok(todo)
                         : Results.NotFound());
 
-            app.MapPost("/api/products", async (Todo todos, PSengineDB db) =>
-            {
-                db.Todos.Add(todos);
-                await db.SaveChangesAsync();
-                return Results.Created($"/api/products/{todos.Id}", todos);
-            });
+            //app.MapPost("/api/products", async (Todo todos, PSengineDB db) =>
+            //{
+            //    db.Todos.Add(todos);
+            //    await db.SaveChangesAsync();
+            //    return Results.Created($"/api/products/{todos.Id}", todos);
+            //});
 
             // app.MapPut("/api/products/{id}", async (int id, Todo todo, PSengineDB db) =>
             // {
@@ -71,19 +71,19 @@ namespace P7_PSEngine.API
             //     return Results.NoContent();
             // });
 
-            app.MapDelete("/api/products/{id}", async (int id, PSengineDB db) =>
-            {
-                var product = await db.Todos.FindAsync(id);
-                if (product == null)
-                {
-                    return Results.NotFound();
-                }
+            //app.MapDelete("/api/products/{id}", async (int id, PSengineDB db) =>
+            //{
+            //    var product = await db.Todos.FindAsync(id);
+            //    if (product == null)
+            //    {
+            //        return Results.NotFound();
+            //    }
 
-                db.Todos.Remove(product);
-                await db.SaveChangesAsync();
+            //    db.Todos.Remove(product);
+            //    await db.SaveChangesAsync();
 
-                return Results.NoContent();
-            });
+            //    return Results.NoContent();
+            //});
 
             // Add the endpoint for IndexController
             app.MapGet("/api/index", async (IInvertedIndexService invertedIndexService) =>
