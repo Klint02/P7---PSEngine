@@ -10,7 +10,7 @@ namespace P7_PSEngine.Services
         Task<IEnumerable<FileInformation>> SearchDocuments(IEnumerable<string> search);
     }
 
-    public class SearchService
+    public class SearchService : ISearchService
     {
         private readonly PSengineDB _db;
 

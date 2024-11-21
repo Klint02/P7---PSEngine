@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using P7_PSEngine.Data;
 using P7_PSEngine.Model;
+using P7_PSEngine.Repositories;
 using P7_PSEngine.Services;
 
 namespace P7_PSEngine.API
@@ -101,7 +102,14 @@ namespace P7_PSEngine.API
                 {
                     return Results.BadRequest("Invalid search term");
                 }
-                var document = await searchService.SearchDocuments(new List<string> { searchTerm });
+                IEnumerable<FileInformation> document = await searchService.SearchDocuments(new List<string> { searchTerm });
+                foreach (var doc in document)
+                {
+                    foreach (var index in doc.IndexInformations)
+                    {
+                        index.FileInformation = null;
+                    }
+                }
                 return Results.Ok(document);
             });
 

@@ -1,16 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using P7_PSEngine.Data;
 using P7_PSEngine.Model;
+using System.Reflection.Metadata;
 
 namespace P7_PSEngine.Repositories
 {
-    public class InvertedIndexRepository
+    public interface IInvertedIndexRepository
     {
-        private readonly PSengineDB _db;
-
+        Task AddDocumentAsync(FileInformation document);
+        Task<FileInformation?> FindDocumentAsync(string fileName);
+        Task Save();
+    }
+    public class InvertedIndexRepository : IInvertedIndexRepository
+    {
+        private readonly PSengineDB db;
         public InvertedIndexRepository(PSengineDB db)
         {
-            _db = db;
+            this.db = db;
         }
 
         public InvertedIndexRepository()
@@ -20,12 +26,12 @@ namespace P7_PSEngine.Repositories
         
         public async Task Save()
         {
-            await _db.SaveChangesAsync();
+            await db.SaveChangesAsync();
         }
         public async Task AddDocumentAsync(FileInformation document)
         {
-            await _db.FileInformations.AddAsync(document);
+            await db.FileInformations.AddAsync(document);
         }
-        public async Task<FileInformation?> FindDocumentAsync(string fileName) => await _db.FileInformations.Include(p => p.IndexInformations).FirstOrDefaultAsync(p => p.FileName == fileName);
+        public async Task<FileInformation?> FindDocumentAsync(string fileName) => await db.FileInformations.Include(p => p.IndexInformations).FirstOrDefaultAsync(p => p.FileName == fileName);
     }
 }

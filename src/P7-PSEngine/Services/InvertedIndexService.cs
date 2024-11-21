@@ -12,23 +12,23 @@ namespace P7_PSEngine.Services
 
     public class InvertedIndexService: IInvertedIndexService
     {
-        private readonly InvertedIndexRepository _invertedIndexRepository;
-        public InvertedIndexService()
+        private readonly IInvertedIndexRepository invertedIndexRepository;
+        public InvertedIndexService(IInvertedIndexRepository invertedIndexRepository)
         {
-
-        }
-        public InvertedIndexService(InvertedIndexRepository invertedIndexRepository)
-        {
-            _invertedIndexRepository = invertedIndexRepository ?? throw new ArgumentNullException(nameof(invertedIndexRepository));
+            this.invertedIndexRepository = invertedIndexRepository ?? throw new ArgumentNullException(nameof(invertedIndexRepository));
         }
 
         public async Task IndexFiles()
         {
-            string currentDirectory = "C:\\Users\\DJBer\\OneDrive\\Skrivebord\\7 Semester\\P7\\P7-PSEngine\\src\\P7-PSEngine\\Files\\";
+            if (invertedIndexRepository == null)
+            {
+                throw new InvalidOperationException("InvertedIndexRepository is not initialized.");
+            }
+            string currentDirectory = "Files";
             var files = Directory.GetFiles(currentDirectory);
             foreach (var fileName in files)
             {
-                FileInformation? document = await _invertedIndexRepository.FindDocumentAsync(fileName);
+                FileInformation? document = await invertedIndexRepository.FindDocumentAsync(fileName);
                 if (document == null)
                 {
                     await AddFileToDb(fileName, await File.ReadAllTextAsync(fileName));
@@ -38,7 +38,7 @@ namespace P7_PSEngine.Services
                     UpdateFileInDb(document, await File.ReadAllTextAsync(fileName));
                 }
             }
-            await _invertedIndexRepository.Save();
+            await invertedIndexRepository.Save();
         }
 
         public void UpdateFileInDb(FileInformation document, string content)
@@ -50,7 +50,7 @@ namespace P7_PSEngine.Services
 
         public async Task AddFileToDb(string fileName, string content)
         {
-            FileInformation? document = await _invertedIndexRepository.FindDocumentAsync(fileName);
+            FileInformation? document = await invertedIndexRepository.FindDocumentAsync(fileName);
             if (document != null)
             {
                 throw new Exception("document was not null");
@@ -59,7 +59,7 @@ namespace P7_PSEngine.Services
 
             var tokens = Regex.Split(content.ToLower(), "\\W+");
             AddInvertedIndicies(document, tokens);
-            await _invertedIndexRepository.AddDocumentAsync(document);
+            await invertedIndexRepository.AddDocumentAsync(document);
         }
 
         public void AddInvertedIndicies(FileInformation document, string[] tokens)
