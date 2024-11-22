@@ -10,7 +10,7 @@
     <title>Search Engine</title>
 </head>
 
-<body>
+<body onload="checkLogin()">
     <div id="container">
 
         <div id="SearchBodyContainer">
@@ -22,6 +22,7 @@
                 <button id="inlineCommands" onclick="displayCommands()">Inline Commands</button>
                 <button id="login">Login</button>
                 <button id="signup">Sign Up</button>
+                <button id="logout" hidden>Logout</button>
                 
                 <a id="auth-link" href="">Connect onedrive</a>
             </div>
@@ -187,6 +188,15 @@
             }
         }
 
+        function checkLogin(){
+            
+            if (document.cookie){
+                loginbutton.setAttribute("hidden", "hidden");
+                signupbutton.setAttribute("hidden", "hidden");
+                logoutbutton.removeAttribute("hidden");
+                console.log("tester");
+            }
+        }
     </script>
 
 </body>
