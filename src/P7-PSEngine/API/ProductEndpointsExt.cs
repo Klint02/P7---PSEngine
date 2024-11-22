@@ -95,14 +95,14 @@ namespace P7_PSEngine.API
                 return Results.Ok();
             });
 
-            app.MapGet("/api/search", async (HttpContext context,[FromServices] ISearchService searchService) =>
+            app.MapGet("/api/search", async ([FromServices] ISearchService searchService, string q = "") =>
             {
-                var searchTerm = context.Request.Query["q"].ToString();
-                if (string.IsNullOrEmpty(searchTerm))
+                List<string> searchQueries = [.. q.ToLower().Split(",")];
+                if (searchQueries.Count() == 0)
                 {
                     return Results.BadRequest("Invalid search term");
                 }
-                IEnumerable<FileInformation> document = await searchService.SearchDocuments(new List<string> { searchTerm });
+                IEnumerable<FileInformation> document = await searchService.SearchDocuments(searchQueries);
                 foreach (var doc in document)
                 {
                     foreach (var index in doc.IndexInformations)

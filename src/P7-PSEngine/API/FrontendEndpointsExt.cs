@@ -11,10 +11,10 @@ namespace P7_PSEngine.API
     {
         public static void MapFrontendEndpoints(this WebApplication app)
         {
-            //string static_path = "/app/wwwroot";
+            string static_path = "/app/wwwroot";
 
             //Frontpage
-            //app.MapGet("/", () => Results.Content(File.ReadAllText($"{static_path}/index.html"), "text/html"));
+            app.MapGet("/", () => Results.Content(File.ReadAllText($"{static_path}/index.html"), "text/html"));
 
             app.MapPost("/frontend/search", (SearchDetailsDTO Details) => {
                 object[] response = [
