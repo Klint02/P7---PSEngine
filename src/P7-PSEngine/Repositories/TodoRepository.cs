@@ -1,4 +1,4 @@
-﻿/* using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using P7_PSEngine.Data;
 using P7_PSEngine.Model;
 
@@ -32,7 +32,7 @@ namespace P7_PSEngine.API
 
         public async Task AddTodoAsync(Todo todo)
         {
-            await _db.Todos.AddAsync(todo);       
+            await _db.Todos.AddAsync(todo);
         }
         // Always use after adding or updating or deleting an entity
         public async Task SaveDbChangesAsync()
@@ -51,4 +51,3 @@ namespace P7_PSEngine.API
         }
     }
 }
- */

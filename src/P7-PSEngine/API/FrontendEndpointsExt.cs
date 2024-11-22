@@ -18,20 +18,20 @@ namespace P7_PSEngine.API
 
             app.MapPost("/frontend/search", (SearchDetailsDTO Details) => {
                 object[] response = [
-                                    new {name = "Afkrydsning - SIMON", path = "/google/drive/", date = DateTime.Now}, 
+                                    new {name = "Afkrydsning - SIMON", path = "/google/drive/", date = DateTime.Now},
                                     new {name = "Afkrydsning - KASPER", path = "/google/drive/", date = DateTime.Now},
-                                    new {name = "Tilmelding til Aalborg Friskoles Musik- og Kulturskole (Efterår 2024) (svar)", path = "/google/drive/", date = DateTime.Now}, 
+                                    new {name = "Tilmelding til Aalborg Friskoles Musik- og Kulturskole (Efterår 2024) (svar)", path = "/google/drive/", date = DateTime.Now},
                                     new {name = "Lærer Kasper", path = "/google/drive/", date = DateTime.Now},
-                                    new {name = "Afkrydsning - ANDREAS", path = "/google/drive/", date = DateTime.Now}, 
+                                    new {name = "Afkrydsning - ANDREAS", path = "/google/drive/", date = DateTime.Now},
                                     new {name = "Afkrydsning - DAPHNE", path = "/google/drive/", date = DateTime.Now},
-                                    new {name = "Every WFRP Adventure", path = "/google/drive/", date = DateTime.Now}, 
+                                    new {name = "Every WFRP Adventure", path = "/google/drive/", date = DateTime.Now},
                                     new {name = "Tilmelding (Efterår 2024) (optælling) ENDELIG", path = "/google/drive/", date = DateTime.Now},
-                                    new {name = "Simon – bruges ikke", path = "/google/drive/", date = DateTime.Now}, 
+                                    new {name = "Simon – bruges ikke", path = "/google/drive/", date = DateTime.Now},
                                     new {name = "Undervisere Musik- og kulturskolen 2024-2025", path = "/google/drive/", date = DateTime.Now},
-                                    new {name = "Ramme for undervisningen og forventninger til undervisere", path = "/google/drive/", date = DateTime.Now}, 
+                                    new {name = "Ramme for undervisningen og forventninger til undervisere", path = "/google/drive/", date = DateTime.Now},
                                     new {name = "Mail til forældre - trommer", path = "/google/drive/", date = DateTime.Now},
                                     ];
-                
+
                 return response;
             });
 
