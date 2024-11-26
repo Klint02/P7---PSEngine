@@ -1,7 +1,4 @@
-﻿
-using P7_PSEngine.Data;
-
-namespace P7_PSEngine.BackgroundServices;
+﻿namespace P7_PSEngine.BackgroundServices;
 
 public class BackgroundRefresh : IHostedService, IDisposable
 {

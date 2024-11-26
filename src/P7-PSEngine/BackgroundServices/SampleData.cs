@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace P7_PSEngine.Data;
+namespace P7_PSEngine.BackgroundServices;
 
 public class SampleData
 {
