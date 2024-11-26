@@ -1,11 +1,10 @@
-using CloudFileIndexer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using P7_PSEngine.API;
 using P7_PSEngine.BackgroundServices;
 using P7_PSEngine.Data;
 using P7_PSEngine.Repositories;
 using P7_PSEngine.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
