@@ -8,6 +8,7 @@ namespace P7_PSEngine.Services
     public interface ISearchService
     {
         Task<IEnumerable<FileInformation>> SearchDocuments(IEnumerable<string> search);
+        Task<IEnumerable<FileInformation>> GetALlDocumentsWithIndex();
     }
 
     public class SearchService : ISearchService
@@ -22,6 +23,13 @@ namespace P7_PSEngine.Services
         public async Task<IEnumerable<FileInformation>> SearchDocuments(IEnumerable<string> search)
         {
             List<FileInformation> documents = await _db.FileInformations.Include(p => p.IndexInformations.Where(p => search.Contains(p.Word))).Where(p => p.IndexInformations.Any(index => search.Contains(index.Word))).AsNoTracking().ToListAsync();
+
+            return documents;
+        }
+
+        public async Task<IEnumerable<FileInformation>> GetALlDocumentsWithIndex()
+        {
+            List<FileInformation> documents = await _db.FileInformations.Include(p => p.IndexInformations).AsNoTracking().ToListAsync();
 
             return documents;
         }

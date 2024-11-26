@@ -21,6 +21,11 @@ builder.Services.AddTransient<ISearchService, SearchService>();
 builder.Services.AddTransient<IInvertedIndexRepository, InvertedIndexRepository>();
 builder.Services.AddSingleton<SampleData>();
 builder.Services.AddHostedService<BackgroundRefresh>();
+builder.Services.Configure<HostOptions>(x =>
+{
+    x.ServicesStartConcurrently = true;
+    x.ServicesStopConcurrently = true;
+});
 
 
 var app = builder.Build();

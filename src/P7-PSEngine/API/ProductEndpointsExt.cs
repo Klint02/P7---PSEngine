@@ -113,7 +113,21 @@ namespace P7_PSEngine.API
                 return Results.Ok(document);
             });
 
-            app.MapGet("/api/messages", (SampleData data) => data.Data.Order());
+            app.MapGet("/api/GetAllSearch", async ([FromServices] ISearchService searchService) =>
+            {
+                
+                IEnumerable<FileInformation> document = await searchService.GetALlDocumentsWithIndex();
+                foreach (var doc in document)
+                {
+                    foreach (var index in doc.IndexInformations)
+                    {
+                        index.FileInformation = null;
+                    }
+                }
+                return Results.Ok(document);
+            });
+
+            app.MapGet("/api/messages", (SampleData data) => data.Data);
 
         }
     }

@@ -1,8 +1,9 @@
-﻿using System.Collections.Concurrent;
+﻿using P7_PSEngine.Model;
+using System.Collections.Concurrent;
 
 namespace P7_PSEngine.BackgroundServices;
 
 public class SampleData
 {
-    public ConcurrentBag<string> Data { get; set; } = new();
+    public ConcurrentBag<FileInformation> Data { get; set; } = new();
 }
