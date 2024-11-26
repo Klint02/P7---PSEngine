@@ -113,6 +113,8 @@ namespace P7_PSEngine.API
                 return Results.Ok(document);
             });
 
+            app.MapGet("/api/messages", (SampleData data) => data.Data.Order());
+
         }
     }
 }

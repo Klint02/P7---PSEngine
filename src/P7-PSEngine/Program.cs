@@ -2,6 +2,7 @@ using CloudFileIndexer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using P7_PSEngine.API;
+using P7_PSEngine.BackgroundServices;
 using P7_PSEngine.Data;
 using P7_PSEngine.Repositories;
 using P7_PSEngine.Services;
@@ -24,6 +25,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IInvertedIndexService, InvertedIndexService>();
 builder.Services.AddTransient<ISearchService, SearchService>();
 builder.Services.AddTransient<IInvertedIndexRepository, InvertedIndexRepository>();
+builder.Services.AddSingleton<SampleData>();
+builder.Services.AddHostedService<BackgroundRefresh>();
 
 
 var app = builder.Build();
