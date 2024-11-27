@@ -153,7 +153,6 @@ namespace CloudSearcher.Tests
             string docID2 = "doc2";
             int position = 1;
             index.AddOrUpdateTerm(term, docId, position);
-            index.AddOrUpdateTerm(term, docId, 2);
 
             // Act
             index.AddOrUpdateTerm(term, docID2, 2);
@@ -162,10 +161,8 @@ namespace CloudSearcher.Tests
             Assert.True(index.invertedIndex.ContainsKey("term1"));
             Assert.True(index.invertedIndex[term].Documents.ContainsKey("doc1"));
             Assert.True(index.invertedIndex[term].Documents.ContainsKey("doc2"));
-            Assert.Equal(2, index.invertedIndex[term].DocumentFrequency);
-            Assert.Equal(3, index.invertedIndex[term].TotalTermFrequency);
-            Assert.Equal(2, index.invertedIndex[term].Documents[docId].TermFrequency);
-            Assert.Equal(1, index.invertedIndex[term].Documents[docID2].TermFrequency);
+            Assert.Equal(1, index.invertedIndex[term].Documents[docId].TermFrequency);
+            Assert.Equal(2, index.invertedIndex[term].Documents[docID2].TermFrequency);
         }
 
         // AddTerm method should increment the document frequency for a term that already

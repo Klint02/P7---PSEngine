@@ -23,7 +23,7 @@ namespace CloudSearcher.Tests
             // Assert
             Assert.Equal(expectedSearchTerms, searchTerms);
         }
-/*
+
         // Test to check if CalculateTotalResults method returns correct number of results
         // First test case: searchTerm is present in one document
         [Fact]
@@ -85,7 +85,7 @@ namespace CloudSearcher.Tests
             // Assert
             Assert.Equal(expectedTotalResults, totalResults);
         }
-/*
+
         // Test to check if BoolSearch method returns correct search results
         [Fact]
         public void TestBoolSearch()
@@ -113,6 +113,6 @@ namespace CloudSearcher.Tests
             Assert.Equal(expectedSearchResults.SearchTerm, searchResults.SearchTerm);
             Assert.Equal(expectedSearchResults.TotalResults, searchResults.TotalResults);
             Assert.Equal(expectedSearchResults.SearchResults, searchResults.SearchResults);
-        }*/
+        }
     }
 }
