@@ -32,6 +32,6 @@ namespace P7_PSEngine.Repositories
         {
             await db.FileInformations.AddAsync(document);
         }
-        public async Task<FileInformation?> FindDocumentAsync(string fileName) => await db.FileInformations.Include(p => p.IndexInformations).FirstOrDefaultAsync(p => p.FileName == fileName);
+        public async Task<FileInformation?> FindDocumentAsync(string fileName) => await db.FileInformations.Include(p => p.WordInformations).FirstOrDefaultAsync(p => p.FileName == fileName);
     }
 }

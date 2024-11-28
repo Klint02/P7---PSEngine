@@ -13,4 +13,7 @@ public class User {
 
     [Required]
     public string Password { get; set; }
+
+    public ICollection<FileInformation> FileInformations { get; set; }
+    public ICollection<InvertedIndexInformation> InvertedIndexInformations { get; set; }
 }

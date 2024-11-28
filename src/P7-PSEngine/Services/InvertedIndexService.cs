@@ -43,7 +43,7 @@ namespace P7_PSEngine.Services
 
         public void UpdateFileInDb(FileInformation document, string content)
         {
-            document.IndexInformations.Clear();
+            document.WordInformations.Clear();
             var tokens = Regex.Split(content.ToLower(), "\\W+");
             AddInvertedIndicies(document, tokens);
         }
@@ -55,7 +55,7 @@ namespace P7_PSEngine.Services
             {
                 throw new Exception("document was not null");
             }
-            document ??= new FileInformation() { FileName = fileName, IndexInformations = [] };
+            document ??= new FileInformation() { FileName = fileName, WordInformations = [] };
 
             var tokens = Regex.Split(content.ToLower(), "\\W+");
             AddInvertedIndicies(document, tokens);
@@ -69,7 +69,7 @@ namespace P7_PSEngine.Services
                 string token = tokens[i];
                 if (!string.IsNullOrEmpty(token))
                 {
-                    document.IndexInformations.Add(new IndexInformation(token, i));
+                    document.WordInformations.Add(new WordInformation(token));
                 }
             }
         }

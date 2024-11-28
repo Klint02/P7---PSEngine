@@ -11,13 +11,14 @@ public class BackgroundRefresh : IHostedService, IDisposable
     private readonly SampleData _data;
     private readonly ILogger<BackgroundRefresh> _logger;
     private readonly ISearchService _searchService;
+    private readonly IServiceProvider _serviceProvider;
 
-    public BackgroundRefresh(SampleData data, ILogger<BackgroundRefresh> logger, ISearchService searchService)
+    public BackgroundRefresh(SampleData data, ILogger<BackgroundRefresh> logger, IServiceProvider serviceProvider)
     {
         _data = data;
         _logger = logger;
-        _searchService = searchService;
         _executionTime = new TimeSpan(10, 58, 0);
+        _serviceProvider = serviceProvider;
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -25,8 +26,7 @@ public class BackgroundRefresh : IHostedService, IDisposable
         _logger.LogInformation("BackgroundRefresh is starting.");
         _logger.LogInformation("Inserting data into the bag");
         AddIndexToCache(null);
-        _logger.LogInformation("Inserted data into the bag");
-        ScheduleTask();
+        //ScheduleTask();
         //_timer = new Timer(test1, null, delay, Timeout.InfiniteTimeSpan);
         return Task.CompletedTask;
     }
@@ -54,11 +54,13 @@ public class BackgroundRefresh : IHostedService, IDisposable
 
     private async void AddIndexToCache(object? state)
     {
+        using var scope = _serviceProvider.CreateScope();
+        var searchService = scope.ServiceProvider.GetService<ISearchService>();
         // Fetch document with their indexes
-        IEnumerable<FileInformation> document = await _searchService.GetALlDocumentsWithIndex();
+        IEnumerable<FileInformation> document = await searchService!.GetALlDocumentsWithIndex();
         foreach (var doc in document)
         {
-            foreach (var index in doc.IndexInformations)
+            foreach (var index in doc.WordInformations)
             {
                 index.FileInformation = null;
             }

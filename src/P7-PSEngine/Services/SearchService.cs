@@ -22,14 +22,14 @@ namespace P7_PSEngine.Services
 
         public async Task<IEnumerable<FileInformation>> SearchDocuments(IEnumerable<string> search)
         {
-            List<FileInformation> documents = await _db.FileInformations.Include(p => p.IndexInformations.Where(p => search.Contains(p.Word))).Where(p => p.IndexInformations.Any(index => search.Contains(index.Word))).AsNoTracking().ToListAsync();
+            List<FileInformation> documents = await _db.FileInformations.Include(p => p.WordInformations.Where(p => search.Contains(p.Word))).Where(p => p.WordInformations.Any(index => search.Contains(index.Word))).AsNoTracking().ToListAsync();
 
             return documents;
         }
 
         public async Task<IEnumerable<FileInformation>> GetALlDocumentsWithIndex()
         {
-            List<FileInformation> documents = await _db.FileInformations.Include(p => p.IndexInformations).AsNoTracking().ToListAsync();
+            List<FileInformation> documents = await _db.FileInformations.Include(p => p.WordInformations).AsNoTracking().ToListAsync();
 
             return documents;
         }

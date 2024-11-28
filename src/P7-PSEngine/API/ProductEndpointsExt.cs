@@ -105,7 +105,7 @@ namespace P7_PSEngine.API
                 IEnumerable<FileInformation> document = await searchService.SearchDocuments(searchQueries);
                 foreach (var doc in document)
                 {
-                    foreach (var index in doc.IndexInformations)
+                    foreach (var index in doc.WordInformations)
                     {
                         index.FileInformation = null;
                     }
@@ -119,7 +119,7 @@ namespace P7_PSEngine.API
                 IEnumerable<FileInformation> document = await searchService.GetALlDocumentsWithIndex();
                 foreach (var doc in document)
                 {
-                    foreach (var index in doc.IndexInformations)
+                    foreach (var index in doc.WordInformations)
                     {
                         index.FileInformation = null;
                     }
