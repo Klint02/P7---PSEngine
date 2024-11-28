@@ -1,11 +1,13 @@
 ﻿using P7_PSEngine.Model;
 using P7_PSEngine.Services;
+using System.Globalization;
 
 namespace P7_PSEngine.BackgroundServices;
 
 public class BackgroundRefresh : IHostedService, IDisposable
 {
     private Timer? _timer;
+    private readonly TimeSpan _executionTime;
     private readonly SampleData _data;
     private readonly ILogger<BackgroundRefresh> _logger;
     private readonly ISearchService _searchService;
@@ -15,6 +17,7 @@ public class BackgroundRefresh : IHostedService, IDisposable
         _data = data;
         _logger = logger;
         _searchService = searchService;
+        _executionTime = new TimeSpan(10, 58, 0);
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -23,7 +26,30 @@ public class BackgroundRefresh : IHostedService, IDisposable
         //_timer = new Timer(AddIndexToCache, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
         AddIndexToCache(null);
         _logger.LogInformation("Inserted data into the bag");
+        ScheduleTask();
+        //_timer = new Timer(test1, null, delay, Timeout.InfiniteTimeSpan);
         return Task.CompletedTask;
+    }
+
+    private void ScheduleTask()
+    {
+        var now = DateTime.Now;
+        var nextRunTime = now.Date + _executionTime;
+        if (nextRunTime <= now)
+        {
+            nextRunTime = nextRunTime.AddDays(1);
+            Console.WriteLine("added to next day");
+        }
+        var delay = nextRunTime - now;
+        _timer = new Timer(test1, null, delay, Timeout.InfiniteTimeSpan);
+    }
+
+    private void test1(object? state)
+    {
+        Console.WriteLine($"test1 : time {DateTime.Now.ToLongTimeString()}");
+
+        // Schedule the next run
+        ScheduleTask();
     }
 
     private async void AddIndexToCache(object? state)
@@ -42,6 +68,24 @@ public class BackgroundRefresh : IHostedService, IDisposable
             _data.Data.Add(doc);
         }
     }
+
+    //private TimeSpan getScheduledParsedTime()
+    //{
+    //    string[] formats = { @"hh\:mm\:ss", "hh\\:mm" };
+    //    string jobStartTime = "10:31";
+    //    TimeSpan.TryParseExact(jobStartTime, formats, CultureInfo.InvariantCulture, out TimeSpan ScheduledTimespan);
+    //    return ScheduledTimespan;
+    //}
+
+    //private TimeSpan getJobRunDelay()
+    //{
+    //    TimeSpan scheduledParsedTime = getScheduledParsedTime();
+    //    TimeSpan curentTimeOftheDay = TimeSpan.Parse(DateTime.Now.TimeOfDay.ToString("hh\\:mm"));
+    //    TimeSpan delayTime = scheduledParsedTime >= curentTimeOftheDay
+    //        ? scheduledParsedTime - curentTimeOftheDay     // Initial Run, when ETA is within 24 hours
+    //        : new TimeSpan(24, 0, 0) - curentTimeOftheDay + scheduledParsedTime;   // For every other subsequent runs
+    //    return delayTime;
+    //}
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
