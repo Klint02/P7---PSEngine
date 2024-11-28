@@ -23,7 +23,7 @@ public class BackgroundRefresh : IHostedService, IDisposable
     public Task StartAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("BackgroundRefresh is starting.");
-        //_timer = new Timer(AddIndexToCache, null, TimeSpan.Zero, TimeSpan.FromSeconds(5));
+        _logger.LogInformation("Inserting data into the bag");
         AddIndexToCache(null);
         _logger.LogInformation("Inserted data into the bag");
         ScheduleTask();
