@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace P7_PSEngine.Model
+﻿namespace P7_PSEngine.Model
 {
     public class InvertedIndexInformation
     {
-        public InvertedIndexInformation(string word)
+        public InvertedIndexInformation()
         {
-            Word = word;
+            
         }
         
         public string Word { get; set; }

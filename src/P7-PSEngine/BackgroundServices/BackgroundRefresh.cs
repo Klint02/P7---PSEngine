@@ -57,18 +57,18 @@ public class BackgroundRefresh : IHostedService, IDisposable
         using var scope = _serviceProvider.CreateScope();
         var searchService = scope.ServiceProvider.GetService<ISearchService>();
         // Fetch document with their indexes
-        IEnumerable<FileInformation> document = await searchService!.GetALlDocumentsWithIndex();
-        foreach (var doc in document)
-        {
-            foreach (var index in doc.WordInformations)
-            {
-                index.FileInformation = null;
-            }
-        }
-        foreach (var doc in document)
-        {
-            _data.Data.Add(doc);
-        }
+        //IEnumerable<FileInformation> document = await searchService!.GetALlDocumentsWithIndex();
+        //foreach (var doc in document)
+        //{
+        //    foreach (var index in doc.WordInformations)
+        //    {
+        //        index.FileInformation = null;
+        //    }
+        //}
+        //foreach (var doc in document)
+        //{
+        //    _data.Data.Add(doc);
+        //}
     }
 
     //private TimeSpan getScheduledParsedTime()

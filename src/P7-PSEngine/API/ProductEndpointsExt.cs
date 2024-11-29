@@ -127,7 +127,7 @@ namespace P7_PSEngine.API
                 return Results.Ok(document);
             });
 
-            app.MapGet("/api/messages", (SampleData data) => data.Data);
+            app.MapGet("/api/messages", (SampleData data, string q ="") => data.Data);
 
         }
     }

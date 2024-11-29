@@ -12,9 +12,8 @@ namespace P7_PSEngine.Model
         public InvertedIndexInformation InvertedIndex { get; set; }
         public FileInformation FileInformation { get; set; }
         public User User { get; set; }
-        public WordInformation(string word) 
+        public WordInformation() 
         {
-            Word = word;
         }
     }
 }
