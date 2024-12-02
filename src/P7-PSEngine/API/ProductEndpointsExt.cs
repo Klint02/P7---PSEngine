@@ -90,8 +90,8 @@ namespace P7_PSEngine.API
             // Add the endpoint for IndexController
             app.MapGet("/api/index", async (HttpContext context, [FromServices] IInvertedIndexService invertedIndexService) =>
             {
-                //var indexService = context.RequestServices.GetRequiredService<InvertedIndexService>;
-                await invertedIndexService.IndexFiles();
+                var indexService = context.RequestServices.GetRequiredService<InvertedIndexService>;
+                await invertedIndexService.InitializeUser();
                 return Results.Ok();
             });
 

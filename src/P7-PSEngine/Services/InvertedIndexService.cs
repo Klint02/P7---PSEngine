@@ -4,12 +4,14 @@ using P7_PSEngine.Repositories;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using InvertedIndex = CloudFileIndexer.InvertedIndex;
 
 namespace P7_PSEngine.Services
 {
     public interface IInvertedIndexService
     {
-        
+        Task InitializeUser();
     }
 
     public class InvertedIndexService: IInvertedIndexService
@@ -19,6 +21,50 @@ namespace P7_PSEngine.Services
         {
             this.invertedIndexRepository = invertedIndexRepository ?? throw new ArgumentNullException(nameof(invertedIndexRepository));
         }
+
+        public async Task InitializeUser()
+        {
+            int userId = 1;
+            string currentDirectory = "./Files";
+            var files = Directory.GetFiles(currentDirectory);
+            string jsonFilePath = "./Files/testgoogle.json";
+            string jsonData = await File.ReadAllTextAsync(jsonFilePath);
+            //FileList filelist = JsonConvert.DeserializeObject<FileList>(jsonData);
+            Console.WriteLine("Running InitializeUser");
+            Console.WriteLine(jsonData);
+            await IndexFileAsync("1", "jsonData", userId);
+            
+            /*
+            if (filelist == null)
+            {
+                throw new InvalidOperationException("Invalid file data (filelist null)");
+            }
+            else if (filelist.Files == null)
+            {
+                throw new InvalidOperationException("Invalid file data (filelist.Files null)");
+            }
+            else if (filelist.Files.Count == 0)
+            {
+                throw new InvalidOperationException("Invalid file data (filelist.Files empty)");
+            }
+            else
+            {
+                await IndexFileAsync("1", "test", userId);
+            // Creating dictionary to store inverted index of tokens and file IDs
+            // Key: token, Value: list of file IDs (could probably be stored as an integer instead)
+            // var index = new InvertedIndexRepository();
+
+            // Loop through each file
+            foreach (var file in filelist.Files)
+            {
+                // Tokenize the file name (split by spaces, punctuation, etc.)
+                // The tokenization process should be more complex also using lemmatization and stemming
+                string id = file.Id;
+                string name = file.Name;
+                await IndexFileAsync(id, name, userId);
+            }*/
+        }
+    
 
         //public async Task IndexFiles()
         //{
@@ -60,7 +106,7 @@ namespace P7_PSEngine.Services
         //    await invertedIndexRepository.AddDocumentAsync(document);
         //}
 
-        public async void addOrUpdateWord(string word, string fileId, int userId)
+        public async Task addOrUpdateWord(string word, string fileId, int userId)
         {
             word = word.ToLower();
 
@@ -98,12 +144,12 @@ namespace P7_PSEngine.Services
             await invertedIndexRepository.Save();
         }
 
-        public void indexfile(string fileId, string content, int userId) 
+        public async Task IndexFileAsync(string fileId, string content, int userId) 
         {
             var tokens = Regex.Split(content.ToLower(), @"\W+");
             foreach (var token in tokens)
             {
-                addOrUpdateWord(token, fileId, userId);
+                await addOrUpdateWord(token, fileId, userId);
             }
         }
     }
