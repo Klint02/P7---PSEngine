@@ -7,6 +7,7 @@ body {
 }
 
 /*-------------- CONTAINER --------------*/
+
 #container {
     padding: 5px;
     border-radius: 12px;
@@ -53,6 +54,15 @@ body {
     display: flex;
     flex-direction: column;
 
+}#searchResults {
+    margin-right: 40%;
+    color: #999;
+    
+}
+#searchResultsContainer {
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
 h1 {

@@ -1,6 +1,7 @@
-async function saveSearch(){
+async function saveSearch() {
     console.log("Searching");
-
+    let startTime = Date.now();
+    let endTime;
     const formData = {
         "Query": document.getElementById("searchbar").value,
         "filenameOption": document.getElementById("searchByFilename").checked,
@@ -15,7 +16,7 @@ async function saveSearch(){
         "dateType": document.getElementById("dateCreated").checked ? "created" : "modified"
     }
 
-    fetch ("/frontend/search", {
+    fetch("/frontend/search", {
         method: "post",
         headers: {
             'Accept': "application/json",
@@ -23,41 +24,42 @@ async function saveSearch(){
         },
         body: JSON.stringify(formData)
     })
-    .then(function(response) { return response.json();})
-    .then(function(data) {
-        const files = data.slice(0);
-        
-        var tablebody = "";
-        for (let i = 0; i<files.length; i++){
-            tablebody += `
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+            const files = data.slice(0);
+
+            var tablebody = "";
+            for (let i = 0; i < files.length; i++) {
+                tablebody += `
             <tr>
                 <th>${files[i]["name"]}</th>
                 <th>${files[i]["path"]}</th>
                 <th>${files[i]["date"]}</th>
             </tr>  
             `
-        }
-        
-        document.getElementById("resultsTable").innerHTML=tablebody;
-    });
- }
+            }
+            endTime = Date.now()
+            document.getElementById("resultsTable").innerHTML = tablebody;
+            document.getElementById("searchResults").innerHTML = `${files.length} Restults returned in ${parseInt((endTime - startTime) / 1000) <= 0 ? "0." + parseInt(endTime - startTime) + " seconds" : parseInt(endTime - startTime) / 1000 + " seconds"}`;
+        });
+}
 
- getCommands();
- async function getCommands(){
-    fetch("/frontend/commands").then(response => {return response.json();})
-    .then(data => {
-        const commands = data.slice(0);
+getCommands();
+async function getCommands() {
+    fetch("/frontend/commands").then(response => { return response.json(); })
+        .then(data => {
+            const commands = data.slice(0);
 
-        var tablebody = "";
-        for (let i = 0; i<commands.length; i++){
-            tablebody += `
+            var tablebody = "";
+            for (let i = 0; i < commands.length; i++) {
+                tablebody += `
             <tr>
                 <th>${commands[i]["keyword"]}</th>
                 <th>${commands[i]["explanation"]}</th>
             </tr>  
             `
-        }
-        document.getElementById("commandsTable").innerHTML+=tablebody;
-    });
- }
+            }
+            document.getElementById("commandsTable").innerHTML += tablebody;
+        });
+}
 
