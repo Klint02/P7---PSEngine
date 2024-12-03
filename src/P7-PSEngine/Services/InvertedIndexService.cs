@@ -159,7 +159,7 @@ namespace P7_PSEngine.Services
                 await invertedIndexRepository.AddTermAsync(invertedIndexEntry);
             }
 
-            var wordFileEntry = await invertedIndexRepository.FindExistingDocumentAsync(term, docId, userId);
+            var wordFileEntry = await invertedIndexRepository.FindInvertedTerm(term, userId, docId);
             Console.WriteLine(wordFileEntry == null ? "No existing TermInformation found" : "Existing TermInformation found");
 
             if (wordFileEntry == null)
