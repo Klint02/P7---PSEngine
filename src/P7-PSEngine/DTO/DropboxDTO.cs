@@ -1,12 +1,6 @@
 //using Dropbox.Api;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using System.IO;
-using Microsoft.Extensions.Configuration;
-using System.Runtime.CompilerServices;
-using System.Text.Json;
 using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace CloudSearcher
 {
@@ -129,17 +123,17 @@ namespace CloudSearcher
 
     public class Entry
     {
-    [JsonProperty(".tag")]
-    public string Tag { get; set; } 
-    public string Name { get; set; }
-    public string PathLower { get; set; }
-    public string PathDisplay { get; set; }
-    public string Id { get; set; }
+        [JsonProperty(".tag")]
+        public string Tag { get; set; }
+        public string Name { get; set; }
+        public string PathLower { get; set; }
+        public string PathDisplay { get; set; }
+        public string Id { get; set; }
     }
 
-public class FolderResponse
+    public class FolderResponse
     {
-    [JsonProperty("entries")]
-    public List<Entry> Entries { get; set; }
+        [JsonProperty("entries")]
+        public List<Entry> Entries { get; set; }
     }
 }

@@ -1,12 +1,7 @@
-﻿using P7_PSEngine.Model;
-using P7_PSEngine.Repositories;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.RegularExpressions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using P7_PSEngine.Model;
-using P7_PSEngine.API;
-using P7_PSEngine.DTO;
+using P7_PSEngine.Repositories;
+using System.Text.RegularExpressions;
 
 namespace P7_PSEngine.Services
 {
@@ -17,7 +12,7 @@ namespace P7_PSEngine.Services
         Task addOrUpdateTerm(string term, string docId, int userId);
     }
 
-    public class InvertedIndexService: IInvertedIndexService
+    public class InvertedIndexService : IInvertedIndexService
     {
         private readonly IInvertedIndexRepository invertedIndexRepository;
         public InvertedIndexService(IInvertedIndexRepository invertedIndexRepository)
@@ -36,8 +31,8 @@ namespace P7_PSEngine.Services
             Console.WriteLine("Running InitializeUser");
             Console.WriteLine(jsonData);
             //await IndexDocumentAsync("1", "jsonData", userId);
-            
-            
+
+
             if (filelist == null)
             {
                 throw new InvalidOperationException("Invalid file data (filelist null)");
@@ -53,22 +48,22 @@ namespace P7_PSEngine.Services
             else
             {
                 await IndexDocumentAsync("10", "test", userId);
-            // Creating dictionary to store inverted index of tokens and file IDs
-            // Key: token, Value: list of file IDs (could probably be stored as an integer instead)
-            // var index = new InvertedIndexRepository();
+                // Creating dictionary to store inverted index of tokens and file IDs
+                // Key: token, Value: list of file IDs (could probably be stored as an integer instead)
+                // var index = new InvertedIndexRepository();
 
-            // Loop through each file
-            foreach (var file in filelist.Files)
-            {
-                // Tokenize the file name (split by spaces, punctuation, etc.)
-                // The tokenization process should be more complex also using lemmatization and stemming
-                string id = file.Id;
-                string name = file.Name;
-                await IndexDocumentAsync(id, name, userId);
+                // Loop through each file
+                foreach (var file in filelist.Files)
+                {
+                    // Tokenize the file name (split by spaces, punctuation, etc.)
+                    // The tokenization process should be more complex also using lemmatization and stemming
+                    string id = file.Id;
+                    string name = file.Name;
+                    await IndexDocumentAsync(id, name, userId);
+                }
             }
         }
-        }
-    
+
 
         //public async Task IndexFiles()
         //{
@@ -150,7 +145,7 @@ namespace P7_PSEngine.Services
                     DocID = docId,
                     TermFrequency = 1,
                 };
-                
+
                 invertedIndexEntry = new InvertedIndex
                 {
                     Term = term,
@@ -159,7 +154,7 @@ namespace P7_PSEngine.Services
                     TotalTermFrequency = 1,
                     TermDocuments = new List<TermInformation> { termInformationEntry }
                 };
-                
+
                 Console.WriteLine("Adding new term to InvertedIndex");
                 await invertedIndexRepository.AddTermAsync(invertedIndexEntry);
             }
@@ -176,10 +171,17 @@ namespace P7_PSEngine.Services
                     TermFrequency = 1,
                     DocID = docId,
                 };
+
+                var invertIndexupdate = new InvertedIndex
+                {
+                     
+                };
                 Console.WriteLine("Adding new TermInformation for document");
+                //await invertedIndexRepository.AddTermAsync(wordFileEntry);
 
             }
-            else {
+            else
+            {
                 wordFileEntry.TermFrequency++;
                 Console.WriteLine($"Incrementing TermFrequency for term: {term}");
             }
@@ -187,7 +189,7 @@ namespace P7_PSEngine.Services
             Console.WriteLine("Changes saved to repository");
         }
 
-        public async Task IndexDocumentAsync(string fileId, string content, int userId) 
+        public async Task IndexDocumentAsync(string fileId, string content, int userId)
         {
             var tokens = Regex.Split(content.ToLower(), @"\W+");
             foreach (var token in tokens)

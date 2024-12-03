@@ -6,7 +6,7 @@
         {
             TermDocuments = new List<TermInformation>();
         }
-        
+
         public string Term { get; set; }
         public int UserId { get; set; }
         public int DocumentFrequency { get; set; }

@@ -32,7 +32,7 @@ namespace P7_PSEngine.API
 
         public async Task AddUserAsync(User user)
         {
-            await _db.Users.AddAsync(user);       
+            await _db.Users.AddAsync(user);
         }
         // Always use after adding or updating or deleting an entity
         public async Task SaveDbChangesAsync()

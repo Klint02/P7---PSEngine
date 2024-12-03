@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace P7_PSEngine.Model
+﻿namespace P7_PSEngine.Model
 {
     public class TermInformation
     {
@@ -12,7 +10,7 @@ namespace P7_PSEngine.Model
         public InvertedIndex InvertedIndex { get; set; }
         public DocumentInformation DocumentInformation { get; set; }
         public User User { get; set; }
-        public TermInformation() 
+        public TermInformation()
         {
 
         }

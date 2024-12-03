@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations;
 namespace P7_PSEngine.Model;
 
 [Index(nameof(Username), IsUnique = true)]
-public class User {
+public class User
+{
     [Required]
     public int Id { get; set; }
 

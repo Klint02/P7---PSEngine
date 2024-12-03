@@ -1,9 +1,5 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
-using P7_PSEngine.DTO;
-using P7_PSEngine.Data;
-using P7_PSEngine.Model;
 using P7_PSEngine.Controllers;
+using P7_PSEngine.Model;
 
 namespace P7_PSEngine.API
 {
@@ -16,7 +12,8 @@ namespace P7_PSEngine.API
             //Frontpage
             app.MapGet("/", () => Results.Content(File.ReadAllText($"{static_path}/index.html"), "text/html"));
 
-            app.MapPost("/frontend/search", (SearchDetailsDTO Details) => {
+            app.MapPost("/frontend/search", (SearchDetailsDTO Details) =>
+            {
                 object[] response = [
                                     new {name = "Afkrydsning - SIMON", path = "/google/drive/", date = DateTime.Now},
                                     new {name = "Afkrydsning - KASPER", path = "/google/drive/", date = DateTime.Now},
@@ -35,19 +32,23 @@ namespace P7_PSEngine.API
                 return response;
             });
 
-            app.MapGet("/frontend/commands", () => { 
+            app.MapGet("/frontend/commands", () =>
+            {
                 return FrontendController.SendCommands();
             });
 
-            app.MapPost("/frontend/signin", async (User user, IUserRepository repo) => {
+            app.MapPost("/frontend/signin", async (User user, IUserRepository repo) =>
+            {
                 return await FrontendController.HandleLogin(user, repo);
             });
 
-            app.MapPost("/frontend/signup", async (User user, IUserRepository repo) => {
+            app.MapPost("/frontend/signup", async (User user, IUserRepository repo) =>
+            {
                 return await FrontendController.HandleSignUp(user, repo);
             });
 
-            app.MapPost("/frontend/verifysession", (SessionCookieDTO cookie) => {
+            app.MapPost("/frontend/verifysession", (SessionCookieDTO cookie) =>
+            {
                 return FrontendController.VerifySession(cookie.username, cookie.session_cookie);
             });
         }

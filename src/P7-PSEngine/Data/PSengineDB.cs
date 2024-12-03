@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using P7_PSEngine.Model;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace P7_PSEngine.Data
 {
@@ -8,7 +7,7 @@ namespace P7_PSEngine.Data
     {
         public PSengineDB()
         {
-            
+
         }
 
         public PSengineDB(DbContextOptions<PSengineDB> options)
@@ -35,7 +34,7 @@ namespace P7_PSEngine.Data
             modelBuilder.Entity<TermInformation>()
                 .HasOne(td => td.InvertedIndex)
                 .WithMany(ii => ii.TermDocuments)
-                .HasForeignKey(td => new { td.Term, td.UserId});
+                .HasForeignKey(td => new { td.Term, td.UserId });
 
             modelBuilder.Entity<TermInformation>()
                 .HasOne(td => td.DocumentInformation)
@@ -54,5 +53,5 @@ namespace P7_PSEngine.Data
 
         }
     }
-    
+
 }

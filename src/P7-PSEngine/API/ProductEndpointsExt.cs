@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using P7_PSEngine.BackgroundServices;
 using P7_PSEngine.Model;
-using P7_PSEngine.Repositories;
 using P7_PSEngine.Services;
 
 namespace P7_PSEngine.API
@@ -115,7 +113,7 @@ namespace P7_PSEngine.API
 
             app.MapGet("/api/GetAllSearch", async ([FromServices] ISearchService searchService) =>
             {
-                
+
                 IEnumerable<DocumentInformation> document = await searchService.GetALlDocumentsWithIndex();
                 foreach (var doc in document)
                 {
@@ -127,7 +125,7 @@ namespace P7_PSEngine.API
                 return Results.Ok(document);
             });
 
-            app.MapGet("/api/messages", (SampleData data, string q ="") => data.Data);
+            app.MapGet("/api/messages", (SampleData data, string q = "") => data.Data);
 
         }
     }

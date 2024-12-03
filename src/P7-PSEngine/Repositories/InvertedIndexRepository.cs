@@ -1,7 +1,6 @@
-﻿using P7_PSEngine.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using P7_PSEngine.Data;
 using P7_PSEngine.Model;
-using System.Reflection.Metadata;
-using Microsoft.EntityFrameworkCore;
 
 namespace P7_PSEngine.Repositories
 {
@@ -14,6 +13,7 @@ namespace P7_PSEngine.Repositories
         Task AddTermAsync(InvertedIndex invertedIndex);
         Task<TermInformation?> FindExistingDocumentAsync(string term, string docId, int userId);
         Task EnsureUserExistsOrCreateAsync(int userId);
+        Task<TermInformation?> FindInvertedTerm(string term, int userId, string docId);
 
         Task<User?> FindUserAsync(int userId);
     }
@@ -29,12 +29,12 @@ namespace P7_PSEngine.Repositories
         {
 
         }
-        
+
         public async Task Save()
         {
             await db.SaveChangesAsync();
         }
-        
+
         public async Task AddDocumentAsync(DocumentInformation document)
         {
             var existingDocument = await db.DocumentInformation
@@ -61,12 +61,11 @@ namespace P7_PSEngine.Repositories
 
         public async Task<InvertedIndex?> FindTerm(string term, int userId) => await db.InvertedIndex.FirstOrDefaultAsync(p => p.Term == term && p.UserId == userId);
 
+        public async Task<TermInformation?> FindInvertedTerm(string term, int userId, string docId) => await db.TermInformations.Include(p => p.InvertedIndex).FirstOrDefaultAsync(p => p.Term == term && p.UserId == userId && p.DocID == docId);
 
         public async Task AddTermAsync(InvertedIndex invertedIndex)
-        
         {
             await db.InvertedIndex.AddAsync(invertedIndex);
-            await db.SaveChangesAsync();
         }
         public async Task<TermInformation?> FindExistingDocumentAsync(string term, string docID, int userId) => await db.TermInformations.FirstOrDefaultAsync(p => p.Term == term && p.DocID == docID && p.UserId == userId);
 
@@ -75,7 +74,7 @@ namespace P7_PSEngine.Repositories
         public async Task EnsureUserExistsOrCreateAsync(int userId)
         {
             var user = await db.Users.FindAsync(userId);
-            if (user == null)
+            if (user == null)// Delete this in final product
             {
                 user = new User { Id = userId, Username = "Default Name", Password = "1234" }; // Adjust fields as needed
                 db.Users.Add(user);
