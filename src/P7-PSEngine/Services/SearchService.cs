@@ -7,8 +7,8 @@ namespace P7_PSEngine.Services
 {
     public interface ISearchService
     {
-        Task<IEnumerable<FileInformation>> SearchDocuments(IEnumerable<string> search);
-        Task<IEnumerable<FileInformation>> GetALlDocumentsWithIndex();
+        Task<IEnumerable<DocumentInformation>> SearchDocuments(IEnumerable<string> search);
+        Task<IEnumerable<DocumentInformation>> GetALlDocumentsWithIndex();
     }
 
     public class SearchService : ISearchService
@@ -20,16 +20,16 @@ namespace P7_PSEngine.Services
             _db = db;
         }
 
-        public async Task<IEnumerable<FileInformation>> SearchDocuments(IEnumerable<string> search)
+        public async Task<IEnumerable<DocumentInformation>> SearchDocuments(IEnumerable<string> search)
         {
-            List<FileInformation> documents = await _db.FileInformations.Include(p => p.WordInformations.Where(p => search.Contains(p.Word))).Where(p => p.WordInformations.Any(index => search.Contains(index.Word))).AsNoTracking().ToListAsync();
+            List<DocumentInformation> documents = await _db.DocumentInformation.Include(p => p.TermDocuments.Where(p => search.Contains(p.Term))).Where(p => p.TermDocuments.Any(index => search.Contains(index.Term))).AsNoTracking().ToListAsync();
 
             return documents;
         }
 
-        public async Task<IEnumerable<FileInformation>> GetALlDocumentsWithIndex()
+        public async Task<IEnumerable<DocumentInformation>> GetALlDocumentsWithIndex()
         {
-            List<FileInformation> documents = await _db.FileInformations.Include(p => p.WordInformations).AsNoTracking().ToListAsync();
+            List<DocumentInformation> documents = await _db.DocumentInformation.Include(p => p.TermDocuments).AsNoTracking().ToListAsync();
 
             return documents;
         }

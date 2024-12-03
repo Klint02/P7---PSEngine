@@ -1,17 +1,20 @@
-﻿using CloudFileIndexer;
-using P7_PSEngine.Model;
+﻿using P7_PSEngine.Model;
 using P7_PSEngine.Repositories;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using InvertedIndex = CloudFileIndexer.InvertedIndex;
+using P7_PSEngine.Model;
+using P7_PSEngine.API;
+using P7_PSEngine.DTO;
 
 namespace P7_PSEngine.Services
 {
     public interface IInvertedIndexService
     {
         Task InitializeUser();
+        Task IndexDocumentAsync(string fileId, string content, int userId);
+        Task addOrUpdateTerm(string term, string docId, int userId);
     }
 
     public class InvertedIndexService: IInvertedIndexService
@@ -29,12 +32,12 @@ namespace P7_PSEngine.Services
             var files = Directory.GetFiles(currentDirectory);
             string jsonFilePath = "./Files/testgoogle.json";
             string jsonData = await File.ReadAllTextAsync(jsonFilePath);
-            //FileList filelist = JsonConvert.DeserializeObject<FileList>(jsonData);
+            FileList filelist = JsonConvert.DeserializeObject<FileList>(jsonData);
             Console.WriteLine("Running InitializeUser");
             Console.WriteLine(jsonData);
-            await IndexFileAsync("1", "jsonData", userId);
+            //await IndexDocumentAsync("1", "jsonData", userId);
             
-            /*
+            
             if (filelist == null)
             {
                 throw new InvalidOperationException("Invalid file data (filelist null)");
@@ -49,7 +52,7 @@ namespace P7_PSEngine.Services
             }
             else
             {
-                await IndexFileAsync("1", "test", userId);
+                await IndexDocumentAsync("10", "test", userId);
             // Creating dictionary to store inverted index of tokens and file IDs
             // Key: token, Value: list of file IDs (could probably be stored as an integer instead)
             // var index = new InvertedIndexRepository();
@@ -61,8 +64,9 @@ namespace P7_PSEngine.Services
                 // The tokenization process should be more complex also using lemmatization and stemming
                 string id = file.Id;
                 string name = file.Name;
-                await IndexFileAsync(id, name, userId);
-            }*/
+                await IndexDocumentAsync(id, name, userId);
+            }
+        }
         }
     
 
@@ -106,50 +110,89 @@ namespace P7_PSEngine.Services
         //    await invertedIndexRepository.AddDocumentAsync(document);
         //}
 
-        public async Task addOrUpdateWord(string word, string fileId, int userId)
+        public async Task addOrUpdateTerm(string term, string docId, int userId)
         {
-            word = word.ToLower();
+            Console.WriteLine($"addOrUpdateTerm called with term: {term}, docId: {docId}, userId: {userId}");
+            term = term.ToLower();
 
-            var invertedIndexEntry = await invertedIndexRepository.FindWord(word, userId);
+            // Ensure user exists or create a new user
+            await invertedIndexRepository.EnsureUserExistsOrCreateAsync(userId);
+
+            // Ensure the Document exists or create a new Document
+            var documentexists = await invertedIndexRepository.FindDocumentAsync(docId, userId);
+            Console.WriteLine(documentexists == null ? "Document not found" : "Document found");
+
+            if (documentexists == null)
+            {
+                if (string.IsNullOrWhiteSpace(docId))
+                    throw new ArgumentException("DocId cannot be null or empty.", nameof(docId));
+
+                var document = new DocumentInformation
+                {
+                    DocumentName = term,
+                    DocId = docId,
+                    UserId = userId,
+                    TermDocuments = new List<TermInformation>()
+                };
+                Console.WriteLine("Adding new document to repository");
+                Console.WriteLine($"DocumentName: {document.DocumentName}, UserId: {document.UserId}, DocumentId: {document.DocId}");
+                await invertedIndexRepository.AddDocumentAsync(document);
+            }
+
+            // Find term in InvertedIndex
+            var invertedIndexEntry = await invertedIndexRepository.FindTerm(term, userId);
+            Console.WriteLine(invertedIndexEntry == null ? "Term not found in InvertedIndex" : "Term found in InvertedIndex");
 
             if (invertedIndexEntry == null)
             {
-                invertedIndexEntry = new WordInformation
+                var termInformationEntry = new TermInformation
                 {
-                    Word = word,
-                    UserId = userId,
-                    WordFrequency = 1,
-                    FileID = fileId,
+                    DocID = docId,
+                    TermFrequency = 1,
                 };
-
-                await invertedIndexRepository.AddWordAsync(invertedIndexEntry);
+                
+                invertedIndexEntry = new InvertedIndex
+                {
+                    Term = term,
+                    UserId = userId,
+                    DocumentFrequency = 1,
+                    TotalTermFrequency = 1,
+                    TermDocuments = new List<TermInformation> { termInformationEntry }
+                };
+                
+                Console.WriteLine("Adding new term to InvertedIndex");
+                await invertedIndexRepository.AddTermAsync(invertedIndexEntry);
             }
 
-            var wordFileEntry = await invertedIndexRepository.FindExistingFileAsync(word, fileId, userId);
+            var wordFileEntry = await invertedIndexRepository.FindExistingDocumentAsync(term, docId, userId);
+            Console.WriteLine(wordFileEntry == null ? "No existing TermInformation found" : "Existing TermInformation found");
 
             if (wordFileEntry == null)
             {
-                wordFileEntry = new WordInformation
+                wordFileEntry = new TermInformation
                 {
-                    Word = word,
+                    Term = term,
                     UserId = userId,
-                    WordFrequency = 1,
-                    FileID = fileId,
+                    TermFrequency = 1,
+                    DocID = docId,
                 };
+                Console.WriteLine("Adding new TermInformation for document");
 
             }
             else {
-                wordFileEntry.WordFrequency++;
+                wordFileEntry.TermFrequency++;
+                Console.WriteLine($"Incrementing TermFrequency for term: {term}");
             }
             await invertedIndexRepository.Save();
+            Console.WriteLine("Changes saved to repository");
         }
 
-        public async Task IndexFileAsync(string fileId, string content, int userId) 
+        public async Task IndexDocumentAsync(string fileId, string content, int userId) 
         {
             var tokens = Regex.Split(content.ToLower(), @"\W+");
             foreach (var token in tokens)
             {
-                await addOrUpdateWord(token, fileId, userId);
+                await addOrUpdateTerm(token, fileId, userId);
             }
         }
     }

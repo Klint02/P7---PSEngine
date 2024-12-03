@@ -16,40 +16,40 @@ namespace P7_PSEngine.Data
 
         public DbSet<Todo> Todos => Set<Todo>();
         public DbSet<User> Users => Set<User>();
-        public DbSet<FileInformation> FileInformations => Set<FileInformation>();
-        public DbSet<InvertedIndexInformation> InvertedIndexInformations => Set<InvertedIndexInformation>();
-        public DbSet<WordInformation> WordInformations => Set<WordInformation>();
+        public DbSet<DocumentInformation> DocumentInformation => Set<DocumentInformation>();
+        public DbSet<InvertedIndex> InvertedIndex => Set<InvertedIndex>();
+        public DbSet<TermInformation> TermInformations => Set<TermInformation>();
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<FileInformation>()
-                .HasKey(td => new { td.FileId, td.UserId });
+            modelBuilder.Entity<DocumentInformation>()
+                .HasKey(td => new { td.DocId, td.UserId });
 
-            modelBuilder.Entity<InvertedIndexInformation>()
-                .HasKey(td => new { td.Word, td.UserId });
+            modelBuilder.Entity<InvertedIndex>()
+                .HasKey(td => new { td.Term, td.UserId });
 
-            modelBuilder.Entity<WordInformation>()
-                .HasKey(td => new { td.Word, td.UserId });
+            modelBuilder.Entity<TermInformation>()
+                .HasKey(td => new { td.Term, td.UserId });
 
-            modelBuilder.Entity<WordInformation>()
+            modelBuilder.Entity<TermInformation>()
                 .HasOne(td => td.InvertedIndex)
-                .WithMany(ii => ii.WordInformations)
-                .HasForeignKey(td => new { td.Word, td.UserId});
+                .WithMany(ii => ii.TermDocuments)
+                .HasForeignKey(td => new { td.Term, td.UserId});
 
-            modelBuilder.Entity<WordInformation>()
-                .HasOne(td => td.FileInformation)
-                .WithMany(d => d.WordInformations)
-                .HasForeignKey(td => new { td.FileID, td.UserId });
+            modelBuilder.Entity<TermInformation>()
+                .HasOne(td => td.DocumentInformation)
+                .WithMany(d => d.TermDocuments)
+                .HasForeignKey(td => new { td.DocID, td.UserId });
 
-            modelBuilder.Entity<FileInformation>()
+            modelBuilder.Entity<DocumentInformation>()
                 .HasOne(d => d.User)
-                .WithMany(u => u.FileInformations)
+                .WithMany(u => u.documentInformations)
                 .HasForeignKey(d => d.UserId);
 
-            modelBuilder.Entity<InvertedIndexInformation>()
+            modelBuilder.Entity<InvertedIndex>()
                 .HasOne(d => d.User)
-                .WithMany(u => u.InvertedIndexInformations)
+                .WithMany(u => u.InvertedIndex)
                 .HasForeignKey(d => d.UserId);
 
         }

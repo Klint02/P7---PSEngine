@@ -102,12 +102,12 @@ namespace P7_PSEngine.API
                 {
                     return Results.BadRequest("Invalid search term");
                 }
-                IEnumerable<FileInformation> document = await searchService.SearchDocuments(searchQueries);
+                IEnumerable<DocumentInformation> document = await searchService.SearchDocuments(searchQueries);
                 foreach (var doc in document)
                 {
-                    foreach (var index in doc.WordInformations)
+                    foreach (var index in doc.TermDocuments)
                     {
-                        index.FileInformation = null;
+                        index.DocumentInformation = null;
                     }
                 }
                 return Results.Ok(document);
@@ -116,12 +116,12 @@ namespace P7_PSEngine.API
             app.MapGet("/api/GetAllSearch", async ([FromServices] ISearchService searchService) =>
             {
                 
-                IEnumerable<FileInformation> document = await searchService.GetALlDocumentsWithIndex();
+                IEnumerable<DocumentInformation> document = await searchService.GetALlDocumentsWithIndex();
                 foreach (var doc in document)
                 {
-                    foreach (var index in doc.WordInformations)
+                    foreach (var index in doc.TermDocuments)
                     {
-                        index.FileInformation = null;
+                        index.DocumentInformation = null;
                     }
                 }
                 return Results.Ok(document);

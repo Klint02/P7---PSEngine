@@ -9,11 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<PSengineDB>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-//builder.Services.AddSingleton<InvertedIndex>();
-//builder.Services.AddSingleton<IndexService>();
-//builder.Services.AddScoped<IndexController>();
-//builder.Services.AddScoped<SearchController>();
-//builder.Services.AddSingleton<SearchController>();
 builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IInvertedIndexService, InvertedIndexService>();

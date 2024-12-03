@@ -5,5 +5,5 @@ namespace P7_PSEngine.BackgroundServices;
 
 public class SampleData
 {
-    public ConcurrentBag<FileInformation> Data { get; set; } = new();
+    public ConcurrentBag<DocumentInformation> Data { get; set; } = new();
 }

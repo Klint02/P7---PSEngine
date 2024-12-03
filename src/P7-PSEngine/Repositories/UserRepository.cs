@@ -49,5 +49,14 @@ namespace P7_PSEngine.API
         {
             _db.Users.Remove(user);
         }
+
+        public async Task EnsureUserExistsAsync(int userId)
+        {
+            var userExists = await _db.Users.AnyAsync(u => u.Id == userId);
+            if (!userExists)
+            {
+                throw new InvalidOperationException($"User with ID {userId} does not exist.");
+            }
+        }
     }
 }
