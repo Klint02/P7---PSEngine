@@ -10,12 +10,13 @@ namespace P7_PSEngine.Repositories
         Task<DocumentInformation?> FindDocumentAsync(string documentName, int userId);
         Task Save();
         Task<InvertedIndex> FindTerm(string term, int userId);
-        Task AddTermAsync(InvertedIndex invertedIndex);
+        Task AddInvertedIndexAsync(InvertedIndex invertedIndex);
         Task<TermInformation?> FindExistingDocumentAsync(string term, string docId, int userId);
         Task EnsureUserExistsOrCreateAsync(int userId);
-        Task<TermInformation?> FindInvertedTerm(string term, int userId, string docId);
+        Task<InvertedIndex?> FindInvertedTerm(string term, int userId);
 
         Task<User?> FindUserAsync(int userId);
+        Task AddTermAsync(TermInformation term);
     }
     public class InvertedIndexRepository : IInvertedIndexRepository
     {
@@ -23,11 +24,6 @@ namespace P7_PSEngine.Repositories
         public InvertedIndexRepository(PSengineDB db)
         {
             this.db = db;
-        }
-
-        public InvertedIndexRepository()
-        {
-
         }
 
         public async Task Save()
@@ -61,15 +57,17 @@ namespace P7_PSEngine.Repositories
 
         public async Task<InvertedIndex?> FindTerm(string term, int userId) => await db.InvertedIndex.FirstOrDefaultAsync(p => p.Term == term && p.UserId == userId);
 
-        public async Task<TermInformation?> FindInvertedTerm(string term, int userId, string docId) => await db.TermInformations.Include(p => p.InvertedIndex).FirstOrDefaultAsync(p => p.Term == term && p.UserId == userId && p.DocID == docId);
-
-        public async Task AddTermAsync(InvertedIndex invertedIndex)
+        public async Task AddInvertedIndexAsync(InvertedIndex invertedIndex)
         {
             await db.InvertedIndex.AddAsync(invertedIndex);
         }
         public async Task<TermInformation?> FindExistingDocumentAsync(string term, string docID, int userId) => await db.TermInformations.FirstOrDefaultAsync(p => p.Term == term && p.DocID == docID && p.UserId == userId);
 
         public async Task<User?> FindUserAsync(int userId) => await db.Users.FirstOrDefaultAsync(p => p.Id == userId);
+
+        public async Task<InvertedIndex?> FindInvertedTerm(string term, int userId) => await db.InvertedIndex.FirstOrDefaultAsync(p => p.Term == term && p.UserId == userId);
+
+        public async Task AddTermAsync(TermInformation term) => await db.TermInformations.AddAsync(term);
 
         public async Task EnsureUserExistsOrCreateAsync(int userId)
         {
