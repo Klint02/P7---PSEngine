@@ -95,11 +95,13 @@ namespace P7_PSEngine.API
 
             app.MapGet("/api/search", async ([FromServices] ISearchService searchService, string q = "") =>
             {
-                List<string> searchQueries = [.. q.ToLower().Split(",")];
-                if (searchQueries.Count() == 0)
+                //List<string> searchQueries = await searchService.ProcessSearchQuery(q);
+                /*if (searchQueries.Count() == 0)
                 {
                     return Results.BadRequest("Invalid search term");
-                }
+                }*/
+                
+
                 IEnumerable<DocumentInformation> document = await searchService.SearchDocuments(searchQueries);
                 foreach (var doc in document)
                 {
