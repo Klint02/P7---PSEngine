@@ -7,6 +7,7 @@ body {
 }
 
 /*-------------- CONTAINER --------------*/
+
 #container {
     padding: 5px;
     border-radius: 12px;
@@ -53,6 +54,15 @@ body {
     display: flex;
     flex-direction: column;
 
+}#searchResults {
+    margin-right: 40%;
+    color: #999;
+    
+}
+#searchResultsContainer {
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
 h1 {
@@ -111,6 +121,7 @@ input[type="date"]:hover {
     width: 60%;
     height: 3rem;
     background-color: rgb(221, 221, 221);
+    padding-left: 10px;
 }
 
 #searchbar:focus {
@@ -122,6 +133,13 @@ input[type="date"]:hover {
     margin-top: auto;
     display: flex;
     padding: 5px;
+}
+
+#loginSigninButtons {
+
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
 #Filter div {
@@ -321,18 +339,16 @@ td {
 /*-------------- DIALOG (LOGIN) --------------*/
 /* DIALOG (LOGIN) */
 /*TODO (nkc): Ændre height fra px til fit content, så den er dynamisk*/
-#loginForm {
+.dia {
     border-radius: 12px;
     border: none;
     outline: none;
     flex-direction: column;
-    height: 250px;
-    width: 300px;
     justify-content: center;
     align-items: center;
 }
 
-#loginForm div {
+.dia-div div {
     display: flex;
     padding: 5px;
     text-align: left;
@@ -340,16 +356,12 @@ td {
     align-items: center;
 }
 
-#loginForm #closeLogin {
-    background-color: rgb(208, 43, 43);
-    margin-right: 30px;
+button.dia-closebtn {
+    background-color: rgb(208, 43, 43) !important;
+    margin-right: 30px !important;
 }
 
-.dia-btns {
-    position: absolute;
-    bottom: 16px;
-    width: 85%;
-}
+
 
 
 dialog input {

@@ -14,18 +14,23 @@
     <div id="container">
 
         <div id="SearchBodyContainer">
-            <h1>Search Engine</h1>
+            <div id="loginSigninButtons">
+                <h1>Search Engine</h1>
+            <div >
+                
+                <button id="login">Login</button>
+                <button id="signup">Sign Up</button>
+                <button id="logout" hidden>Logout</button>
+            </div>
+            </div>
+            
             <div id="Search">
 
                 <input type="search" id="searchbar" placeholder="Search for file">
                 <button id="searchButton" onclick="saveSearch()">Search</button>
-                <button id="inlineCommands" onclick="displayCommands()">Inline Commands</button>
-                <button id="login">Login</button>
-                <button id="signup">Sign Up</button>
-                <button id="logout" hidden>Logout</button>
-                
-                <a id="auth-link" href="">Connect onedrive</a>
             </div>
+            
+           
             <div id="advancedOptions">
                 <div id="Filter">
                     <div id="searchOptions">
@@ -112,9 +117,8 @@
             </div>
         </div>
         <!-- LOGIN FORM -->
-        <dialog id="loginForm">
+        <dialog id="loginForm" class="dia dia-div">
             <h3 style="margin-top: 0px;" id="sign-header">Login or Sign up</h3>
-
             <div>
                 <label for="username">Username:</label>
                 <input type="text" id="username" placeholder="Username">
@@ -132,17 +136,21 @@
                 <label for="signIn">Sign in</label>
             </div>
 
-            <div class="dia-btns">
-                <button id="closeLogin">Cancel</button>
+            <div >
+                <button id="closeLogin" class="dia-closebtn">Cancel</button>
                 <button id="submit">Login</button>
             </div>
             <script src="js/login.js"></script>
         </dialog>
 
-
         <!-- Results box -->
         <div id="Results">
+            <div id="searchResultsContainer">
             <h1>Results</h1>
+            <h4 id="searchResults"></h4>
+
+            </div>
+            
             <div id="resTable">
                 <table id="resultsTable">
                    
@@ -203,6 +211,7 @@
 
 
 <script>
+
     let user = "klint"
     document.cookie = `username=${user}`;
     
