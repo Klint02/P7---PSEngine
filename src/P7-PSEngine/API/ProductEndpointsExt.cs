@@ -93,27 +93,31 @@ namespace P7_PSEngine.API
                 return Results.Ok();
             });
 
-            app.MapGet("/api/search", async ([FromServices] ISearchService searchService, string q = "") =>
+            app.MapGet("/api/search", async (HttpContext context, [FromServices] ISearchService searchService, string q = "") =>
             {
-                //List<string> searchQueries = await searchService.ProcessSearchQuery(q);
-                /*if (searchQueries.Count() == 0)
+                if (string.IsNullOrEmpty(q))
+                {
+                    return Results.BadRequest("Search term cannot be empty");   
+                }
+                IEnumerable<string> searchQueries = await searchService.ProcessSearchQuery(q);
+                if (!searchQueries.Any())
                 {
                     return Results.BadRequest("Invalid search term");
-                }*/
-                
-
-                IEnumerable<DocumentInformation> document = await searchService.SearchDocuments(searchQueries);
-                foreach (var doc in document)
-                {
-                    foreach (var index in doc.TermDocuments)
-                    {
-                        index.DocumentInformation = null;
-                    }
                 }
-                return Results.Ok(document);
+                
+                foreach (var query in searchQueries)
+                {
+                    if (string.IsNullOrEmpty(query))
+                    {
+                        return Results.BadRequest("Invalid search term");
+                    }
+                    var searchResult = await searchService.BoolSearch(query);
+                    return Results.Ok(searchResult);
+                }
+                return Results.BadRequest("No valid search terms found"); 
             });
 
-            app.MapGet("/api/GetAllSearch", async ([FromServices] ISearchService searchService) =>
+/*            app.MapGet("/api/GetAllSearch", async ([FromServices] ISearchService searchService) =>
             {
 
                 IEnumerable<DocumentInformation> document = await searchService.GetALlDocumentsWithIndex();
@@ -125,7 +129,7 @@ namespace P7_PSEngine.API
                     }
                 }
                 return Results.Ok(document);
-            });
+            });*/
 
             app.MapGet("/api/messages", (SampleData data, string q = "") => data.Data);
 

@@ -11,6 +11,7 @@ namespace P7_PSEngine.Services
         Task<IEnumerable<DocumentInformation>> SearchDocuments(IEnumerable<string> search);
         Task<IEnumerable<DocumentInformation>> GetALlDocumentsWithIndex();
         Task<IEnumerable<string>> ProcessSearchQuery(string searchTerm);
+        Task<SearchResult> BoolSearch(string searchTerm);
     }
 
     public class SearchService : ISearchService
@@ -34,6 +35,9 @@ namespace P7_PSEngine.Services
 
         public async Task<SearchResult> BoolSearch(string searchTerm)
         {
+            // For testing purposes, the user ID is hardcoded to 1
+            int userId = 1;
+            
             // Process the search query
             var searchTerms = await ProcessSearchQuery(searchTerm); 
             // Create a list to store the search results
@@ -47,31 +51,29 @@ namespace P7_PSEngine.Services
                 // Get the TermData object for the term
                 var termData = await FindTerm(term, userId);
 
-                if (!_db.InvertedIndex.ContainsKey(term))
+                // If the term is not in the inverted index, skip to the next term
+                if (termData == null)
                 {
-                    continue; // If the term is not in the inverted index, skip to the next term
+                    continue;
                 }
-
-                var termData = _db.TermInformations.invertedIndex[term];
 
                 // Increment the total number of results with the total term frequency
                 searchResults.TotalResults += termData.TotalTermFrequency;
 
-                foreach (var document in termData.Documents)
+                foreach (var document in termData.TermDocuments)
                 {
-                    var docID = document.Key;
-                    var documentData = document.Value;
+                    var docID = document.DocID;
+                    var documentData = document.DocumentInformation;
 
                     // Add the document ID and filename to the search results
                     searchResults.AddSearchResult(
                         docID, 
-                        "Filename", 
-                        documentData.TermFrequency);
+                        documentData.DocumentName, 
+                        document.TermFrequency);
                 }
             }
             return searchResults;
-        }
-
+}
         public async Task<IEnumerable<DocumentInformation>> SearchDocuments(IEnumerable<string> search)
         {
             List<DocumentInformation> documents = await _db.DocumentInformation.Include(p => p.TermDocuments.Where(p => search.Contains(p.Term))).Where(p => p.TermDocuments.Any(index => search.Contains(index.Term))).AsNoTracking().ToListAsync();
@@ -84,6 +86,11 @@ namespace P7_PSEngine.Services
             List<DocumentInformation> documents = await _db.DocumentInformation.Include(p => p.TermDocuments).AsNoTracking().ToListAsync();
 
             return documents;
+        }
+
+        public async Task<InvertedIndex> FindTerm(string term, int userId)
+        {
+            return await _db.InvertedIndex.FirstOrDefaultAsync(p => p.Term == term && p.UserId == userId);
         }
     }
 
@@ -114,6 +121,7 @@ namespace P7_PSEngine.Services
                     Filename = filename,
                     TermFrequency = termFrequency
                 };
+            Console.WriteLine($"Adding search result: {result.DocID}, {result.Filename}, {result.TermFrequency}");
             SearchResults.Add(result);
         }
     }
