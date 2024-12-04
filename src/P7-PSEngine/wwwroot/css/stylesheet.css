@@ -121,6 +121,7 @@ input[type="date"]:hover {
     width: 60%;
     height: 3rem;
     background-color: rgb(221, 221, 221);
+    padding-left: 10px;
 }
 
 #searchbar:focus {

@@ -16,8 +16,8 @@ loginbutton.addEventListener("click", () => {
     passw.value = '';
     signheader.innerText = "Login";
     post_url = "/frontend/signin"
-    // loginbutton.setAttribute("hidden", "hidden");
-    // signupbutton.setAttribute("hidden", "hidden");
+    loginbutton.setAttribute("hidden", "hidden");
+    signupbutton.setAttribute("hidden", "hidden");
     logoutbutton.removeAttribute("hidden");
     loginform.showModal();
 });
