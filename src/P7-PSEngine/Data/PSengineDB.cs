@@ -29,7 +29,7 @@ namespace P7_PSEngine.Data
                 .HasKey(td => new { td.Term, td.UserId });
 
             modelBuilder.Entity<TermInformation>()
-                .HasKey(td => new { td.Term, td.UserId });
+                .HasKey(td => new { td.Term, td.DocID, td.UserId });
 
             modelBuilder.Entity<TermInformation>()
                 .HasOne(td => td.InvertedIndex)
