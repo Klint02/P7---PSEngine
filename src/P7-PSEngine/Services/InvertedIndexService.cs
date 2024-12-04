@@ -157,16 +157,17 @@ namespace P7_PSEngine.Services
 
                 Console.WriteLine("Adding new term to InvertedIndex");
                 await invertedIndexRepository.AddInvertedIndexAsync(invertedIndexEntry);
+                await invertedIndexRepository.Save();
             }
             else
             {
                 var wordFileEntry = await invertedIndexRepository.FindExistingDocumentAsync(term, docId, userId);
                 Console.WriteLine(wordFileEntry == null ? "No existing TermInformation found" : "Existing TermInformation found");
-                var updateInvertedIndex = await invertedIndexRepository.FindInvertedTerm(term, userId);
-                if (updateInvertedIndex == null)
-                {
-                    throw new InvalidOperationException("InvertedIndex entry not found");
-                }
+                //var updateInvertedIndex = await invertedIndexRepository.FindInvertedTerm(term, userId);
+                //if (updateInvertedIndex == null)
+                //{
+                //    throw new InvalidOperationException("InvertedIndex entry not found");
+                //}
 
                 if (wordFileEntry == null)
                 {
@@ -178,18 +179,18 @@ namespace P7_PSEngine.Services
                         DocID = docId,
                     };
 
-                    updateInvertedIndex.DocumentFrequency++;
-                    updateInvertedIndex.TotalTermFrequency++;
+                    invertedIndexEntry.DocumentFrequency++;
+                    invertedIndexEntry.TotalTermFrequency++;
 
                     Console.WriteLine("Adding new TermInformation for document");
                     await invertedIndexRepository.AddTermAsync(wordFileEntry);
-
+                    await invertedIndexRepository.Save();
                 }
                 else
                 {
                     wordFileEntry.TermFrequency++;
-                    updateInvertedIndex.DocumentFrequency++;
-                    updateInvertedIndex.TotalTermFrequency++;
+                    invertedIndexEntry.DocumentFrequency++;
+                    invertedIndexEntry.TotalTermFrequency++;
                     Console.WriteLine($"Incrementing TermFrequency for term: {term}");
                 }
             }

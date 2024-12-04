@@ -13,7 +13,6 @@ namespace P7_PSEngine.Repositories
         Task AddInvertedIndexAsync(InvertedIndex invertedIndex);
         Task<TermInformation?> FindExistingDocumentAsync(string term, string docId, int userId);
         Task EnsureUserExistsOrCreateAsync(int userId);
-        Task<InvertedIndex?> FindInvertedTerm(string term, int userId);
 
         Task<User?> FindUserAsync(int userId);
         Task AddTermAsync(TermInformation term);
@@ -64,8 +63,6 @@ namespace P7_PSEngine.Repositories
         public async Task<TermInformation?> FindExistingDocumentAsync(string term, string docID, int userId) => await db.TermInformations.FirstOrDefaultAsync(p => p.Term == term && p.DocID == docID && p.UserId == userId);
 
         public async Task<User?> FindUserAsync(int userId) => await db.Users.FirstOrDefaultAsync(p => p.Id == userId);
-
-        public async Task<InvertedIndex?> FindInvertedTerm(string term, int userId) => await db.InvertedIndex.FirstOrDefaultAsync(p => p.Term == term && p.UserId == userId);
 
         public async Task AddTermAsync(TermInformation term) => await db.TermInformations.AddAsync(term);
 
