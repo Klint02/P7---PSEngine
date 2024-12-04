@@ -10,8 +10,8 @@ namespace P7_PSEngine.Data
 
         public DbSet<Todo> Todos => Set<Todo>();
         public DbSet<User> Users => Set<User>();
-        public DbSet<FileInformation> FileInformations => Set<FileInformation>();
-        public DbSet<IndexInformation> IndexInformations => Set<IndexInformation>();
+        public DbSet<FileInformation> FileInformation => Set<FileInformation>();
+        //public DbSet<IndexInformation> IndexInformations => Set<IndexInformation>();
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
@@ -21,6 +21,7 @@ namespace P7_PSEngine.Data
         //        model.HasMany(p => p.IndexInformations).WithOne(p => p.FileInformation);
         //    });
         //}
+        public DbSet<CloudService> CloudService => Set<CloudService>();
     }
     
 }
