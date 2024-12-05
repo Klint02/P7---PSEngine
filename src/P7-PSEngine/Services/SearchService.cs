@@ -98,7 +98,7 @@ namespace P7_PSEngine.Services
 
         public async Task<List<InvertedIndex>> FindTerm(IEnumerable<string> term, int userId)
         {
-            List<InvertedIndex> invertedIndices = await _db.InvertedIndex.Include(p => p.TermDocuments.Where(p => term.Contains(p.Term))).Where(p => p.TermDocuments.Any(index => term.Contains(index.Term))).ToListAsync();
+            List<InvertedIndex> invertedIndices = await _db.InvertedIndex.Include(p => p.TermDocuments.Where(p => term.Contains(p.Term))).Where(p => p.TermDocuments.Any(index => term.Contains(index.Term))).Where(p => p.UserId == userId).ToListAsync();
 
             return invertedIndices;
         }
@@ -141,6 +141,9 @@ namespace P7_PSEngine.Services
     {
         public string DocID { get; set; } = "";
         public string Filename { get; set; } = "";
+        public string Path { get; set; } = "";
+
+        public DateTime dateCreated { get; set; } = DateTime.Now;
         public int TermFrequency { get; set; } = 0;
     }
 }

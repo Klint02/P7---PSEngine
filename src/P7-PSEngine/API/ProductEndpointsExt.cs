@@ -93,13 +93,14 @@ namespace P7_PSEngine.API
                 return Results.Ok();
             });
 
-            app.MapGet("/api/search", async (HttpContext context, [FromServices] ISearchService searchService, string q = "") =>
+            app.MapPost("/api/search", async (HttpContext context, [FromServices] ISearchService searchService, [FromBody] SearchDetailsDTO searchDetails) =>
             {
-                if (string.IsNullOrEmpty(q))
+                if (searchDetails == null || string.IsNullOrEmpty(searchDetails.searchwords))
                 {
-                    return Results.BadRequest("Search term cannot be empty");   
+                    return Results.BadRequest("Search details cannot be empty");
                 }
-                IEnumerable<string> searchQueries = await searchService.ProcessSearchQuery(q);
+
+                IEnumerable<string> searchQueries = await searchService.ProcessSearchQuery(searchDetails.searchwords);
                 if (!searchQueries.Any())
                 {
                     return Results.BadRequest("Invalid search term");

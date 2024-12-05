@@ -2,7 +2,7 @@ async function saveSearch(){
     console.log("Searching");
 
     const formData = {
-        "Query": document.getElementById("searchbar").value,
+        "searchWords": document.getElementById("searchbar").value,
         "filenameOption": document.getElementById("searchByFilename").checked,
         "contentOption": document.getElementById("searchByContent").checked,
         "mailOption": document.getElementById("mailOption").checked,
@@ -15,7 +15,7 @@ async function saveSearch(){
         "dateType": document.getElementById("dateCreated").checked ? "created" : "modified"
     }
 
-    fetch ("/frontend/search", {
+    fetch ("/api/search", {
         method: "post",
         headers: {
             'Accept': "application/json",
@@ -24,16 +24,15 @@ async function saveSearch(){
         body: JSON.stringify(formData)
     })
     .then(function(response) { return response.json();})
-    .then(function(data) {
-        const files = data.slice(0);
-        
+    .then(data => {
+        var files = data.slice(0);
         var tablebody = "";
-        for (let i = 0; i<files.length; i++){
+        console.log(files[0].termDocuments);
+        for (let i = 0; i<files[0].termDocuments.length; i++){
             tablebody += `
             <tr>
-                <th>${files[i]["name"]}</th>
-                <th>${files[i]["path"]}</th>
-                <th>${files[i]["date"]}</th>
+                <th>${files[0].termDocuments[i]["term"]}</th>
+                <th>${files[0].termDocuments[i]["docID"]}</th>
             </tr>  
             `
         }

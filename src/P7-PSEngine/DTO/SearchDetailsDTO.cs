@@ -1,6 +1,6 @@
-public struct SearchDetailsDTO
+public class SearchDetailsDTO
 {
-    public string searchwords { get; set; }
+    public string searchwords { get; set; } = "";
     public bool filenameOption { get; set; }
     public bool contentOption { get; set; }
     public bool mailOption { get; set; }
