@@ -11,7 +11,7 @@ namespace P7_PSEngine.Services
         Task<IEnumerable<DocumentInformation>> SearchDocuments(IEnumerable<string> search);
         Task<IEnumerable<DocumentInformation>> GetALlDocumentsWithIndex();
         Task<IEnumerable<string>> ProcessSearchQuery(string searchTerm);
-        Task<List<InvertedIndex>> BoolSearch(string searchTerm);
+        Task<SearchResult> BoolSearch(string searchTerm);
     }
 
     public class SearchService : ISearchService
@@ -33,7 +33,7 @@ namespace P7_PSEngine.Services
             return searchTerms;
         }
 
-        public async Task<List<InvertedIndex>> BoolSearch(string searchTerm)
+        public async Task<SearchResult> BoolSearch(string searchTerm)
         {
             // For testing purposes, the user ID is hardcoded to 1
             int userId = 1;
@@ -77,10 +77,18 @@ namespace P7_PSEngine.Services
                 foreach (var index in doc.TermDocuments)
                 {
                     index.InvertedIndex = null;
+                    searchResults.SearchTerm = searchTerm;
+                    searchResults.TotalResults = doc.DocumentFrequency;
+                    searchResults.SearchResults = new List<SearchResultItem> {
+                        new SearchResultItem {
+                            DocID = index.DocID,
+                            Filename = "",
+                            TermFrequency = index.TermFrequency,
+                    } };
                 }
             }
 
-            return termData;
+            return searchResults;
 }
         public async Task<IEnumerable<DocumentInformation>> SearchDocuments(IEnumerable<string> search)
         {
@@ -98,7 +106,9 @@ namespace P7_PSEngine.Services
 
         public async Task<List<InvertedIndex>> FindTerm(IEnumerable<string> term, int userId)
         {
-            List<InvertedIndex> invertedIndices = await _db.InvertedIndex.Include(p => p.TermDocuments.Where(p => term.Contains(p.Term))).Where(p => p.TermDocuments.Any(index => term.Contains(index.Term))).Where(p => p.UserId == userId).ToListAsync();
+            List<InvertedIndex> invertedIndices = await _db.InvertedIndex.Include(p => p.TermDocuments
+                .Where(p => term.Contains(p.Term))).Where(p => p.TermDocuments.Any(index => term.Contains(index.Term)))
+                .Where(p => p.UserId == userId).ToListAsync();
 
             return invertedIndices;
         }
