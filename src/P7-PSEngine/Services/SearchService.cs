@@ -11,7 +11,7 @@ namespace P7_PSEngine.Services
         Task<IEnumerable<DocumentInformation>> SearchDocuments(IEnumerable<string> search);
         Task<IEnumerable<DocumentInformation>> GetALlDocumentsWithIndex();
         Task<IEnumerable<string>> ProcessSearchQuery(string searchTerm);
-        Task<SearchResult> BoolSearch(string searchTerm);
+        Task<List<InvertedIndex>> BoolSearch(string searchTerm);
     }
 
     public class SearchService : ISearchService
@@ -33,7 +33,7 @@ namespace P7_PSEngine.Services
             return searchTerms;
         }
 
-        public async Task<SearchResult> BoolSearch(string searchTerm)
+        public async Task<List<InvertedIndex>> BoolSearch(string searchTerm)
         {
             // For testing purposes, the user ID is hardcoded to 1
             int userId = 1;
@@ -44,35 +44,43 @@ namespace P7_PSEngine.Services
             // The list should contain the document IDs
             // This should be a list of dictionaries, where each dictionary contains the document ID and the filename
             var searchResults = new SearchResult { SearchTerm = searchTerm };
-
+            var termData = await FindTerm(searchTerms, userId);
             // For each term in the search query, get the TermInfo from the inverted index
-            foreach (var term in searchTerms)
+            //foreach (var term in searchTerms)
+            //{
+            //    // Get the TermData object for the term
+            //    var termData = await FindTerm(term, userId);
+
+            //    // If the term is not in the inverted index, skip to the next term
+            //    if (termData == null)
+            //    {
+            //        continue;
+            //    }
+
+            //    // Increment the total number of results with the total term frequency
+            //    searchResults.TotalResults += termData.TotalTermFrequency;
+
+            //    foreach (var document in termData.TermDocuments)
+            //    {
+            //        var docID = document.DocID;
+            //        var documentData = document.DocumentInformation;
+
+            //        // Add the document ID and filename to the search results
+            //        searchResults.AddSearchResult(
+            //            docID, 
+            //            documentData.DocumentName, 
+            //            document.TermFrequency);
+            //    }
+            //}
+            foreach (var doc in termData)
             {
-                // Get the TermData object for the term
-                var termData = await FindTerm(term, userId);
-
-                // If the term is not in the inverted index, skip to the next term
-                if (termData == null)
+                foreach (var index in doc.TermDocuments)
                 {
-                    continue;
-                }
-
-                // Increment the total number of results with the total term frequency
-                searchResults.TotalResults += termData.TotalTermFrequency;
-
-                foreach (var document in termData.TermDocuments)
-                {
-                    var docID = document.DocID;
-                    var documentData = document.DocumentInformation;
-
-                    // Add the document ID and filename to the search results
-                    searchResults.AddSearchResult(
-                        docID, 
-                        documentData.DocumentName, 
-                        document.TermFrequency);
+                    index.InvertedIndex = null;
                 }
             }
-            return searchResults;
+
+            return termData;
 }
         public async Task<IEnumerable<DocumentInformation>> SearchDocuments(IEnumerable<string> search)
         {
@@ -88,9 +96,11 @@ namespace P7_PSEngine.Services
             return documents;
         }
 
-        public async Task<InvertedIndex> FindTerm(string term, int userId)
+        public async Task<List<InvertedIndex>> FindTerm(IEnumerable<string> term, int userId)
         {
-            return await _db.InvertedIndex.FirstOrDefaultAsync(p => p.Term == term && p.UserId == userId);
+            List<InvertedIndex> invertedIndices = await _db.InvertedIndex.Include(p => p.TermDocuments.Where(p => term.Contains(p.Term))).Where(p => p.TermDocuments.Any(index => term.Contains(index.Term))).ToListAsync();
+
+            return invertedIndices;
         }
     }
 
