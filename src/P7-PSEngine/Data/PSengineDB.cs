@@ -33,7 +33,7 @@ namespace P7_PSEngine.Data
 
             modelBuilder.Entity<TermInformation>()
                 .HasOne(td => td.InvertedIndex)
-                .WithMany(ii => ii.TermDocuments)
+                .WithMany(ii => ii.TermInformations)
                 .HasForeignKey(td => new { td.Term, td.UserId });
 
             modelBuilder.Entity<TermInformation>()
