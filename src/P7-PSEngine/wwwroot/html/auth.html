@@ -1,29 +1,24 @@
 <html>
     <body>
-        cookie    
-        <a href="" id="link">test</a>
-    </body>
-    <script>
-        console.log(document.cookie);
-        console.log(window.location.href)
-        let search_params = new URLSearchParams(window.location.href.split("?")[1]);
-        let redirect_url = "http://localhost:8070/linkuser";
-        let scope = "offline_access Files.Read.All";
-        console.log(search_params.get("code"));
-        
-        fetch("/api/addservice", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                code: search_params.get("code"),
-                service_type: "onedrive",
-                user: document.cookie,
-                user_defined_service_name: "Mit Onedrive"
-            })
 
-        })
-            
+    </body>
+    <script type="module">
+        import Lib from "./js/lib.js"
+        let search_params = new URLSearchParams(window.location.href.split("?")[1]);
+        
+        const promise_result = Lib.PostRequest({
+            code: search_params.get("code"),
+            service_type: Lib.GetCookie("service"),
+            user: Lib.GetCookie("username"),
+            user_defined_service_name: "Mit Onedrive"
+        }, "/api/addservice");
+        
+        const result = await promise_result;
+        if (result.data == "") {
+            console.error(result.error)
+        } else {
+            window.close();
+        }
     </script>
-</html>
+    
+    </html>

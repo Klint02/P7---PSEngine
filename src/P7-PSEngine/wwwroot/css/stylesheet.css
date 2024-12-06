@@ -339,7 +339,7 @@ td {
 /*-------------- DIALOG (LOGIN) --------------*/
 /* DIALOG (LOGIN) */
 /*TODO (nkc): Ændre height fra px til fit content, så den er dynamisk*/
-.dia {
+.modal-baseline {
     border-radius: 12px;
     border: none;
     outline: none;
@@ -348,7 +348,12 @@ td {
     align-items: center;
 }
 
-.dia-div div {
+#loginForm {
+    height: 250px;
+    width: 300px;
+}
+
+#loginForm div {
     display: flex;
     padding: 5px;
     text-align: left;

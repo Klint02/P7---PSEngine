@@ -10,7 +10,7 @@
     <title>Search Engine</title>
 </head>
 
-<body onload="checkLogin()">
+<body>
     <div id="container">
 
         <div id="SearchBodyContainer">
@@ -20,6 +20,8 @@
                 
                 <button id="login">Login</button>
                 <button id="signup">Sign Up</button>
+                <button id="account">
+                <img src="images/account.svg" alt="account menu"></button>
                 <button id="logout" hidden>Logout</button>
             </div>
             </div>
@@ -28,6 +30,7 @@
 
                 <input type="search" id="searchbar" placeholder="Search for file">
                 <button id="searchButton" onclick="saveSearch()">Search</button>
+                <button id="inlineCommands" onclick="displayCommands()">Inline Commands</button>
             </div>
             
            
@@ -117,7 +120,7 @@
             </div>
         </div>
         <!-- LOGIN FORM -->
-        <dialog id="loginForm" class="dia dia-div">
+        <dialog id="loginForm" class="modal-baseline dia dia-div">
             <h3 style="margin-top: 0px;" id="sign-header">Login or Sign up</h3>
             <div>
                 <label for="username">Username:</label>
@@ -131,11 +134,6 @@
                 <input type="checkbox" id="showPassword">
                 <label for="showPassword">Show password</label>
             </div>
-            <div>
-                <input type="checkbox" id="signIn">
-                <label for="signIn">Sign in</label>
-            </div>
-
             <div >
                 <button id="closeLogin" class="dia-closebtn">Cancel</button>
                 <button id="submit">Login</button>
@@ -161,17 +159,6 @@
     </div>
 
     <script>
-        const signIn = document.getElementById("signIn");
-
-        signIn.addEventListener('click', ()=>{
-            if(signIn.checked){
-                //do something
-                console.log('hej')
-            }
-        })
-
-
-
         const commandsBlock = document.getElementById("inlineHelp");
         // shows the list of inline kommands.
         function displayCommands() {
@@ -195,36 +182,52 @@
                 button.innerText = "Show Advanced Options";
             }
         }
-
-        function checkLogin(){
-            
-            if (document.cookie){
-                loginbutton.setAttribute("hidden", "hidden");
-                signupbutton.setAttribute("hidden", "hidden");
-                logoutbutton.removeAttribute("hidden");
-                console.log("tester");
-            }
-        }
     </script>
 
+
+    <!-- LOGIN FORM -->
+    <dialog id="loginForm" class="modal-baseline">
+        <h3 style="margin-top: 0px;" id="sign-header">Login or Sign up</h3>
+
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" placeholder="Username">
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Password">
+        </div>
+        <div id="display-start">
+            <input type="checkbox" id="showPassword">
+            <label for="showPassword">Show password</label>
+        </div>
+
+        <div class="dia-btns">
+            <button id="closeLogin">Cancel</button>
+            <button id="submit">Login</button>
+        </div>
+        <script type="module" src="js/login.mjs"></script>
+    </dialog>
+
+    <dialog id="account-modal" class="modal-baseline">
+        <script type="module" src="js/account.mjs"></script>
+        <h3 style="margin-top: 0px;" id="account-modal-header">User Settings</h3>
+        
+            <button id="dropbox" onclick="OpenDropboxAuth()">
+                <img src="images/dropbox.svg" alt="">
+                Connect Dropbox
+            </button>
+        <br>
+        <a id="gdrive-auth-link" href="https://google.com" onclick="document.cookie = 'service=gdrive'">
+            <button id="gdrive">
+                <img src="images/gdrive.svg" alt="">
+                Connect Google Drive
+            </button>
+        </a>
+        <script>
+
+        </script>
+
+    </dialog>
 </body>
-
-
-<script>
-
-    let user = "klint"
-    document.cookie = `username=${user}`;
-    
-    //let tenant = "69ba7116-c3b3-44a4-9a15-69e541023514";
-    //let client_id = "1cbff542-d06d-4d84-8302-fda352d2b1f2";
-    //let scope = `offline_access Files.Read.All`;
-    //document.getElementById("auth-link").href = `https://login.microsoftonline.com/${tenant}/oauth2/v2.0/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect_url}&response_mode=query&scope=${scope}&state=12345`;
-    
-    let redirect_url = `http://localhost:8070/linkuser`;
-    let client_id = "raub5n9uotgroaz";
-
-    document.getElementById("auth-link").href = `https://www.dropbox.com/oauth2/authorize?client_id=${client_id}&token_access_type=offline&response_type=code&redirect_uri=${redirect_url}`;
-</script>
-
-
 </html>
