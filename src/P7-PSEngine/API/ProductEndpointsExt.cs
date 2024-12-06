@@ -113,6 +113,7 @@ namespace P7_PSEngine.API
                         return Results.BadRequest("Invalid search term");
                     }
                     var searchResult = await searchService.BoolSearch(query);
+                    Console.WriteLine($"Search result for {query}: {searchResult}");
                     return Results.Ok(searchResult);
                 }
                 return Results.BadRequest("No valid search terms found"); 

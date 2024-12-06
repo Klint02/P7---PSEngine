@@ -40,54 +40,47 @@ namespace P7_PSEngine.Services
             
             // Process the search query
             var searchTerms = await ProcessSearchQuery(searchTerm); 
+
             // Create a list to store the search results
-            // The list should contain the document IDs
-            // This should be a list of dictionaries, where each dictionary contains the document ID and the filename
             var searchResults = new SearchResult { SearchTerm = searchTerm };
-            var termData = await FindTerm(searchTerms, userId);
-            // For each term in the search query, get the TermInfo from the inverted index
-            //foreach (var term in searchTerms)
-            //{
-            //    // Get the TermData object for the term
-            //    var termData = await FindTerm(term, userId);
 
-            //    // If the term is not in the inverted index, skip to the next term
-            //    if (termData == null)
-            //    {
-            //        continue;
-            //    }
-
-            //    // Increment the total number of results with the total term frequency
-            //    searchResults.TotalResults += termData.TotalTermFrequency;
-
-            //    foreach (var document in termData.TermDocuments)
-            //    {
-            //        var docID = document.DocID;
-            //        var documentData = document.DocumentInformation;
-
-            //        // Add the document ID and filename to the search results
-            //        searchResults.AddSearchResult(
-            //            docID, 
-            //            documentData.DocumentName, 
-            //            document.TermFrequency);
-            //    }
-            //}
-            foreach (var doc in termData)
+            // Find the search term in the inverted index
+            foreach (var term in searchTerms)
             {
-                foreach (var index in doc.TermDocuments)
+                Console.WriteLine($"Searching for term: {term}");
+                var termData = await FindTerm(new List<string> { term }, userId);
+
+                // Iterate through the search results and add them to the list
+                if (termData == null || !termData.Any())
                 {
-                    index.InvertedIndex = null;
-                    searchResults.SearchTerm = searchTerm;
-                    searchResults.TotalResults = doc.DocumentFrequency;
-                    searchResults.SearchResults = new List<SearchResultItem> {
-                        new SearchResultItem {
-                            DocID = index.DocID,
-                            Filename = "",
-                            TermFrequency = index.TermFrequency,
-                    } };
+                    Console.WriteLine($"No search results found for {term}");
+                    continue;
+                }
+                foreach (var doc in termData)
+                {
+                    foreach (var index in doc.TermDocuments)
+                    {
+                        index.InvertedIndex = null;
+                        searchResults.SearchResults.Add(new SearchResultItem
+                        {
+                            documentId = index.DocID,
+                            fileName = "",
+                            termFrequency = index.TermFrequency,
+                        });
+                        
+                        // Increment the total number of search results
+                        searchResults.TotalResults += index.TermFrequency;
+                    }
                 }
             }
 
+            // Calculate the total number of search results
+            Console.WriteLine($"Search results for {searchTerm}: {searchResults.TotalResults}");
+            // Print all the files that contain the search term
+            foreach (var result in searchResults.SearchResults)
+            {
+                Console.WriteLine($"Document ID: {result.documentId}, Filename: {result.fileName}, Term Frequency: {result.termFrequency}");
+            }
             return searchResults;
 }
         public async Task<IEnumerable<DocumentInformation>> SearchDocuments(IEnumerable<string> search)
@@ -137,11 +130,11 @@ namespace P7_PSEngine.Services
         {
             var result = new SearchResultItem
                 {
-                    DocID = docId,
-                    Filename = filename,
-                    TermFrequency = termFrequency
+                    documentId = docId,
+                    fileName = filename,
+                    termFrequency = termFrequency
                 };
-            Console.WriteLine($"Adding search result: {result.DocID}, {result.Filename}, {result.TermFrequency}");
+            Console.WriteLine($"Adding search result: {result.documentId}, {result.fileName}, {result.termFrequency}");
             SearchResults.Add(result);
         }
     }
@@ -149,11 +142,11 @@ namespace P7_PSEngine.Services
     // This class is used to store the results of a search
     public class SearchResultItem
     {
-        public string DocID { get; set; } = "";
-        public string Filename { get; set; } = "";
-        public string Path { get; set; } = "";
+        public string documentId { get; set; } = "";
+        public string fileName { get; set; } = "";
+        public string path { get; set; } = "";
 
         public DateTime dateCreated { get; set; } = DateTime.Now;
-        public int TermFrequency { get; set; } = 0;
+        public int termFrequency { get; set; } = 0;
     }
 }
