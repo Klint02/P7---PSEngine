@@ -52,6 +52,7 @@ namespace P7_PSEngine.Data
                 .HasForeignKey(d => d.UserId);
 
         }
+        public DbSet<CloudService> CloudService => Set<CloudService>();
     }
 
 }

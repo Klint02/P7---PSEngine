@@ -54,9 +54,17 @@ public static class FrontendController
         return new DataErrorDTO { Error = $"'{user.Username}' is already taken", Data = "" };
     }
 
-    public static bool VerifySession(string username, string session_cookie)
-    {
-        return (HashData(username + DateTime.Now.ToString("MM/dd/yyyy")) == session_cookie);
+    public static async Task<DataErrorDTO> VerifySession (string username, string session_cookie, IUserRepository repo) {
+        string hash_data = HashData(username + DateTime.Now.ToString("MM/dd/yyyy"));
+
+        User? user = await repo.GetUserByUsernameAsync(username);
+
+        if (hash_data == session_cookie && user != null) {
+            return new DataErrorDTO {Error = "", Data = hash_data};
+        } else {
+            return new DataErrorDTO {Error = "Session cookie mismatch", Data = ""};
+
+        }
     }
 
     public static FrontendSearchCommandDTO[] SendCommands()
@@ -101,5 +109,20 @@ public static class FrontendController
                             ];
 
         return response;
+    }
+
+    public static DataErrorDTO GetServiceKey(string service, WebApplication app) {
+        switch (service)
+        {
+            case "dropbox":
+                return new DataErrorDTO {Error = "", Data = app.Configuration["DBOX_ID"]};
+
+            case "google_drive":
+                return new DataErrorDTO {Error = "", Data = app.Configuration["GDRIVE_ID"]};
+
+            default:
+                return new DataErrorDTO {Error = "Service requested is not implemented", Data = ""};
+
+        }
     }
 }

@@ -1,4 +1,4 @@
-async function saveSearch(){
+async function saveSearch() {
     console.log("Searching");
     let startTime = Date.now();
     let endTime;
@@ -67,22 +67,22 @@ async function saveSearch(){
         console.error("Error:", error);
     });
 
- getCommands();
- async function getCommands(){
-    fetch("/frontend/commands").then(response => {return response.json();})
-    .then(data => {
-        const commands = data.slice(0);
+getCommands();
+async function getCommands() {
+    fetch("/frontend/commands").then(response => { return response.json(); })
+        .then(data => {
+            const commands = data.slice(0);
 
-        var tablebody = "";
-        for (let i = 0; i<commands.length; i++){
-            tablebody += `
+            var tablebody = "";
+            for (let i = 0; i < commands.length; i++) {
+                tablebody += `
             <tr>
                 <th>${commands[i]["keyword"]}</th>
                 <th>${commands[i]["explanation"]}</th>
             </tr>  
             `
-        }
-        document.getElementById("commandsTable").innerHTML+=tablebody;
-    });
- }
+            }
+            document.getElementById("commandsTable").innerHTML += tablebody;
+        });
 }
+
