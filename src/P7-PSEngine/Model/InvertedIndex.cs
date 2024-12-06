@@ -4,14 +4,14 @@
     {
         public InvertedIndex()
         {
-            TermDocuments = new List<TermInformation>();
+            TermInformations = new List<TermInformation>();
         }
 
         public string Term { get; set; }
         public int UserId { get; set; }
         public int DocumentFrequency { get; set; }
         public int TotalTermFrequency { get; set; }
-        public ICollection<TermInformation> TermDocuments { get; set; }
+        public ICollection<TermInformation> TermInformations { get; set; }
         public User User { get; set; }
     }
 }

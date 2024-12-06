@@ -152,7 +152,7 @@ namespace P7_PSEngine.Services
                     UserId = userId,
                     DocumentFrequency = 1,
                     TotalTermFrequency = 1,
-                    TermDocuments = new List<TermInformation> { termInformationEntry }
+                    TermInformations = new List<TermInformation> { termInformationEntry }
                 };
 
                 Console.WriteLine("Adding new term to InvertedIndex");

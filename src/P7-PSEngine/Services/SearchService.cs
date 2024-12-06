@@ -85,7 +85,10 @@ namespace P7_PSEngine.Services
 }
         public async Task<IEnumerable<DocumentInformation>> SearchDocuments(IEnumerable<string> search)
         {
-            List<DocumentInformation> documents = await _db.DocumentInformation.Include(p => p.TermDocuments.Where(p => search.Contains(p.Term))).Where(p => p.TermDocuments.Any(index => search.Contains(index.Term))).AsNoTracking().ToListAsync();
+            List<DocumentInformation> documents = await _db.DocumentInformation.Include(p => p.TermDocuments.Where(p => search.Contains(p.Term)))
+                .Where(p => p.TermDocuments.Any(index => search.Contains(index.Term)))
+                .AsNoTracking()
+                .ToListAsync();
 
             return documents;
         }
@@ -99,9 +102,15 @@ namespace P7_PSEngine.Services
 
         public async Task<List<InvertedIndex>> FindTerm(IEnumerable<string> term, int userId)
         {
-            List<InvertedIndex> invertedIndices = await _db.InvertedIndex.Include(p => p.TermDocuments
-                .Where(p => term.Contains(p.Term))).Where(p => p.TermDocuments.Any(index => term.Contains(index.Term)))
-                .Where(p => p.UserId == userId).ToListAsync();
+            var kage = await _db.TermInformations.Include(p => p.DocumentInformation).Include(p => p.InvertedIndex)
+                .Where(p => term.Contains(p.Term) && p.UserId == userId)
+                .ToListAsync();
+
+            List<InvertedIndex> invertedIndices = await _db.InvertedIndex.Include(p => p.TermInformations.Where(p => term.Contains(p.Term)))
+                .ThenInclude(p => p.DocumentInformation)
+                .Where(p => p.TermInformations.Any(index => term.Contains(index.Term)))
+                .Where(p => p.UserId == userId)
+                .ToListAsync();
 
             return invertedIndices;
         }
