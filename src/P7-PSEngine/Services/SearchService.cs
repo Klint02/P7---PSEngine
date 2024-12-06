@@ -58,7 +58,7 @@ namespace P7_PSEngine.Services
                 }
                 foreach (var doc in termData)
                 {
-                    foreach (var index in doc.TermDocuments)
+                    foreach (var index in doc.TermInformations)
                     {
                         index.InvertedIndex = null;
                         searchResults.SearchResults.Add(new SearchResultItem
