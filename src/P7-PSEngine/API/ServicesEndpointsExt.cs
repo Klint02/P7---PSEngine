@@ -3,6 +3,7 @@ using P7_PSEngine.Data;
 using P7_PSEngine.Model;
 using P7_PSEngine.Handlers;
 using P7_PSEngine.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace P7_PSEngine.API
 {
@@ -14,11 +15,11 @@ namespace P7_PSEngine.API
 
             app.MapGet("/linkuser", () => Results.Content(File.ReadAllText($"{static_path}/html/auth.html"), "text/html"));
 
-            app.MapPost("/api/addservice", async (ServiceCreationDetailsDTO Details, IFileInformationRepository file_repo, IUserRepository user_repo, ICloudServiceRepository cloud_repo) => {
+            app.MapPost("/api/addservice", async (ServiceCreationDetailsDTO Details, IFileInformationRepository file_repo, IUserRepository user_repo, ICloudServiceRepository cloud_repo, [FromServices] IInvertedIndexService index) => {
                 ICloudServiceHandler service_handler;
 
                 if (Details.service_type == "dropbox") {
-                    service_handler = new DropBoxHandler(file_repo, user_repo, cloud_repo);
+                    service_handler = new DropBoxHandler(file_repo, user_repo, cloud_repo, index);
                 } else {
                     service_handler = new GoogleDriveHandler(file_repo);
                 }
@@ -32,7 +33,7 @@ namespace P7_PSEngine.API
 
                 CloudService? service = cloud_repo.GetServiceByDefinedNameAsync(Details.user_defined_service_name).Result;
                 if (service != null && user != null) {
-                    await service_handler.ServiceFileRequest(app, user, null, service);
+                    await service_handler.ProcessFiles(app, user, null, service, index);
 
                 }
                 if (oauth2_task_result) {

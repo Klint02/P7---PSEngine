@@ -85,4 +85,4 @@ async function getCommands() {
             document.getElementById("commandsTable").innerHTML += tablebody;
         });
 }
-
+}

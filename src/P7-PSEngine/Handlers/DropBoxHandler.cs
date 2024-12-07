@@ -24,10 +24,11 @@ public class DropBoxHandler : ICloudServiceHandler
 
     private readonly IInvertedIndexService _index;
 
-    public DropBoxHandler(IFileInformationRepository file_repo, IUserRepository user_repo, ICloudServiceRepository cloud_repo) {
+    public DropBoxHandler(IFileInformationRepository file_repo, IUserRepository user_repo, ICloudServiceRepository cloud_repo, IInvertedIndexService index) {
         _file_repo = file_repo;
         _user_repo = user_repo;
         _cloud_repo = cloud_repo;
+        _index = index;
     }
 
 
@@ -158,12 +159,29 @@ public class DropBoxHandler : ICloudServiceHandler
             } catch (Exception e) {
                 Console.WriteLine(e);
             }       
-/*
-            foreach (var file in filelist)
-            {
-               await _index.IndexFileAsync(file.FileId, file.FileName, user);
-            }*/
             return filelist;
         }
+    }
+
+    public async Task IndexFiles(List<FileInformation> filelist, User user, IInvertedIndexService indexService)
+    {
+        foreach (var file in filelist)
+        {
+            await indexService.IndexFileAsync(file.FileId, file.FileName, user);
+        }
+    }
+
+    public async Task<bool> ProcessFiles(WebApplication app, User user, string? path, CloudService service, IInvertedIndexService indexService)
+    {
+        // Fetch and save files
+        var filelist = await ServiceFileRequest(app, user, path, service);
+
+        // Index the files
+        if (filelist.Any())
+        {
+            await IndexFiles(filelist, user, indexService);
+        }
+        return true;
+    
     }
 }
