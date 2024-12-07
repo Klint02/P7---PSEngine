@@ -22,7 +22,7 @@ public static class FrontendController
     {
         user.Password = HashData(user.Password);
 
-        User? fetched_user = await repo.GetUserByUsernameAsync(user.Username);
+        User? fetched_user = await repo.GetUserByUsernameAsync(user.UserName);
 
         if (fetched_user == null)
         {
@@ -31,27 +31,27 @@ public static class FrontendController
 
         if (fetched_user.Password != user.Password)
         {
-            return new DataErrorDTO { Error = $"Password of user '{user.Username}' does not match", Data = "" };
+            return new DataErrorDTO { Error = $"Password of user '{user.UserName}' does not match", Data = "" };
 
         }
 
-        return new DataErrorDTO { Error = "", Data = HashData(user.Username + DateTime.Now.ToString("MM/dd/yyyy")) };
+        return new DataErrorDTO { Error = "", Data = HashData(user.UserName + DateTime.Now.ToString("MM/dd/yyyy")) };
     }
 
     public static async Task<DataErrorDTO> HandleSignUp(User user, IUserRepository repo)
     {
         user.Password = HashData(user.Password);
 
-        User? fetched_user = await repo.GetUserByUsernameAsync(user.Username);
+        User? fetched_user = await repo.GetUserByUsernameAsync(user.UserName);
 
         if (fetched_user == null)
         {
             await repo.AddUserAsync(user);
             await repo.SaveDbChangesAsync();
-            return new DataErrorDTO { Data = HashData(user.Username + DateTime.Now.ToString("MM/dd/yyyy")), Error = "" };
+            return new DataErrorDTO { Data = HashData(user.UserName + DateTime.Now.ToString("MM/dd/yyyy")), Error = "" };
         }
 
-        return new DataErrorDTO { Error = $"'{user.Username}' is already taken", Data = "" };
+        return new DataErrorDTO { Error = $"'{user.UserName}' is already taken", Data = "" };
     }
 
     public static async Task<DataErrorDTO> VerifySession (string username, string session_cookie, IUserRepository repo) {

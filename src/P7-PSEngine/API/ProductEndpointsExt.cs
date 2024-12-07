@@ -36,63 +36,16 @@ namespace P7_PSEngine.API
                         ? Results.Ok(todo)
                         : Results.NotFound());
 
-            //app.MapPost("/api/products", async (Todo todos, PSengineDB db) =>
-            //{
-            //    db.Todos.Add(todos);
-            //    await db.SaveChangesAsync();
-            //    return Results.Created($"/api/products/{todos.Id}", todos);
-            //});
-
-            // app.MapPut("/api/products/{id}", async (int id, Todo todo, PSengineDB db) =>
-            // {
-            //     if (id != todo.Id)
-            //     {
-            //         return Results.BadRequest();
-            //     }
-
-            //     db.Entry(todo).State = EntityState.Modified;
-
-            //     try
-            //     {
-            //         await db.SaveChangesAsync();
-            //     }
-            //     catch (DbUpdateConcurrencyException)
-            //     {
-            //         if (await db.Todos.FindAsync(id) == null)
-            //         {
-            //             return Results.NotFound();
-            //         }
-            //         else
-            //         {
-            //             throw;
-            //         }
-            //     }
-
-            //     return Results.NoContent();
-            // });
-
-            //app.MapDelete("/api/products/{id}", async (int id, PSengineDB db) =>
-            //{
-            //    var product = await db.Todos.FindAsync(id);
-            //    if (product == null)
-            //    {
-            //        return Results.NotFound();
-            //    }
-
-            //    db.Todos.Remove(product);
-            //    await db.SaveChangesAsync();
-
-            //    return Results.NoContent();
-            //});
 
             // Add the endpoint for IndexController
-            app.MapGet("/api/index", async (HttpContext context, [FromServices] IInvertedIndexService invertedIndexService) =>
+            app.MapGet("/api/index", async ([FromBody] SessionCookieDTO userDTO, [FromServices] IInvertedIndexService invertedIndexService, [FromServices] IUserRepository userRepository) =>
             {
-                var indexService = context.RequestServices.GetRequiredService<InvertedIndexService>;
-                await invertedIndexService.InitializeUser();
+                User user = await userRepository.GetUserByUsernameAsync(userDTO.username);
+                invertedIndexService.InitializeUser(user);
                 return Results.Ok();
             });
 
+            // Add the endpoint for SearchController
             app.MapPost("/api/search", async (HttpContext context, [FromServices] ISearchService searchService, [FromBody] SearchDetailsDTO searchDetails) =>
             {
                 if (searchDetails == null || string.IsNullOrEmpty(searchDetails.searchwords))

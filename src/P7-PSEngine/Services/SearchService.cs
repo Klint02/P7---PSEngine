@@ -8,8 +8,8 @@ namespace P7_PSEngine.Services
 {
     public interface ISearchService
     {
-        Task<IEnumerable<DocumentInformation>> SearchDocuments(IEnumerable<string> search);
-        Task<IEnumerable<DocumentInformation>> GetALlDocumentsWithIndex();
+        Task<IEnumerable<FileInformation>> SearchFiles(IEnumerable<string> search);
+        Task<IEnumerable<FileInformation>> GetALlFilesWithIndex();
         Task<IEnumerable<string>> ProcessSearchQuery(string searchTerm);
         Task<SearchResult> BoolSearch(string searchTerm);
     }
@@ -63,7 +63,7 @@ namespace P7_PSEngine.Services
                         index.InvertedIndex = null;
                         searchResults.SearchResults.Add(new SearchResultItem
                         {
-                            documentId = index.DocID,
+                            fileId = index.FileId,
                             fileName = "",
                             termFrequency = index.TermFrequency,
                         });
@@ -79,35 +79,35 @@ namespace P7_PSEngine.Services
             // Print all the files that contain the search term
             foreach (var result in searchResults.SearchResults)
             {
-                Console.WriteLine($"Document ID: {result.documentId}, Filename: {result.fileName}, Term Frequency: {result.termFrequency}");
+                Console.WriteLine($"File ID: {result.fileId}, Filename: {result.fileName}, Term Frequency: {result.termFrequency}");
             }
             return searchResults;
 }
-        public async Task<IEnumerable<DocumentInformation>> SearchDocuments(IEnumerable<string> search)
+        public async Task<IEnumerable<FileInformation>> SearchFiles(IEnumerable<string> search)
         {
-            List<DocumentInformation> documents = await _db.DocumentInformation.Include(p => p.TermDocuments.Where(p => search.Contains(p.Term)))
-                .Where(p => p.TermDocuments.Any(index => search.Contains(index.Term)))
+            List<FileInformation> files = await _db.FileInformation.Include(p => p.TermFiles.Where(p => search.Contains(p.Term)))
+                .Where(p => p.TermFiles.Any(index => search.Contains(index.Term)))
                 .AsNoTracking()
                 .ToListAsync();
 
-            return documents;
+            return files;
         }
 
-        public async Task<IEnumerable<DocumentInformation>> GetALlDocumentsWithIndex()
+        public async Task<IEnumerable<FileInformation>> GetALlFilesWithIndex()
         {
-            List<DocumentInformation> documents = await _db.DocumentInformation.Include(p => p.TermDocuments).AsNoTracking().ToListAsync();
+            List<FileInformation> files = await _db.FileInformation.Include(p => p.TermFiles).AsNoTracking().ToListAsync();
 
-            return documents;
+            return files;
         }
 
         public async Task<List<InvertedIndex>> FindTerm(IEnumerable<string> term, int userId)
         {
-            var kage = await _db.TermInformations.Include(p => p.DocumentInformation).Include(p => p.InvertedIndex)
+/*            var kage = await _db.TermInformations.Include(p => p.FileInformation).Include(p => p.InvertedIndex)
                 .Where(p => term.Contains(p.Term) && p.UserId == userId)
-                .ToListAsync();
+                .ToListAsync();*/
 
             List<InvertedIndex> invertedIndices = await _db.InvertedIndex.Include(p => p.TermInformations.Where(p => term.Contains(p.Term)))
-                .ThenInclude(p => p.DocumentInformation)
+                .ThenInclude(p => p.FileInformation)
                 .Where(p => p.TermInformations.Any(index => term.Contains(index.Term)))
                 .Where(p => p.UserId == userId)
                 .ToListAsync();
@@ -135,15 +135,15 @@ namespace P7_PSEngine.Services
         }
 
         // Method to add a search result
-        public void AddSearchResult(string docId, string filename, int termFrequency)
+        public void AddSearchResult(string fileid, string filename, int termFrequency)
         {
             var result = new SearchResultItem
                 {
-                    documentId = docId,
+                    fileId = fileid,
                     fileName = filename,
                     termFrequency = termFrequency
                 };
-            Console.WriteLine($"Adding search result: {result.documentId}, {result.fileName}, {result.termFrequency}");
+            Console.WriteLine($"Adding search result: {result.fileId}, {result.fileName}, {result.termFrequency}");
             SearchResults.Add(result);
         }
     }
@@ -151,7 +151,7 @@ namespace P7_PSEngine.Services
     // This class is used to store the results of a search
     public class SearchResultItem
     {
-        public string documentId { get; set; } = "";
+        public string fileId { get; set; } = "";
         public string fileName { get; set; } = "";
         public string path { get; set; } = "";
 

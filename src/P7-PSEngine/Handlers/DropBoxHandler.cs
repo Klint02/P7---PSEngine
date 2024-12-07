@@ -10,7 +10,8 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
-using P7_PSEngine.Migrations;
+using P7_PSEngine.Services;
+//using P7_PSEngine.Migrations;
 
 namespace P7_PSEngine.Handlers;
 
@@ -21,12 +22,15 @@ public class DropBoxHandler : ICloudServiceHandler
 
     private readonly ICloudServiceRepository _cloud_repo;
 
-    public DropBoxHandler(IFileInformationRepository file_repo, IUserRepository user_repo, ICloudServiceRepository cloud_repo) 
-    {
+    private readonly IInvertedIndexService _index;
+
+    public DropBoxHandler(IFileInformationRepository file_repo, IUserRepository user_repo, ICloudServiceRepository cloud_repo) {
+        _file_repo = file_repo;
         _user_repo = user_repo;
         _cloud_repo = cloud_repo;
-        _file_repo = file_repo;
     }
+
+
 
     private async Task<bool> FetchUserAvatar(WebApplication app, string access_token) {
         var user_request = HttpHandler.JSONAsyncPost(new {query = "foo"}, "https://api.dropboxapi.com/2/check/user", access_token);
@@ -85,7 +89,7 @@ public class DropBoxHandler : ICloudServiceHandler
         if (user != null && await FetchUserAvatar(app, access_token)) {
             var cloud_service = new CloudService();
             cloud_service.ServiceType = "dropbox";
-            cloud_service.UID = user;
+            cloud_service.UserId = user.UserId;
             cloud_service.UserDefinedServiceName = service.user_defined_service_name;
             cloud_service.refresh_token = refresh_token;
             await _cloud_repo.AddServiceAsync(cloud_service);
@@ -120,36 +124,46 @@ public class DropBoxHandler : ICloudServiceHandler
         dynamic files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
 
         List<FileInformation> filelist = new List<FileInformation>();
-        //Cursed AF, but shit works. JS code in C# FTW
-        try {
-            for (int i = 0; i < files.entries.Count; i++) {
+
+        // This method iterates through the files and adds them to the database
+        if (files.entries == null) {
+            return filelist;
+        }
+        else {
+            foreach (var file in files.entries) {
                 FileInformation tmp_file = new FileInformation();
-                tmp_file.FileName = files.entries[i]["name"];
-                tmp_file.FilePath = files.entries[i]["path_lower"];
-                tmp_file.FileType = files.entries[i][".tag"];
-                string client_modified = files.entries[i]["client_modified"];
-                string server_modified = files.entries[i]["server_modified"];
-                if (files.entries[i][".tag"] == "folder") {
+                tmp_file.FileId = Guid.NewGuid().ToString();
+                tmp_file.FileName = file.name;
+                tmp_file.FilePath = file.path_lower;
+                tmp_file.FileType = file[".tag"];
+                string client_modified = file.client_modified;
+                string server_modified = file.server_modified;
+                if (file[".tag"] == "folder") {
                     tmp_file.ChangedDate = new DateTime();
                     tmp_file.CreationDate = new DateTime(); 
                 } else {
-                    //TODO: (nkc) parse date later
                     tmp_file.ChangedDate = DateTime.ParseExact(client_modified, "MM/dd/yyyy HH:mm:ss",  new CultureInfo("en-DK"));
                     tmp_file.CreationDate = DateTime.ParseExact(server_modified, "MM/dd/yyyy HH:mm:ss",  new CultureInfo("en-DK"));
                 }
-                tmp_file.UID = user;
+                tmp_file.UserId = user.UserId;
                 tmp_file.SID = service;
+                Console.WriteLine(tmp_file.FileName);
                 filelist.Add(tmp_file);
             }
 
-        } catch (Exception e) {
-            Console.WriteLine(e);
-        }
-        
-        await _file_repo.RemoveUserCache(user, service);
-        await _file_repo.AddFileInformationRangeAsync(filelist);
-        await _file_repo.SaveDbChangesAsync();
+            try {
+                await _file_repo.AddFileInformationRangeAsync(filelist);
+                await _file_repo.SaveDbChangesAsync();
 
-        return filelist;
+            } catch (Exception e) {
+                Console.WriteLine(e);
+            }       
+/*
+            foreach (var file in filelist)
+            {
+               await _index.IndexFileAsync(file.FileId, file.FileName, user);
+            }*/
+            return filelist;
+        }
     }
 }

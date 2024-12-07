@@ -3,18 +3,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace P7_PSEngine.Model;
 
-[Index(nameof(Username), IsUnique = true)]
+//[Index(nameof(Username), IsUnique = true)]
 public class User
 {
-    [Required]
-    public int Id { get; set; }
+    
+    public int UserId { get; set; }
 
-    [Required]
-    public string Username { get; set; }
+    
+    public string UserName { get; set; }
 
-    [Required]
+    
     public string Password { get; set; }
 
-    public ICollection<DocumentInformation> documentInformations { get; set; }
+    public ICollection<FileInformation> FileInformations { get; set; }
     public ICollection<InvertedIndex> InvertedIndex { get; set; }
+    public ICollection<CloudService> CloudServices { get; set; }
 }

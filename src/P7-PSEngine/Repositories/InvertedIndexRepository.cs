@@ -6,15 +6,15 @@ namespace P7_PSEngine.Repositories
 {
     public interface IInvertedIndexRepository
     {
-        Task AddDocumentAsync(DocumentInformation document);
-        Task<DocumentInformation?> FindDocumentAsync(string documentName, int userId);
+        Task AddFileAsync(FileInformation file);
+        Task<FileInformation?> FindFileAsync(string fileName, User user);
         Task Save();
-        Task<InvertedIndex> FindTerm(string term, int userId);
+        Task<InvertedIndex> FindTerm(string term, User user);
         Task AddInvertedIndexAsync(InvertedIndex invertedIndex);
-        Task<TermInformation?> FindExistingDocumentAsync(string term, string docId, int userId);
-        Task EnsureUserExistsOrCreateAsync(int userId);
+        Task<TermInformation?> FindExistingFileAsync(string term, string fileId, User user);
+        Task EnsureUserExistsOrCreateAsync(User user);
 
-        Task<User?> FindUserAsync(int userId);
+        Task<User?> FindUserAsync(User user);
         Task AddTermAsync(TermInformation term);
     }
     public class InvertedIndexRepository : IInvertedIndexRepository
@@ -30,48 +30,41 @@ namespace P7_PSEngine.Repositories
             await db.SaveChangesAsync();
         }
 
-        public async Task AddDocumentAsync(DocumentInformation document)
+        public async Task AddFileAsync(FileInformation file)
         {
-            var existingDocument = await db.DocumentInformation
-                .FirstOrDefaultAsync(d => d.DocId == document.DocId && d.UserId == document.UserId);
+            var existingFile = await db.FileInformation
+                .FirstOrDefaultAsync(d => d.FileId == file.FileId && d.UserId == file.UserId);
 
-            if (existingDocument == null)
+            if (existingFile == null)
             {
-                Console.WriteLine($"Adding document: DocId={document.DocId}, UserId={document.UserId}");
-                db.DocumentInformation.Add(document);
+                Console.WriteLine($"Adding document: FileId={file.FileId}, UserId={file.UserId}");
+                db.FileInformation.Add(file);
                 await db.SaveChangesAsync();
             }
             else
             {
-                Console.WriteLine($"Document already exists: DocId={document.DocId}, UserId={document.UserId}");
+                Console.WriteLine($"Document already exists: DocId={file.FileId}, UserId={file.UserId}");
             }
         }
-        /*
-        public async Task AddDocumentAsync(DocumentInformation document)
-        {
-            await db.DocumentInformation.AddAsync(document);
-            await db.SaveChangesAsync();
-        }*/
-        public async Task<DocumentInformation?> FindDocumentAsync(string documentName, int userId) => await db.DocumentInformation.Include(p => p.TermDocuments).FirstOrDefaultAsync(p => p.DocumentName == documentName && p.UserId == userId);
+        public async Task<FileInformation?> FindFileAsync(string fileName, User user) => await db.FileInformation.Include(p => p.TermFiles).FirstOrDefaultAsync(p => p.FileName == fileName && p.User.UserId == user.UserId);
 
-        public async Task<InvertedIndex?> FindTerm(string term, int userId) => await db.InvertedIndex.FirstOrDefaultAsync(p => p.Term == term && p.UserId == userId);
+        public async Task<InvertedIndex?> FindTerm(string term, User user) => await db.InvertedIndex.FirstOrDefaultAsync(p => p.Term == term && p.User.UserId == user.UserId);
 
         public async Task AddInvertedIndexAsync(InvertedIndex invertedIndex)
         {
             await db.InvertedIndex.AddAsync(invertedIndex);
         }
-        public async Task<TermInformation?> FindExistingDocumentAsync(string term, string docID, int userId) => await db.TermInformations.FirstOrDefaultAsync(p => p.Term == term && p.DocID == docID && p.UserId == userId);
+        public async Task<TermInformation?> FindExistingFileAsync(string term, string fileId, User user) => await db.TermInformations.FirstOrDefaultAsync(p => p.Term == term && p.FileId == fileId && p.User.UserId == user.UserId);
 
-        public async Task<User?> FindUserAsync(int userId) => await db.Users.FirstOrDefaultAsync(p => p.Id == userId);
+        public async Task<User?> FindUserAsync(User user) => await db.Users.FirstOrDefaultAsync(p => p.UserId == user.UserId);
 
         public async Task AddTermAsync(TermInformation term) => await db.TermInformations.AddAsync(term);
 
-        public async Task EnsureUserExistsOrCreateAsync(int userId)
+        public async Task EnsureUserExistsOrCreateAsync(User user)
         {
-            var user = await db.Users.FindAsync(userId);
-            if (user == null)// Delete this in final product
+            var existingUser = await db.Users.FindAsync(user.UserId);
+            if (existingUser == null)// Delete this in final product
             {
-                user = new User { Id = userId, Username = "Default Name", Password = "1234" }; // Adjust fields as needed
                 db.Users.Add(user);
                 await db.SaveChangesAsync();
             }

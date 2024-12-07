@@ -27,7 +27,7 @@ namespace P7_PSEngine.API
 
         public async Task<User?> GetUserByUsernameAsync(string Username)
         {
-            return await _db.Users.FirstOrDefaultAsync(p => p.Username == Username);
+            return await _db.Users.FirstOrDefaultAsync(p => p.UserName == Username);
         }
 
         public async Task AddUserAsync(User user)
@@ -38,6 +38,11 @@ namespace P7_PSEngine.API
         public async Task SaveDbChangesAsync()
         {
             await _db.SaveChangesAsync();
+        }
+
+        public async Task<User?> GetUser(User user)
+        {
+            return await _db.Users.FindAsync(user);
         }
 
         public void UpdateUserEntity(User existingUser)
@@ -52,7 +57,7 @@ namespace P7_PSEngine.API
 
         public async Task EnsureUserExistsAsync(int userId)
         {
-            var userExists = await _db.Users.AnyAsync(u => u.Id == userId);
+            var userExists = await _db.Users.AnyAsync(u => u.UserId == userId);
             if (!userExists)
             {
                 throw new InvalidOperationException($"User with ID {userId} does not exist.");

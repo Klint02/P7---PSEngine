@@ -9,7 +9,7 @@
 
         public string Term { get; set; }
         public int UserId { get; set; }
-        public int DocumentFrequency { get; set; }
+        public int FileFrequency { get; set; }
         public int TotalTermFrequency { get; set; }
         public ICollection<TermInformation> TermInformations { get; set; }
         public User User { get; set; }

@@ -2,6 +2,7 @@ using P7_PSEngine.DTO;
 using P7_PSEngine.Data;
 using P7_PSEngine.Model;
 using P7_PSEngine.Handlers;
+using P7_PSEngine.Services;
 
 namespace P7_PSEngine.API
 {

@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Configuration;
-using CloudFileIndexer;
 using Microsoft.EntityFrameworkCore;
 using P7_PSEngine.API;
 using P7_PSEngine.BackgroundServices;
@@ -24,6 +23,8 @@ builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFileInformationRepository, FileInformationRepository>();
 builder.Services.AddScoped<ICloudServiceRepository, CloudServiceRepository>();
+builder.Services.AddScoped<ICloudServiceHandler, DropBoxHandler>();
+builder.Services.AddScoped<IInvertedIndexService, InvertedIndexService>();
 builder.Services.AddTransient<IInvertedIndexService, InvertedIndexService>();
 builder.Services.AddTransient<ISearchService, SearchService>();
 builder.Services.AddTransient<IInvertedIndexRepository, InvertedIndexRepository>();
