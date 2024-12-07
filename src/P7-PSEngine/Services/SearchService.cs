@@ -11,7 +11,7 @@ namespace P7_PSEngine.Services
         Task<IEnumerable<FileInformation>> SearchFiles(IEnumerable<string> search);
         Task<IEnumerable<FileInformation>> GetALlFilesWithIndex();
         Task<IEnumerable<string>> ProcessSearchQuery(string searchTerm);
-        Task<SearchResult> BoolSearch(string searchTerm);
+        Task<SearchResult> BoolSearch(string searchTerm, User user);
     }
 
     public class SearchService : ISearchService
@@ -33,11 +33,10 @@ namespace P7_PSEngine.Services
             return searchTerms;
         }
 
-        public async Task<SearchResult> BoolSearch(string searchTerm)
+        public async Task<SearchResult> BoolSearch(string searchTerm, User user)
         {
-            // For testing purposes, the user ID is hardcoded to 1
-            int userId = 1;
             
+
             // Process the search query
             var searchTerms = await ProcessSearchQuery(searchTerm); 
 
@@ -48,7 +47,7 @@ namespace P7_PSEngine.Services
             foreach (var term in searchTerms)
             {
                 Console.WriteLine($"Searching for term: {term}");
-                var termData = await FindTerm(new List<string> { term }, userId);
+                var termData = await FindTerm(new List<string> { term }, user);
 
                 // Iterate through the search results and add them to the list
                 if (termData == null || !termData.Any())
@@ -63,8 +62,10 @@ namespace P7_PSEngine.Services
                         index.InvertedIndex = null;
                         searchResults.SearchResults.Add(new SearchResultItem
                         {
-                            fileId = index.FileId,
-                            fileName = "",
+                            fileId = index.FileInformation.FileId,
+                            fileName = index.FileInformation.FileName,
+                            path = index.FileInformation.FilePath,
+                            dateCreated = index.FileInformation.CreationDate,
                             termFrequency = index.TermFrequency,
                         });
                         
@@ -100,7 +101,7 @@ namespace P7_PSEngine.Services
             return files;
         }
 
-        public async Task<List<InvertedIndex>> FindTerm(IEnumerable<string> term, int userId)
+        public async Task<List<InvertedIndex>> FindTerm(IEnumerable<string> term, User user)
         {
 /*            var kage = await _db.TermInformations.Include(p => p.FileInformation).Include(p => p.InvertedIndex)
                 .Where(p => term.Contains(p.Term) && p.UserId == userId)
@@ -109,7 +110,7 @@ namespace P7_PSEngine.Services
             List<InvertedIndex> invertedIndices = await _db.InvertedIndex.Include(p => p.TermInformations.Where(p => term.Contains(p.Term)))
                 .ThenInclude(p => p.FileInformation)
                 .Where(p => p.TermInformations.Any(index => term.Contains(index.Term)))
-                .Where(p => p.UserId == userId)
+                .Where(p => p.UserId == user.UserId)
                 .ToListAsync();
 
             return invertedIndices;
@@ -135,12 +136,14 @@ namespace P7_PSEngine.Services
         }
 
         // Method to add a search result
-        public void AddSearchResult(string fileid, string filename, int termFrequency)
+        public void AddSearchResult(string fileid, string filename, string path, DateTime date,  int termFrequency)
         {
             var result = new SearchResultItem
                 {
                     fileId = fileid,
                     fileName = filename,
+                    path = path,
+                    dateCreated = date,
                     termFrequency = termFrequency
                 };
             Console.WriteLine($"Adding search result: {result.fileId}, {result.fileName}, {result.termFrequency}");

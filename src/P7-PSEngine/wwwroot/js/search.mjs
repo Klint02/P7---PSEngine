@@ -1,20 +1,29 @@
+import Lib from "./lib.js";
+
 async function saveSearch() {
     console.log("Searching");
     let startTime = Date.now();
     let endTime;
+    const username = Lib.GetCookie("username");
 
     const formData = {
-        "searchWords": document.getElementById("searchbar").value,
-        "filenameOption": document.getElementById("searchByFilename").checked,
-        "contentOption": document.getElementById("searchByContent").checked,
-        "mailOption": document.getElementById("mailOption").checked,
-        "docOption": document.getElementById("docOption").checked,
-        "folderOption": document.getElementById("folderOption").checked,
-        "imageOption": document.getElementById("imageOption").checked,
-        "miscOption": document.getElementById("miscOption").checked,
-        "startDate": document.getElementById("searchIntervalStart").checked ? document.getElementById("startDate").value : null,
-        "endDate": document.getElementById("searchIntervalEnd").checked ? document.getElementById("endDate").value : null,
-        "dateType": document.getElementById("dateCreated").checked ? "created" : "modified"
+        sessionCookie: {
+            username: username,
+        },
+        searchDetails: {
+
+            "searchWords": document.getElementById("searchbar").value,
+            "filenameOption": document.getElementById("searchByFilename").checked,
+            "contentOption": document.getElementById("searchByContent").checked,
+            "mailOption": document.getElementById("mailOption").checked,
+            "docOption": document.getElementById("docOption").checked,
+            "folderOption": document.getElementById("folderOption").checked,
+            "imageOption": document.getElementById("imageOption").checked,
+            "miscOption": document.getElementById("miscOption").checked,
+            "startDate": document.getElementById("searchIntervalStart").checked ? document.getElementById("startDate").value : null,
+            "endDate": document.getElementById("searchIntervalEnd").checked ? document.getElementById("endDate").value : null,
+            "dateType": document.getElementById("dateCreated").checked ? "created" : "modified"
+        }
     }
 
     fetch ("/api/search", {
@@ -66,6 +75,8 @@ async function saveSearch() {
     .catch(error => {
         console.error("Error:", error);
     });
+}
+
 
 getCommands();
 async function getCommands() {
@@ -85,4 +96,6 @@ async function getCommands() {
             document.getElementById("commandsTable").innerHTML += tablebody;
         });
 }
-}
+
+// Attach the saveSearch function to the search button click event
+document.getElementById("searchButton").addEventListener("click", saveSearch);

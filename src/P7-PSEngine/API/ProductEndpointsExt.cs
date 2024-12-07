@@ -46,14 +46,15 @@ namespace P7_PSEngine.API
             });
 
             // Add the endpoint for SearchController
-            app.MapPost("/api/search", async (HttpContext context, [FromServices] ISearchService searchService, [FromBody] SearchDetailsDTO searchDetails) =>
+            app.MapPost("/api/search", async ([FromBody] SearchRequestDTO searchRequest, [FromServices] ISearchService searchService, [FromServices] IUserRepository userRepository ) =>
             {
-                if (searchDetails == null || string.IsNullOrEmpty(searchDetails.searchwords))
+                User user = await userRepository.GetUserByUsernameAsync(searchRequest.SessionCookie.username);
+                if (searchRequest.SearchDetails == null || string.IsNullOrEmpty(searchRequest.SearchDetails.searchwords))
                 {
                     return Results.BadRequest("Search details cannot be empty");
                 }
 
-                IEnumerable<string> searchQueries = await searchService.ProcessSearchQuery(searchDetails.searchwords);
+                IEnumerable<string> searchQueries = await searchService.ProcessSearchQuery(searchRequest.SearchDetails.searchwords);
                 if (!searchQueries.Any())
                 {
                     return Results.BadRequest("Invalid search term");
@@ -65,29 +66,22 @@ namespace P7_PSEngine.API
                     {
                         return Results.BadRequest("Invalid search term");
                     }
-                    var searchResult = await searchService.BoolSearch(query);
+                    var searchResult = await searchService.BoolSearch(query, user);
                     Console.WriteLine($"Search result for {query}: {searchResult}");
                     return Results.Ok(searchResult);
                 }
                 return Results.BadRequest("No valid search terms found"); 
             });
 
-/*            app.MapGet("/api/GetAllSearch", async ([FromServices] ISearchService searchService) =>
-            {
-
-                IEnumerable<DocumentInformation> document = await searchService.GetALlDocumentsWithIndex();
-                foreach (var doc in document)
-                {
-                    foreach (var index in doc.TermDocuments)
-                    {
-                        index.DocumentInformation = null;
-                    }
-                }
-                return Results.Ok(document);
-            });*/
 
             app.MapGet("/api/messages", (SampleData data, string q = "") => data.Data);
 
         }
+    }
+
+    public class SearchRequestDTO
+    {
+        public SessionCookieDTO SessionCookie { get; set; }
+        public SearchDetailsDTO SearchDetails { get; set; }
     }
 }
