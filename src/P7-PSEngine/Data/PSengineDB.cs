@@ -23,7 +23,7 @@ namespace P7_PSEngine.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+
             // FileInformation entity
 
             modelBuilder.Entity<FileInformation>(entity =>
@@ -37,10 +37,10 @@ namespace P7_PSEngine.Data
 
                 entity.Property(e => e.FileName)
                     .IsRequired();
-                
+
                 entity.Property(e => e.UserId)
                     .IsRequired();
-                
+
                 entity.Property(e => e.FilePath)
                     .IsRequired();
 
@@ -48,7 +48,7 @@ namespace P7_PSEngine.Data
                     .IsRequired();
 
                 // Relationships
-                
+
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.FileInformations)
                     .HasForeignKey(d => d.UserId)

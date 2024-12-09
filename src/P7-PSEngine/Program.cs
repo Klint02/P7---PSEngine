@@ -1,10 +1,8 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using P7_PSEngine.API;
 using P7_PSEngine.BackgroundServices;
 using P7_PSEngine.Data;
 using P7_PSEngine.Handlers;
-using P7_PSEngine.Model;
 
 using P7_PSEngine.Repositories;
 using P7_PSEngine.Services;

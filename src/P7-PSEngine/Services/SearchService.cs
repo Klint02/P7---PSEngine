@@ -2,7 +2,6 @@
 using P7_PSEngine.Data;
 using P7_PSEngine.Model;
 using System.Text.RegularExpressions;
-using P7_PSEngine.Repositories;
 
 namespace P7_PSEngine.Services
 {
@@ -14,6 +13,8 @@ namespace P7_PSEngine.Services
         Task<SearchResult> BoolSearch(string searchTerm, User user);
     }
 
+    //TODO (djb) If serached with more than 1 word return more inverted terms
+    //TODO (djb) Maybe send invertedIndex with OrderBy, so the files are in a descending order
     public class SearchService : ISearchService
     {
         private readonly PSengineDB _db;
@@ -35,10 +36,8 @@ namespace P7_PSEngine.Services
 
         public async Task<SearchResult> BoolSearch(string searchTerm, User user)
         {
-            
-
             // Process the search query
-            var searchTerms = await ProcessSearchQuery(searchTerm); 
+            var searchTerms = await ProcessSearchQuery(searchTerm);
 
             // Create a list to store the search results
             var searchResults = new SearchResult { SearchTerm = searchTerm };
@@ -68,7 +67,7 @@ namespace P7_PSEngine.Services
                             dateCreated = index.FileInformation.CreationDate,
                             termFrequency = index.TermFrequency,
                         });
-                        
+
                         // Increment the total number of search results
                         searchResults.TotalResults += index.TermFrequency;
                     }
@@ -83,7 +82,8 @@ namespace P7_PSEngine.Services
                 Console.WriteLine($"File ID: {result.fileId}, Filename: {result.fileName}, Term Frequency: {result.termFrequency}");
             }
             return searchResults;
-}
+        }
+
         public async Task<IEnumerable<FileInformation>> SearchFiles(IEnumerable<string> search)
         {
             List<FileInformation> files = await _db.FileInformation.Include(p => p.TermFiles.Where(p => search.Contains(p.Term)))
@@ -103,9 +103,9 @@ namespace P7_PSEngine.Services
 
         public async Task<List<InvertedIndex>> FindTerm(IEnumerable<string> term, User user)
         {
-/*            var kage = await _db.TermInformations.Include(p => p.FileInformation).Include(p => p.InvertedIndex)
-                .Where(p => term.Contains(p.Term) && p.UserId == userId)
-                .ToListAsync();*/
+            /*            var kage = await _db.TermInformations.Include(p => p.FileInformation).Include(p => p.InvertedIndex)
+                            .Where(p => term.Contains(p.Term) && p.UserId == userId)
+                            .ToListAsync();*/
 
             List<InvertedIndex> invertedIndices = await _db.InvertedIndex.Include(p => p.TermInformations.Where(p => term.Contains(p.Term)))
                 .ThenInclude(p => p.FileInformation)
@@ -117,14 +117,14 @@ namespace P7_PSEngine.Services
         }
     }
 
-     public class SearchResult
+    public class SearchResult
     {
 
         // It should contain a dictionary of document IDs and filenames as well as the total number of results
         public string SearchTerm { get; set; } = "";
         // The total number of results for the search term including multiple entries in the same document
         public int TotalResults { get; set; } = 0;
-        
+
         // List of dictionaries to store search results
         // Each dictionary contains the document ID, filename, and term frequency
         public List<SearchResultItem> SearchResults { get; set; } = new List<SearchResultItem>();
@@ -136,16 +136,16 @@ namespace P7_PSEngine.Services
         }
 
         // Method to add a search result
-        public void AddSearchResult(string fileid, string filename, string path, DateTime date,  int termFrequency)
+        public void AddSearchResult(string fileid, string filename, string path, DateTime date, int termFrequency)
         {
             var result = new SearchResultItem
-                {
-                    fileId = fileid,
-                    fileName = filename,
-                    path = path,
-                    dateCreated = date,
-                    termFrequency = termFrequency
-                };
+            {
+                fileId = fileid,
+                fileName = filename,
+                path = path,
+                dateCreated = date,
+                termFrequency = termFrequency
+            };
             Console.WriteLine($"Adding search result: {result.fileId}, {result.fileName}, {result.termFrequency}");
             SearchResults.Add(result);
         }

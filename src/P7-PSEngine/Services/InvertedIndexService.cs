@@ -12,6 +12,9 @@ namespace P7_PSEngine.Services
         Task addOrUpdateTerm(string term, string docId, User user);
     }
 
+
+    //TODO (djb) Remove whitespaces from indexing tokens
+    //TODO (djb) Remove redundant code
     public class InvertedIndexService : IInvertedIndexService
     {
         private readonly IInvertedIndexRepository invertedIndexRepository;
@@ -23,7 +26,7 @@ namespace P7_PSEngine.Services
         public async Task InitializeUser(User user)
         {
             Console.WriteLine("Running InitializeUser");
-            
+
             string currentDirectory = "./Files";
             var files = Directory.GetFiles(currentDirectory);
             string jsonFilePath = "./Files/testgoogle.json";

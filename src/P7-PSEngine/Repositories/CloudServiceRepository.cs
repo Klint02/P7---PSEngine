@@ -31,7 +31,7 @@ namespace P7_PSEngine.API
 
         public async Task AddServiceAsync(CloudService cloudService)
         {
-            await _db.CloudService.AddAsync(cloudService);       
+            await _db.CloudService.AddAsync(cloudService);
         }
         // Always use after adding or updating or deleting an entity
         public async Task SaveDbChangesAsync()

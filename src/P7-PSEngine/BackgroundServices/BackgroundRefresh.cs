@@ -4,6 +4,10 @@ namespace P7_PSEngine.BackgroundServices;
 
 public class BackgroundRefresh : IHostedService, IDisposable
 {
+    //TODO (djb) Make a queue for new user cloud services
+    //TODO (djb) Setup background services to work 
+    //TODO (djb) Map invertedIndex to our desire DTO
+    //TODO (djb) Make sure there is a flow
     private Timer? _timer;
     private readonly TimeSpan _executionTime;
     private readonly SampleData _data;

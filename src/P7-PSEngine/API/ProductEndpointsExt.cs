@@ -46,7 +46,7 @@ namespace P7_PSEngine.API
             });
 
             // Add the endpoint for SearchController
-            app.MapPost("/api/search", async ([FromBody] SearchRequestDTO searchRequest, [FromServices] ISearchService searchService, [FromServices] IUserRepository userRepository ) =>
+            app.MapPost("/api/search", async ([FromBody] SearchRequestDTO searchRequest, [FromServices] ISearchService searchService, [FromServices] IUserRepository userRepository) =>
             {
                 User user = await userRepository.GetUserByUsernameAsync(searchRequest.SessionCookie.username);
                 if (searchRequest.SearchDetails == null || string.IsNullOrEmpty(searchRequest.SearchDetails.searchwords))
@@ -59,7 +59,7 @@ namespace P7_PSEngine.API
                 {
                     return Results.BadRequest("Invalid search term");
                 }
-                
+
                 foreach (var query in searchQueries)
                 {
                     if (string.IsNullOrEmpty(query))
@@ -70,7 +70,7 @@ namespace P7_PSEngine.API
                     Console.WriteLine($"Search result for {query}: {searchResult}");
                     return Results.Ok(searchResult);
                 }
-                return Results.BadRequest("No valid search terms found"); 
+                return Results.BadRequest("No valid search terms found");
             });
 
 
