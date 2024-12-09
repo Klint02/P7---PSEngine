@@ -5,7 +5,7 @@ namespace P7_PSEngine.BackgroundServices;
 public class BackgroundRefresh : IHostedService, IDisposable
 {
     //TODO (djb) Make a queue for new user cloud services
-    //TODO (djb) Setup background services to work 
+    //TODO (djb) Setup background services to work - fetch files from cloudservices
     //TODO (djb) Map invertedIndex to our desire DTO
     //TODO (djb) Make sure there is a flow
     private Timer? _timer;
@@ -28,30 +28,8 @@ public class BackgroundRefresh : IHostedService, IDisposable
         _logger.LogInformation("BackgroundRefresh is starting.");
         _logger.LogInformation("Inserting data into the bag");
         AddIndexToCache(null);
-        //ScheduleTask();
         //_timer = new Timer(test1, null, delay, Timeout.InfiniteTimeSpan);
         return Task.CompletedTask;
-    }
-
-    private void ScheduleTask()
-    {
-        var now = DateTime.Now;
-        var nextRunTime = now.Date + _executionTime;
-        if (nextRunTime <= now)
-        {
-            nextRunTime = nextRunTime.AddDays(1);
-            Console.WriteLine("added to next day");
-        }
-        var delay = nextRunTime - now;
-        _timer = new Timer(test1, null, delay, Timeout.InfiniteTimeSpan);
-    }
-
-    private void test1(object? state)
-    {
-        Console.WriteLine($"test1 : time {DateTime.Now.ToLongTimeString()}");
-
-        // Schedule the next run
-        ScheduleTask();
     }
 
     private async void AddIndexToCache(object? state)
@@ -72,24 +50,6 @@ public class BackgroundRefresh : IHostedService, IDisposable
         //    _data.Data.Add(doc);
         //}
     }
-
-    //private TimeSpan getScheduledParsedTime()
-    //{
-    //    string[] formats = { @"hh\:mm\:ss", "hh\\:mm" };
-    //    string jobStartTime = "10:31";
-    //    TimeSpan.TryParseExact(jobStartTime, formats, CultureInfo.InvariantCulture, out TimeSpan ScheduledTimespan);
-    //    return ScheduledTimespan;
-    //}
-
-    //private TimeSpan getJobRunDelay()
-    //{
-    //    TimeSpan scheduledParsedTime = getScheduledParsedTime();
-    //    TimeSpan curentTimeOftheDay = TimeSpan.Parse(DateTime.Now.TimeOfDay.ToString("hh\\:mm"));
-    //    TimeSpan delayTime = scheduledParsedTime >= curentTimeOftheDay
-    //        ? scheduledParsedTime - curentTimeOftheDay     // Initial Run, when ETA is within 24 hours
-    //        : new TimeSpan(24, 0, 0) - curentTimeOftheDay + scheduledParsedTime;   // For every other subsequent runs
-    //    return delayTime;
-    //}
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
