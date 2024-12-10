@@ -38,13 +38,7 @@ namespace P7_PSEngine.Repositories
 
             if (existingFile == null)
             {
-                Console.WriteLine($"Adding document: FileId={file.FileId}, UserId={file.UserId}");
                 _db.FileInformation.Add(file);
-                await _db.SaveChangesAsync();
-            }
-            else
-            {
-                Console.WriteLine($"Document already exists: DocId={file.FileId}, UserId={file.UserId}");
             }
         }
         public async Task<FileInformation?> FindFileAsync(string fileName, User user) 
