@@ -31,7 +31,7 @@ namespace P7_PSEngine.API
 
         public async Task RemoveUserCache(User user, CloudService SID)
         {
-            _db.FileInformation.RemoveRange(_db.FileInformation.Where(p => p.User.UserName == user.UserName).Where(p => p.SID.UserDefinedServiceName == SID.UserDefinedServiceName));
+            _db.FileInformation.RemoveRange(_db.FileInformation.Where(p => p.User.UserName == user.UserName && p.SID.UserDefinedServiceName == SID.UserDefinedServiceName));
             await _db.SaveChangesAsync();
         }
 

@@ -25,16 +25,12 @@ namespace P7_PSEngine.Services
 
         public async Task InitializeUser(User user)
         {
-            Console.WriteLine("Running InitializeUser");
-
             string currentDirectory = "./Files";
             var files = Directory.GetFiles(currentDirectory);
             string jsonFilePath = "./Files/testgoogle.json";
             string jsonData = await File.ReadAllTextAsync(jsonFilePath);
             FileList filelist = JsonConvert.DeserializeObject<FileList>(jsonData);
             Console.WriteLine("Running InitializeUser");
-            Console.WriteLine(jsonData);
-            //await IndexDocumentAsync("1", "jsonData", userId);
 
 
             if (filelist == null)
@@ -51,7 +47,6 @@ namespace P7_PSEngine.Services
             }
             else
             {
-                await IndexFileAsync("10", "test", user);
                 // Creating dictionary to store inverted index of tokens and file IDs
                 // Key: token, Value: list of file IDs (could probably be stored as an integer instead)
                 // var index = new InvertedIndexRepository();
@@ -74,23 +69,31 @@ namespace P7_PSEngine.Services
             term = term.ToLower();
 
             // Ensure user exists or create a new user
-            await invertedIndexRepository.EnsureUserExistsOrCreateAsync(user);
+            //await invertedIndexRepository.EnsureUserExistsOrCreateAsync(user);
 
             // Ensure the Document exists or create a new Document
             var fileexists = await invertedIndexRepository.FindFileAsync(fileId, user);
             Console.WriteLine(fileexists == null ? "File not found" : "File found");
+            var cloudService = await invertedIndexRepository.GetCloudService(user);
+            if (cloudService == null)
+            {
+                throw new Exception("Cloudservice could not be found");
+            }
 
             if (fileexists == null)
             {
                 if (string.IsNullOrWhiteSpace(fileId))
                     throw new ArgumentException("DocId cannot be null or empty.", nameof(fileId));
-
+                
                 var file = new FileInformation
                 {
-                    FileName = term,
+                    FileName = term, // Remember to change this to the actual file name
                     FileId = fileId,
                     UserId = user.UserId,
-                    TermFiles = new List<TermInformation>()
+                    FilePath = "Suck my ass",
+                    FileType = "json",
+                    SID = cloudService,
+                    //TermFiles = new List<TermInformation>()
                 };
                 Console.WriteLine("Adding new document to repository");
                 Console.WriteLine($"DocumentName: {file.FileName}, UserId: {file.UserId}, DocumentId: {file.FileId}");

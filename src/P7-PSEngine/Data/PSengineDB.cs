@@ -25,7 +25,6 @@ namespace P7_PSEngine.Data
         {
 
             // FileInformation entity
-
             modelBuilder.Entity<FileInformation>(entity =>
             {
                 // Primary key (composity key of FileId and UserId)

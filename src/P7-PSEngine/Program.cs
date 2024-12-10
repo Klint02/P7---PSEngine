@@ -22,7 +22,6 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFileInformationRepository, FileInformationRepository>();
 builder.Services.AddScoped<ICloudServiceRepository, CloudServiceRepository>();
 builder.Services.AddScoped<ICloudServiceHandler, DropBoxHandler>();
-builder.Services.AddScoped<IInvertedIndexService, InvertedIndexService>();
 builder.Services.AddTransient<IInvertedIndexService, InvertedIndexService>();
 builder.Services.AddTransient<ISearchService, SearchService>();
 builder.Services.AddTransient<IInvertedIndexRepository, InvertedIndexRepository>();
