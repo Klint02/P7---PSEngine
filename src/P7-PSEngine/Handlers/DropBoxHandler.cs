@@ -102,8 +102,9 @@ public class DropBoxHandler : ICloudServiceHandler
     public async Task<List<FileInformation>> ServiceFileRequest(WebApplication app, User user, string? path, CloudService service) 
     {
 
+        List<FileInformation> filelist = new List<FileInformation>();
+        bool incomplete_file_fetch = true;
         string access_token = GetAccessToken(app, service.refresh_token).Result;
-
         var file_request_object = new {
 
             include_deleted = false,
@@ -119,32 +120,40 @@ public class DropBoxHandler : ICloudServiceHandler
         
         dynamic files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
 
-        List<FileInformation> filelist = new List<FileInformation>();
-        //Cursed AF, but shit works. JS code in C# FTW
-        try {
-            for (int i = 0; i < files.entries.Count; i++) {
-                FileInformation tmp_file = new FileInformation();
-                tmp_file.FileName = files.entries[i]["name"];
-                tmp_file.FilePath = files.entries[i]["path_lower"];
-                tmp_file.FileType = files.entries[i][".tag"];
-                string client_modified = files.entries[i]["client_modified"];
-                string server_modified = files.entries[i]["server_modified"];
-                if (files.entries[i][".tag"] == "folder") {
-                    tmp_file.ChangedDate = new DateTime();
-                    tmp_file.CreationDate = new DateTime(); 
-                } else {
-                    //TODO: (nkc) parse date later
-                    tmp_file.ChangedDate = DateTime.ParseExact(client_modified, "MM/dd/yyyy HH:mm:ss",  new CultureInfo("en-DK"));
-                    tmp_file.CreationDate = DateTime.ParseExact(server_modified, "MM/dd/yyyy HH:mm:ss",  new CultureInfo("en-DK"));
-                }
-                tmp_file.UID = user;
-                tmp_file.SID = service;
-                filelist.Add(tmp_file);
-            }
+        while(incomplete_file_fetch) {
 
-        } catch (Exception e) {
-            Console.WriteLine(e);
+            //Cursed AF, but shit works. JS code in C# FTW
+            try {
+                for (int i = 0; i < files.entries.Count; i++) {
+                    FileInformation tmp_file = new FileInformation();
+                    tmp_file.FileName = files.entries[i]["name"];
+                    tmp_file.FilePath = files.entries[i]["path_lower"];
+                    tmp_file.FileType = files.entries[i][".tag"];
+                    string client_modified = files.entries[i]["client_modified"];
+                    string server_modified = files.entries[i]["server_modified"];
+                    if (files.entries[i][".tag"] == "folder") {
+                        tmp_file.ChangedDate = new DateTime();
+                        tmp_file.CreationDate = new DateTime(); 
+                    } else {
+                        //TODO: (nkc) parse date later
+                        tmp_file.ChangedDate = DateTime.ParseExact(client_modified, "MM/dd/yyyy HH:mm:ss",  new CultureInfo("en-DK"));
+                        tmp_file.CreationDate = DateTime.ParseExact(server_modified, "MM/dd/yyyy HH:mm:ss",  new CultureInfo("en-DK"));
+                    }
+                    tmp_file.UID = user;
+                    tmp_file.SID = service;
+                    filelist.Add(tmp_file);
+                }
+                incomplete_file_fetch = files.has_more; 
+
+                if (incomplete_file_fetch) {
+                    file_request_task = HttpHandler.JSONAsyncPost(new {cursor = files.cursor }, "https://api.dropboxapi.com/2/files/list_folder/continue", access_token);
+                    files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
+                }
+            } catch (Exception e) {
+                Console.WriteLine(e);
+            }
         }
+
         
         await _file_repo.RemoveUserCache(user, service);
         await _file_repo.AddFileInformationRangeAsync(filelist);
