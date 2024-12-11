@@ -1,21 +1,14 @@
 using P7_PSEngine.API;
 using P7_PSEngine.DTO;
-using P7_PSEngine.Repositories;
-using Newtonsoft;
-using System.Text.Json;
-using System;
-using System.Collections.Generic;
 using P7_PSEngine.Model;
-using System.Globalization;
-using System.IO;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 using P7_PSEngine.Services;
+using System.Globalization;
+using System.Text.Json;
 //using P7_PSEngine.Migrations;
 
 namespace P7_PSEngine.Handlers;
 
-public class DropBoxHandler : ICloudServiceHandler 
+public class DropBoxHandler : ICloudServiceHandler
 {
     private readonly IFileInformationRepository _file_repo;
     private readonly IUserRepository _user_repo;
@@ -24,7 +17,8 @@ public class DropBoxHandler : ICloudServiceHandler
 
     private readonly IInvertedIndexService _index;
 
-    public DropBoxHandler(IFileInformationRepository file_repo, IUserRepository user_repo, ICloudServiceRepository cloud_repo, IInvertedIndexService index) {
+    public DropBoxHandler(IFileInformationRepository file_repo, IUserRepository user_repo, ICloudServiceRepository cloud_repo, IInvertedIndexService index)
+    {
         _file_repo = file_repo;
         _user_repo = user_repo;
         _cloud_repo = cloud_repo;
@@ -33,12 +27,14 @@ public class DropBoxHandler : ICloudServiceHandler
 
 
 
-    private async Task<bool> FetchUserAvatar(WebApplication app, string access_token) {
-        var user_request = HttpHandler.JSONAsyncPost(new {query = "foo"}, "https://api.dropboxapi.com/2/check/user", access_token);
+    private async Task<bool> FetchUserAvatar(WebApplication app, string access_token)
+    {
+        var user_request = HttpHandler.JSONAsyncPost(new { query = "foo" }, "https://api.dropboxapi.com/2/check/user", access_token);
         return (user_request.Result.Data == "{\"result\":\"foo\"}");
     }
 
-    private async Task<string> GetAccessToken (WebApplication app, string refresh_token) {
+    private async Task<string> GetAccessToken(WebApplication app, string refresh_token)
+    {
         var refresh_token_body = new FormUrlEncodedContent([
             new KeyValuePair<string, string>("grant_type", "refresh_token"),
             new KeyValuePair<string, string>("refresh_token", refresh_token),
@@ -50,7 +46,8 @@ public class DropBoxHandler : ICloudServiceHandler
         var dbox_oauth2_response = dbox_oauth2_task.Result;
 
         string access_token = "";
-        if (dbox_oauth2_response.Error == "") {
+        if (dbox_oauth2_response.Error == "")
+        {
             DBoxOAuth2DTO response = JsonSerializer.Deserialize<DBoxOAuth2DTO>(dbox_oauth2_response.Data);
             access_token = response.access_token;
         }
@@ -58,7 +55,7 @@ public class DropBoxHandler : ICloudServiceHandler
         return access_token;
     }
 
-    public async Task<bool> OAuth2Handler(WebApplication app, ServiceCreationDetailsDTO service) 
+    public async Task<bool> OAuth2Handler(WebApplication app, ServiceCreationDetailsDTO service)
     {
         //Initial token
         var initial_token_body = new FormUrlEncodedContent([
@@ -72,7 +69,8 @@ public class DropBoxHandler : ICloudServiceHandler
         DataErrorDTO dbox_oauth2_response = dbox_oauth2_task.Result;
 
         string refresh_token = "";
-        if (dbox_oauth2_response.Error == "") {
+        if (dbox_oauth2_response.Error == "")
+        {
             DBoxOAuth2DTO response = JsonSerializer.Deserialize<DBoxOAuth2DTO>(dbox_oauth2_response.Data);
             refresh_token = response.refresh_token;
         }
@@ -80,14 +78,16 @@ public class DropBoxHandler : ICloudServiceHandler
         //Refresh token confirmation
         string access_token = GetAccessToken(app, refresh_token).Result;
 
-        if (dbox_oauth2_response.Error == "") {
+        if (dbox_oauth2_response.Error == "")
+        {
             DBoxOAuth2DTO response = JsonSerializer.Deserialize<DBoxOAuth2DTO>(dbox_oauth2_response.Data);
             access_token = response.access_token;
         }
 
         User? user = _user_repo.GetUserByUsernameAsync(service.user).Result;
 
-        if (user != null && await FetchUserAvatar(app, access_token)) {
+        if (user != null && await FetchUserAvatar(app, access_token))
+        {
             var cloud_service = new CloudService();
             cloud_service.ServiceType = "dropbox";
             cloud_service.UserId = user.UserId;
@@ -95,21 +95,24 @@ public class DropBoxHandler : ICloudServiceHandler
             cloud_service.refresh_token = refresh_token;
             await _cloud_repo.AddServiceAsync(cloud_service);
             await _cloud_repo.SaveDbChangesAsync();
-            
-            return true;
-        } else {
 
-            return false; 
+            return true;
+        }
+        else
+        {
+
+            return false;
         }
 
     }
 
-    public async Task<List<FileInformation>> ServiceFileRequest(WebApplication app, User user, string? path, CloudService service) 
+    public async Task<List<FileInformation>> ServiceFileRequest(WebApplication app, User user, string? path, CloudService service)
     {
 
         string access_token = GetAccessToken(app, service.refresh_token).Result;
 
-        var file_request_object = new {
+        var file_request_object = new
+        {
 
             include_deleted = false,
             include_has_explicit_shared_members = false,
@@ -121,17 +124,20 @@ public class DropBoxHandler : ICloudServiceHandler
         };
 
         var file_request_task = HttpHandler.JSONAsyncPost(file_request_object, "https://api.dropboxapi.com/2/files/list_folder", access_token);
-        
+
         dynamic files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
 
         List<FileInformation> filelist = new List<FileInformation>();
 
         // This method iterates through the files and adds them to the database
-        if (files.entries == null) {
+        if (files.entries == null)
+        {
             return filelist;
         }
-        else {
-            foreach (var file in files.entries) {
+        else
+        {
+            foreach (var file in files.entries)
+            {
                 FileInformation tmp_file = new FileInformation();
                 tmp_file.FileId = Guid.NewGuid().ToString();
                 tmp_file.FileName = file.name;
@@ -139,12 +145,15 @@ public class DropBoxHandler : ICloudServiceHandler
                 tmp_file.FileType = file[".tag"];
                 string client_modified = file.client_modified;
                 string server_modified = file.server_modified;
-                if (file[".tag"] == "folder") {
+                if (file[".tag"] == "folder")
+                {
                     tmp_file.ChangedDate = new DateTime();
-                    tmp_file.CreationDate = new DateTime(); 
-                } else {
-                    tmp_file.ChangedDate = DateTime.ParseExact(client_modified, "MM/dd/yyyy HH:mm:ss",  new CultureInfo("en-DK"));
-                    tmp_file.CreationDate = DateTime.ParseExact(server_modified, "MM/dd/yyyy HH:mm:ss",  new CultureInfo("en-DK"));
+                    tmp_file.CreationDate = new DateTime();
+                }
+                else
+                {
+                    tmp_file.ChangedDate = DateTime.ParseExact(client_modified, "MM/dd/yyyy HH:mm:ss", new CultureInfo("en-DK"));
+                    tmp_file.CreationDate = DateTime.ParseExact(server_modified, "MM/dd/yyyy HH:mm:ss", new CultureInfo("en-DK"));
                 }
                 tmp_file.UserId = user.UserId;
                 tmp_file.SID = service;
@@ -152,13 +161,16 @@ public class DropBoxHandler : ICloudServiceHandler
                 filelist.Add(tmp_file);
             }
 
-            try {
+            try
+            {
                 await _file_repo.AddFileInformationRangeAsync(filelist);
                 await _file_repo.SaveDbChangesAsync();
 
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
-            }       
+            }
             return filelist;
         }
     }
@@ -182,6 +194,6 @@ public class DropBoxHandler : ICloudServiceHandler
             await IndexFiles(filelist, user, indexService);
         }
         return true;
-    
+
     }
 }

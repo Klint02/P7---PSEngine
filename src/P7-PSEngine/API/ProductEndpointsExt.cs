@@ -40,13 +40,17 @@ namespace P7_PSEngine.API
             // Add the endpoint for IndexController
             app.MapGet("/api/index", async ([FromBody] SessionCookieDTO userDTO, [FromServices] IInvertedIndexService invertedIndexService, [FromServices] IUserRepository userRepository) =>
             {
-                User user = await userRepository.GetUserByUsernameAsync(userDTO.username);
-                invertedIndexService.InitializeUser(user);
+                User? user = await userRepository.GetUserByUsernameAsync(userDTO.username);
+                if (user == null)
+                {
+                    return Results.BadRequest("User not found");
+                }
+                await invertedIndexService.InitializeUser(user);
                 return Results.Ok();
             });
 
             // Add the endpoint for SearchController
-            app.MapPost("/api/search", async ([FromBody] SearchRequestDTO searchRequest, [FromServices] ISearchService searchService, [FromServices] IUserRepository userRepository ) =>
+            app.MapPost("/api/search", async ([FromBody] SearchRequestDTO searchRequest, [FromServices] ISearchService searchService, [FromServices] IUserRepository userRepository) =>
             {
 
                 // Check if the search details are empty

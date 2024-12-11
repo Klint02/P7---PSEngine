@@ -16,58 +16,61 @@ namespace P7_PSEngine.Repositories
 
         Task<User?> FindUserAsync(User user);
         Task AddTermAsync(TermInformation term);
+        Task<CloudService?> GetCloudService(User user);
     }
     public class InvertedIndexRepository : IInvertedIndexRepository
     {
-        private readonly PSengineDB db;
+        private readonly PSengineDB _db;
         public InvertedIndexRepository(PSengineDB db)
         {
-            this.db = db;
+            _db = db;
         }
 
         public async Task Save()
         {
-            await db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
         }
 
         public async Task AddFileAsync(FileInformation file)
         {
-            var existingFile = await db.FileInformation
+            var existingFile = await _db.FileInformation
                 .FirstOrDefaultAsync(d => d.FileId == file.FileId && d.UserId == file.UserId);
 
             if (existingFile == null)
             {
-                Console.WriteLine($"Adding document: FileId={file.FileId}, UserId={file.UserId}");
-                db.FileInformation.Add(file);
-                await db.SaveChangesAsync();
-            }
-            else
-            {
-                Console.WriteLine($"Document already exists: DocId={file.FileId}, UserId={file.UserId}");
+                _db.FileInformation.Add(file);
             }
         }
-        public async Task<FileInformation?> FindFileAsync(string fileName, User user) => await db.FileInformation.Include(p => p.TermFiles).FirstOrDefaultAsync(p => p.FileName == fileName && p.User.UserId == user.UserId);
+        public async Task<FileInformation?> FindFileAsync(string fileName, User user) 
+        {
+            return await _db.FileInformation.FirstOrDefaultAsync(p => p.FileName == fileName && p.User.UserId == user.UserId);
+        }
 
-        public async Task<InvertedIndex?> FindTerm(string term, User user) => await db.InvertedIndex.FirstOrDefaultAsync(p => p.Term == term && p.User.UserId == user.UserId);
+        public async Task<InvertedIndex?> FindTerm(string term, User user) => await _db.InvertedIndex.FirstOrDefaultAsync(p => p.Term == term && p.User.UserId == user.UserId);
 
         public async Task AddInvertedIndexAsync(InvertedIndex invertedIndex)
         {
-            await db.InvertedIndex.AddAsync(invertedIndex);
+            await _db.InvertedIndex.AddAsync(invertedIndex);
         }
-        public async Task<TermInformation?> FindExistingFileAsync(string term, string fileId, User user) => await db.TermInformations.FirstOrDefaultAsync(p => p.Term == term && p.FileId == fileId && p.User.UserId == user.UserId);
+        public async Task<TermInformation?> FindExistingFileAsync(string term, string fileId, User user) => await _db.TermInformations.FirstOrDefaultAsync(p => p.Term == term && p.FileId == fileId && p.User.UserId == user.UserId);
 
-        public async Task<User?> FindUserAsync(User user) => await db.Users.FirstOrDefaultAsync(p => p.UserId == user.UserId);
+        public async Task<User?> FindUserAsync(User user) => await _db.Users.FirstOrDefaultAsync(p => p.UserId == user.UserId);
 
-        public async Task AddTermAsync(TermInformation term) => await db.TermInformations.AddAsync(term);
+        public async Task AddTermAsync(TermInformation term) => await _db.TermInformations.AddAsync(term);
 
         public async Task EnsureUserExistsOrCreateAsync(User user)
         {
-            var existingUser = await db.Users.FindAsync(user.UserId);
+            var existingUser = await _db.Users.FindAsync(user.UserId);
             if (existingUser == null)// Delete this in final product
             {
-                db.Users.Add(user);
-                await db.SaveChangesAsync();
+                _db.Users.Add(user);
+                await _db.SaveChangesAsync();
             }
+        }
+
+        public async Task<CloudService?> GetCloudService(User user)
+        {
+            return await _db.CloudService.FirstOrDefaultAsync(p => p.User.UserId == user.UserId);
         }
     }
 }

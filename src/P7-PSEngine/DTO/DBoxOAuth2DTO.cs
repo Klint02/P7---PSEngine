@@ -1,6 +1,6 @@
 namespace P7_PSEngine.DTO;
 
-public struct DBoxOAuth2DTO 
+public struct DBoxOAuth2DTO
 {
     public string access_token { get; set; }
     public string token_type { get; set; }

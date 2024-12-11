@@ -1,10 +1,7 @@
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace P7_PSEngine.Model;
 
-public class CloudService {
+public class CloudService
+{
 
     public int Id { get; set; }
 

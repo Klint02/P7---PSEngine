@@ -31,19 +31,19 @@ namespace P7_PSEngine.API
 
         public async Task RemoveUserCache(User user, CloudService SID)
         {
-            _db.FileInformation.RemoveRange(_db.FileInformation.Where(p => p.User.UserName == user.UserName).Where(p => p.SID.UserDefinedServiceName == SID.UserDefinedServiceName));
+            _db.FileInformation.RemoveRange(_db.FileInformation.Where(p => p.User.UserName == user.UserName && p.SID.UserDefinedServiceName == SID.UserDefinedServiceName));
             await _db.SaveChangesAsync();
         }
 
         public async Task AddFileInformationAsync(FileInformation FileInformation)
         {
-            await _db.FileInformation.AddAsync(FileInformation);       
+            await _db.FileInformation.AddAsync(FileInformation);
         }
 
         public async Task AddFileInformationRangeAsync(List<FileInformation> fileInformation)
         {
             var validFiles = fileInformation.Where(file => !string.IsNullOrEmpty(file.FileId)).ToList();
-            
+
             foreach (var file in validFiles)
             {
                 if (string.IsNullOrEmpty(file.FileId))
@@ -51,7 +51,7 @@ namespace P7_PSEngine.API
                     throw new InvalidOperationException("FileId cannot be null or empty.");
                 }
             }
-            await _db.FileInformation.AddRangeAsync(validFiles);       
+            await _db.FileInformation.AddRangeAsync(validFiles);
         }
         // Always use after adding or updating or deleting an entity
         public async Task SaveDbChangesAsync()

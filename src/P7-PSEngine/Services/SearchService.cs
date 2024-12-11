@@ -2,7 +2,6 @@
 using P7_PSEngine.Data;
 using P7_PSEngine.Model;
 using System.Text.RegularExpressions;
-using P7_PSEngine.Repositories;
 
 namespace P7_PSEngine.Services
 {
@@ -14,6 +13,8 @@ namespace P7_PSEngine.Services
         Task<SearchResult> BoolSearch(string searchTerm, User user);
     }
 
+    //TODO (djb) If serached with more than 1 word return more inverted terms
+    //TODO (djb) Maybe send invertedIndex with OrderBy, so the files are in a descending order
     public class SearchService : ISearchService
     {
         private readonly PSengineDB _db;
@@ -111,7 +112,8 @@ namespace P7_PSEngine.Services
             searchResults.DisplaySearchResults();
 //            Console.WriteLine($"Search results for {searchTerms}: {searchResults.TotalResults}");
             return searchResults;
-}
+        }
+
         public async Task<IEnumerable<FileInformation>> SearchFiles(IEnumerable<string> search)
         {
             List<FileInformation> files = await _db.FileInformation.Include(p => p.TermFiles.Where(p => search.Contains(p.Term)))
@@ -163,14 +165,14 @@ namespace P7_PSEngine.Services
         }
     }
 
-     public class SearchResult
+    public class SearchResult
     {
 
         // It should contain a dictionary of document IDs and filenames as well as the total number of results
         public string SearchTerm { get; set; } = "";
         // The total number of results for the search term including multiple entries in the same document
         public int TotalResults { get; set; } = 0;
-        
+
         // List of dictionaries to store search results
         // Each dictionary contains the document ID, filename, and term frequency
         public List<SearchResultItem> SearchResults { get; set; } = new List<SearchResultItem>();

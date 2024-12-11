@@ -47,11 +47,13 @@ namespace P7_PSEngine.API
                 return await FrontendController.HandleSignUp(user, repo);
             });
 
-            app.MapPost("/frontend/verifysession", async (SessionCookieDTO cookie, IUserRepository repo) => {
+            app.MapPost("/frontend/verifysession", async (SessionCookieDTO cookie, IUserRepository repo) =>
+            {
                 return await FrontendController.VerifySession(cookie.username, cookie.session_cookie, repo);
             });
 
-            app.MapGet("/frontend/{service}/key", (string service) => {
+            app.MapGet("/frontend/{service}/key", (string service) =>
+            {
                 return FrontendController.GetServiceKey(service, app);
             });
         }
