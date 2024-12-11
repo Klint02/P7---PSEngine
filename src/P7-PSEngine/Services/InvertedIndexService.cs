@@ -156,7 +156,7 @@ namespace P7_PSEngine.Services
 
         public async Task IndexFileAsync(string fileId, string content, User user)
         {
-            var tokens = Regex.Split(content.ToLower(), @"\W+");
+            var tokens = Regex.Split(content.ToLower(), @"[a-zA-ZæøåÆØÅ]+");
             foreach (var token in tokens)
             {
                 await addOrUpdateTerm(token, fileId, user);

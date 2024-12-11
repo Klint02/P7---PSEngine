@@ -48,29 +48,27 @@ namespace P7_PSEngine.API
             // Add the endpoint for SearchController
             app.MapPost("/api/search", async ([FromBody] SearchRequestDTO searchRequest, [FromServices] ISearchService searchService, [FromServices] IUserRepository userRepository ) =>
             {
-                User user = await userRepository.GetUserByUsernameAsync(searchRequest.SessionCookie.username);
+
+                // Check if the search details are empty
                 if (searchRequest.SearchDetails == null || string.IsNullOrEmpty(searchRequest.SearchDetails.searchwords))
                 {
                     return Results.BadRequest("Search details cannot be empty");
                 }
-
-                IEnumerable<string> searchQueries = await searchService.ProcessSearchQuery(searchRequest.SearchDetails.searchwords);
-                if (!searchQueries.Any())
-                {
-                    return Results.BadRequest("Invalid search term");
-                }
                 
-                foreach (var query in searchQueries)
+                // Get the user from the session cookie
+                User user = await userRepository.GetUserByUsernameAsync(searchRequest.SessionCookie.username);
+                if (user == null)
                 {
-                    if (string.IsNullOrEmpty(query))
-                    {
-                        return Results.BadRequest("Invalid search term");
-                    }
-                    var searchResult = await searchService.BoolSearch(query, user);
-                    Console.WriteLine($"Search result for {query}: {searchResult}");
-                    return Results.Ok(searchResult);
+                    return Results.BadRequest("User not found");
                 }
-                return Results.BadRequest("No valid search terms found"); 
+
+                // Call boolsearch for the entire search query
+                var searchResult = await searchService.BoolSearch(searchRequest.SearchDetails.searchwords, user);
+                if (searchResult.TotalResults == 0)
+                {
+                    return Results.NotFound("No valid search terms found");
+                }
+                return Results.Ok(searchResult);
             });
 
 

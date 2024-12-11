@@ -39,6 +39,7 @@ async function saveSearch() {
         console.log(data);
         if (data.totalResults == 0){
             document.getElementById("resultsTable").innerHTML = "<tr><th>No results found</th></tr>";
+            document.getElementById("searchResults").innerHTML = `$0 Results returned in ${parseInt((endTime - startTime) / 1000) <= 0 ? "0." + parseInt(endTime - startTime) + " seconds" : parseInt(endTime - startTime) / 1000 + " seconds"}`;
         }
         else
         {
@@ -49,7 +50,6 @@ async function saveSearch() {
             var tablebody = `
             <tr>
                 <th>File Name</th>
-                <th>Document ID</th>
                 <th>Path</th>
                 <th>Date Created</th>
                 <th>Term Frequency</th>
@@ -60,7 +60,6 @@ async function saveSearch() {
                 tablebody += `
                 <tr>
                     <th>${files[i].fileName}</th>
-                    <th>${files[i].documentId}</th>
                     <th>${files[i].path}</th>
                     <th>${formattedDate}</th>
                     <th>${files[i].termFrequency}</th>
