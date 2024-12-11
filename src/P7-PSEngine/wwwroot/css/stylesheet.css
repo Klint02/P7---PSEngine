@@ -19,7 +19,7 @@ body {
     box-shadow: 0 0 .4em rgba(93, 93, 93, 0.553);
 }
 
-#container button {
+#container button,.modal-baseline button {
     cursor: pointer;
     border-radius: 15px;
     height: 3rem;
@@ -28,14 +28,13 @@ body {
     box-shadow: 0 6px 7px #999;
     border: none;
     text-align: center;
-    outline: none;
+    outline: none;  
 }
-
-#container button:hover {
+#container button:hover,.modal-baseline button:hover {
     filter: brightness(1.2);
 }
 
-#container button:active {
+#container button:active,.modal-baseline button:active {
     filter: brightness(1.2);
     box-shadow: 0 4px 7px #666;
     transform: translateY(4px);
@@ -126,6 +125,17 @@ input[type="date"]:hover {
 
 #searchbar:focus {
     filter: brightness(0.9);
+}
+
+.acc-btn{
+    
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    margin-right: 0.5em;
+}
+.acc-btn button{
+    margin-right: 0.5em;
 }
 
 /*-------------- ADVANCED SETTINGS --------------*/
@@ -273,7 +283,9 @@ input[type="radio"]:hover {
 }
 
 
+
 #resTable {
+    margin-top: 1rem;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     border-radius: 10px;
@@ -283,6 +295,8 @@ input[type="radio"]:hover {
     box-shadow: 0 0 .4em;
     height: 40vh;
     width: 95vw;
+    justify-content: center;
+    align-content:center;
 }
 
 p {
@@ -338,7 +352,6 @@ td {
 
 /*-------------- DIALOG (LOGIN) --------------*/
 /* DIALOG (LOGIN) */
-/*TODO (nkc): Ændre height fra px til fit content, så den er dynamisk*/
 .modal-baseline {
     border-radius: 12px;
     border: none;
@@ -346,14 +359,36 @@ td {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 0.5em;
 }
 
-#loginForm {
-    height: 250px;
-    width: 300px;
+ .X-btn{
+    font-family: Tahoma, sans-serif !important;
+    background-color: transparent !important;
+    color: red;
+    font-weight: 900 !important;
+    box-shadow: none !important;
+    font-size: 1.5em !important;
+    -webkit-text-stroke: 2px black!important;
+    transition: 0.3s;
+    border-radius: 1!important;
+    height: auto !important;
+} 
+.X-btn:hover{
+    
+    background-color: red !important;
+} 
+button.X-btn:active {
+    filter: brightness(1.2) !important;
 }
 
-#loginForm div {
+#topDia{
+    margin-top: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.modal-baseline div {
     display: flex;
     padding: 5px;
     text-align: left;
@@ -431,3 +466,26 @@ dialog::backdrop {
     }
 
 }
+
+
+/*-----------LOADING SYMBOL----------*/
+#loadercontainer{
+    display: none;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+}
+.loader {
+    
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

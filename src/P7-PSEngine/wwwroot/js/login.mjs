@@ -11,8 +11,13 @@ const showpassw = document.getElementById("showPassword");
 const passw = document.getElementById("password");
 const usern = document.getElementById("username");
 const signheader = document.getElementById("sign-header");
+const Xbtn = document.getElementById("Xbtn");
 
 let post_url = "";
+
+Xbtn.addEventListener("click",()=>{
+    loginform.close();
+})
 
 loginbutton.addEventListener("click", () => {
     usern.value = '';

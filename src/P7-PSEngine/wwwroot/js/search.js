@@ -1,3 +1,13 @@
+// const searchbar = document.getElementById("searchbar");
+// const loader = document.getElementById("loadercontainer");
+// searchbar.addEventListener("keypress", function (event) {
+//     if (event.key == "Enter" && searchbar.value != "") {
+//         loader.style.display = "flex";
+//         saveSearch();
+//     }
+// })
+
+
 async function saveSearch() {
     console.log("Searching");
     let startTime = Date.now();
@@ -40,6 +50,7 @@ async function saveSearch() {
             }
             endTime = Date.now()
             document.getElementById("resultsTable").innerHTML = tablebody;
+            //loader.style.display = "none";
             document.getElementById("searchResults").innerHTML = `${files.length} Restults returned in ${parseInt((endTime - startTime) / 1000) <= 0 ? "0." + parseInt(endTime - startTime) + " seconds" : parseInt(endTime - startTime) / 1000 + " seconds"}`;
         });
 }
