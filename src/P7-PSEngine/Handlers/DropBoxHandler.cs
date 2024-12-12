@@ -10,7 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
-using P7_PSEngine.Migrations;
+//using P7_PSEngine.Migrations;
 
 namespace P7_PSEngine.Handlers;
 
@@ -119,6 +119,9 @@ public class DropBoxHandler : ICloudServiceHandler
         var file_request_task = HttpHandler.JSONAsyncPost(file_request_object, "https://api.dropboxapi.com/2/files/list_folder", access_token);
         
         dynamic files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
+        if (files != null) {
+            Console.WriteLine("Files loaded");
+        };
 
         while(incomplete_file_fetch) {
 
@@ -146,7 +149,8 @@ public class DropBoxHandler : ICloudServiceHandler
                 incomplete_file_fetch = files.has_more; 
 
                 if (incomplete_file_fetch) {
-                    file_request_task = HttpHandler.JSONAsyncPost(new {cursor = files.cursor }, "https://api.dropboxapi.com/2/files/list_folder/continue", access_token);
+                    string cursor = files.cursor;
+                    file_request_task = HttpHandler.JSONAsyncPost(new {cursor = cursor }, "https://api.dropboxapi.com/2/files/list_folder/continue", access_token);
                     files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
                 }
             } catch (Exception e) {
