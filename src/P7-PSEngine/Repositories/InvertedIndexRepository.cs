@@ -41,7 +41,7 @@ namespace P7_PSEngine.Repositories
                 _db.FileInformation.Add(file);
             }
         }
-        public async Task<FileInformation?> FindFileAsync(string fileName, User user) 
+        public async Task<FileInformation?> FindFileAsync(string fileName, User user)
         {
             return await _db.FileInformation.FirstOrDefaultAsync(p => p.FileName == fileName && p.User.UserId == user.UserId);
         }

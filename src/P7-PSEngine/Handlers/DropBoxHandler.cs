@@ -1,11 +1,11 @@
+using Newtonsoft.Json;
 using P7_PSEngine.API;
 using P7_PSEngine.DTO;
 using P7_PSEngine.Model;
 using P7_PSEngine.Services;
 using System.Globalization;
-using System.IO;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
+using System.Text.Json;
+
 //using P7_PSEngine.Migrations;
 
 namespace P7_PSEngine.Handlers;
@@ -50,7 +50,7 @@ public class DropBoxHandler : ICloudServiceHandler
         string access_token = "";
         if (dbox_oauth2_response.Error == "")
         {
-            DBoxOAuth2DTO response = JsonSerializer.Deserialize<DBoxOAuth2DTO>(dbox_oauth2_response.Data);
+            DBoxOAuth2DTO response = System.Text.Json.JsonSerializer.Deserialize<DBoxOAuth2DTO>(dbox_oauth2_response.Data);
             access_token = response.access_token;
         }
 
@@ -73,7 +73,7 @@ public class DropBoxHandler : ICloudServiceHandler
         string refresh_token = "";
         if (dbox_oauth2_response.Error == "")
         {
-            DBoxOAuth2DTO response = JsonSerializer.Deserialize<DBoxOAuth2DTO>(dbox_oauth2_response.Data);
+            DBoxOAuth2DTO response = System.Text.Json.JsonSerializer.Deserialize<DBoxOAuth2DTO>(dbox_oauth2_response.Data);
             refresh_token = response.refresh_token;
         }
 
@@ -82,7 +82,7 @@ public class DropBoxHandler : ICloudServiceHandler
 
         if (dbox_oauth2_response.Error == "")
         {
-            DBoxOAuth2DTO response = JsonSerializer.Deserialize<DBoxOAuth2DTO>(dbox_oauth2_response.Data);
+            DBoxOAuth2DTO response = System.Text.Json.JsonSerializer.Deserialize<DBoxOAuth2DTO>(dbox_oauth2_response.Data);
             access_token = response.access_token;
         }
 
@@ -114,7 +114,8 @@ public class DropBoxHandler : ICloudServiceHandler
         List<FileInformation> filelist = new List<FileInformation>();
         bool incomplete_file_fetch = true;
         string access_token = GetAccessToken(app, service.refresh_token).Result;
-        var file_request_object = new {
+        var file_request_object = new
+        {
 
             include_deleted = false,
             include_has_explicit_shared_members = false,
@@ -128,14 +129,17 @@ public class DropBoxHandler : ICloudServiceHandler
         var file_request_task = HttpHandler.JSONAsyncPost(file_request_object, "https://api.dropboxapi.com/2/files/list_folder", access_token);
 
         dynamic files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
-        List<FileInformation> filelist = new List<FileInformation>();
-        
-        if (files.entries == null) {
+        //List<FileInformation> filelist = new List<FileInformation>();
+
+        if (files.entries == null)
+        {
             return filelist;
-        };
-        else {
-            while(incomplete_file_fetch) {
-                 foreach (var file in files.entries)
+        }
+        else
+        {
+            while (incomplete_file_fetch)
+            {
+                foreach (var file in files.entries)
                 {
                     FileInformation tmp_file = new FileInformation();
                     tmp_file.FileId = Guid.NewGuid().ToString();
@@ -157,58 +161,62 @@ public class DropBoxHandler : ICloudServiceHandler
                     tmp_file.UserId = user.UserId;
                     tmp_file.SID = service;
                     filelist.Add(tmp_file);
-          
-
-        }
 
 
-
-        List<FileInformation> filelist = new List<FileInformation>();
-        //Cursed AF, but shit works. JS code in C# FTW
-        try {
-            for (int i = 0; i < files.entries.Count; i++) {
-                FileInformation tmp_file = new FileInformation();
-                tmp_file.FileName = files.entries[i]["name"];
-                tmp_file.FilePath = files.entries[i]["path_lower"];
-                tmp_file.FileType = files.entries[i][".tag"];
-                string client_modified = files.entries[i]["client_modified"];
-                string server_modified = files.entries[i]["server_modified"];
-                if (files.entries[i][".tag"] == "folder") {
-                    tmp_file.ChangedDate = new DateTime();
-                    tmp_file.CreationDate = new DateTime(); 
-                } else {
-                    //TODO: (nkc) parse date later
-                    tmp_file.ChangedDate = DateTime.ParseExact(client_modified, "MM/dd/yyyy HH:mm:ss",  new CultureInfo("en-DK"));
-                    tmp_file.CreationDate = DateTime.ParseExact(server_modified, "MM/dd/yyyy HH:mm:ss",  new CultureInfo("en-DK"));
                 }
-                tmp_file.UID = user;
-                tmp_file.SID = service;
-                filelist.Add(tmp_file);
-            }
-            incomplete_file_fetch = files.has_more;
 
-                if (incomplete_file_fetch) {
-                    string cursor = files.cursor;
-                    file_request_task = HttpHandler.JSONAsyncPost(new {cursor = cursor }, "https://api.dropboxapi.com/2/files/list_folder/continue", access_token);
-                    files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
+
+
+                //List<FileInformation> filelist = new List<FileInformation>();
+                //Cursed AF, but shit works. JS code in C# FTW
+                try
+                {
+                    for (int i = 0; i < files.entries.Count; i++)
+                    {
+                        FileInformation tmp_file = new FileInformation();
+                        tmp_file.FileName = files.entries[i]["name"];
+                        tmp_file.FilePath = files.entries[i]["path_lower"];
+                        tmp_file.FileType = files.entries[i][".tag"];
+                        string client_modified = files.entries[i]["client_modified"];
+                        string server_modified = files.entries[i]["server_modified"];
+                        if (files.entries[i][".tag"] == "folder")
+                        {
+                            tmp_file.ChangedDate = new DateTime();
+                            tmp_file.CreationDate = new DateTime();
+                        }
+                        else
+                        {
+                            //TODO: (nkc) parse date later
+                            tmp_file.ChangedDate = DateTime.ParseExact(client_modified, "MM/dd/yyyy HH:mm:ss", new CultureInfo("en-DK"));
+                            tmp_file.CreationDate = DateTime.ParseExact(server_modified, "MM/dd/yyyy HH:mm:ss", new CultureInfo("en-DK"));
+                        }
+                        tmp_file.UserId = user.UserId;
+                        tmp_file.SID = service;
+                        filelist.Add(tmp_file);
+                    }
+                    incomplete_file_fetch = files.has_more;
+
+                    if (incomplete_file_fetch)
+                    {
+                        string cursor = files.cursor;
+                        file_request_task = HttpHandler.JSONAsyncPost(new { cursor = cursor }, "https://api.dropboxapi.com/2/files/list_folder/continue", access_token);
+                        files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
+                    }
                 }
-            } catch (Exception e) {
-                Console.WriteLine(e);
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
-        }
 
-        
-        await _file_repo.RemoveUserCache(user, service);
-        await _file_repo.AddFileInformationRangeAsync(filelist);
-        await _file_repo.SaveDbChangesAsync();
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            return filelist;
+            await _file_repo.RemoveUserCache(user, service);
+            await _file_repo.AddFileInformationRangeAsync(filelist);
+            await _file_repo.SaveDbChangesAsync();
+
         }
+            
+        return filelist;
     }
 
     public async Task IndexFiles(List<FileInformation> filelist, User user, IInvertedIndexService indexService)
@@ -233,3 +241,8 @@ public class DropBoxHandler : ICloudServiceHandler
 
     }
 }
+
+
+
+
+

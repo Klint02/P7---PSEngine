@@ -38,7 +38,7 @@ namespace P7_PSEngine.Services
         {
             // Process the search query
             Console.WriteLine($"Searching for: {searchTerm}");
-            var searchTerms = ProcessSearchQuery(searchTerm); 
+            var searchTerms = ProcessSearchQuery(searchTerm);
             //Console.WriteLine("Search terms: ", searchTerms);
             Console.WriteLine($"Search terms af ProcessSearchQuery: {string.Join(", ", searchTerms)}");
             // Create a list to store the search results
@@ -47,7 +47,7 @@ namespace P7_PSEngine.Services
 
             var termData = await FindTerm(searchTerms, user);
             Console.WriteLine($"TermData count: {termData.Count()}");
-            
+
             Console.WriteLine("TJEK:", termData.Count());
 
             // Dictionary to merge results by file ID
@@ -82,7 +82,7 @@ namespace P7_PSEngine.Services
                         resultMap[fileId].termFrequencies[data.Term] = 0;
                     }
                     resultMap[fileId].termFrequencies[data.Term] += termInfo.TermFrequency;
-                    if (!resultMap[fileId].matchedTerms.Contains(data.Term)) 
+                    if (!resultMap[fileId].matchedTerms.Contains(data.Term))
                     {
                         resultMap[fileId].matchedTerms.Add(termInfo.Term);
                     }
@@ -98,7 +98,7 @@ namespace P7_PSEngine.Services
                     Console.WriteLine($"No search results found for {term}");
                 }
             }
-            else 
+            else
             {
                 searchResults.SearchResults = resultMap.Values
                     .OrderByDescending(result => result.termFrequency)
@@ -110,7 +110,7 @@ namespace P7_PSEngine.Services
 
             // Calculate the total number of search results
             searchResults.DisplaySearchResults();
-//            Console.WriteLine($"Search results for {searchTerms}: {searchResults.TotalResults}");
+            //            Console.WriteLine($"Search results for {searchTerms}: {searchResults.TotalResults}");
             return searchResults;
         }
 
@@ -136,28 +136,28 @@ namespace P7_PSEngine.Services
             Console.WriteLine($"Searching for term: {string.Join(", ", term)}");
             try
             {
-            // List<InvertedIndex> invertedIndices = await _db.InvertedIndex.Include(p => p.TermInformations.Where(p => term.Contains(p.Term)))
-            //     .ThenInclude(p => p.FileInformation)
-            //     .Where(p => p.TermInformations.Any(index => term.Contains(index.Term)))
-            //     .Where(p => p.UserId == user.UserId)
-            //     .ToListAsync();
-            var invertedIndices = await _db.InvertedIndex
-                .Include(p => p.TermInformations)
-                .ThenInclude(p => p.FileInformation)
-                .Where(p => p.TermInformations.Any(index => term.Contains(index.Term)) && p.UserId == user.UserId)
-                .ToListAsync();
+                // List<InvertedIndex> invertedIndices = await _db.InvertedIndex.Include(p => p.TermInformations.Where(p => term.Contains(p.Term)))
+                //     .ThenInclude(p => p.FileInformation)
+                //     .Where(p => p.TermInformations.Any(index => term.Contains(index.Term)))
+                //     .Where(p => p.UserId == user.UserId)
+                //     .ToListAsync();
+                var invertedIndices = await _db.InvertedIndex
+                    .Include(p => p.TermInformations)
+                    .ThenInclude(p => p.FileInformation)
+                    .Where(p => p.TermInformations.Any(index => term.Contains(index.Term)) && p.UserId == user.UserId)
+                    .ToListAsync();
 
-            if (invertedIndices == null)
-            {
-                Console.WriteLine("No inverted indices found");
+                if (invertedIndices == null)
+                {
+                    Console.WriteLine("No inverted indices found");
+                }
+                else
+                {
+                    Console.WriteLine($"Found {invertedIndices.Count()} inverted indices");
+                }
+                return invertedIndices;
             }
-            else
-            {
-                Console.WriteLine($"Found {invertedIndices.Count()} inverted indices");
-            }
-            return invertedIndices;
-            }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("Error in FindTerm: ", e.Message);
                 return null;
@@ -185,18 +185,18 @@ namespace P7_PSEngine.Services
         }
 
         // Method to add a search result
-        public void AddSearchResult(string fileid, string filename, string path, DateTime date,  int termFrequency, string term)
+        public void AddSearchResult(string fileid, string filename, string path, DateTime date, int termFrequency, string term)
         {
             var result = new SearchResultItem
-                {
-                    fileId = fileid,
-                    fileName = filename,
-                    path = path,
-                    dateCreated = date,
-                    termFrequency = termFrequency,
-                    matchedTerms = new List<string> { term }
-                };
-//            Console.WriteLine($"Adding search result: {result.fileId}, {result.fileName}, {result.termFrequency}");
+            {
+                fileId = fileid,
+                fileName = filename,
+                path = path,
+                dateCreated = date,
+                termFrequency = termFrequency,
+                matchedTerms = new List<string> { term }
+            };
+            //            Console.WriteLine($"Adding search result: {result.fileId}, {result.fileName}, {result.termFrequency}");
             SearchResults.Add(result);
         }
 

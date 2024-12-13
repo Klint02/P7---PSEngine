@@ -82,7 +82,7 @@ namespace P7_PSEngine.Services
             {
                 if (string.IsNullOrWhiteSpace(fileId))
                     throw new ArgumentException("DocId cannot be null or empty.", nameof(fileId));
-                
+
                 var file = new FileInformation
                 {
                     FileName = term, // Remember to change this to the actual file name

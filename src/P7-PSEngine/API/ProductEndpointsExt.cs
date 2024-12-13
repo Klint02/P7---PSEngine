@@ -58,7 +58,7 @@ namespace P7_PSEngine.API
                 {
                     return Results.BadRequest("Search details cannot be empty");
                 }
-                
+
                 // Get the user from the session cookie
                 User user = await userRepository.GetUserByUsernameAsync(searchRequest.SessionCookie.username);
                 if (user == null)
