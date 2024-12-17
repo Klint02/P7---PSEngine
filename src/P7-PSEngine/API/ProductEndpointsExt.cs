@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using P7_PSEngine.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using P7_PSEngine.BackgroundServices;
 using P7_PSEngine.Model;
-using P7_PSEngine.Repositories;
 using P7_PSEngine.Services;
 
 namespace P7_PSEngine.API
@@ -38,81 +36,54 @@ namespace P7_PSEngine.API
                         ? Results.Ok(todo)
                         : Results.NotFound());
 
-            //app.MapPost("/api/products", async (Todo todos, PSengineDB db) =>
-            //{
-            //    db.Todos.Add(todos);
-            //    await db.SaveChangesAsync();
-            //    return Results.Created($"/api/products/{todos.Id}", todos);
-            //});
-
-            // app.MapPut("/api/products/{id}", async (int id, Todo todo, PSengineDB db) =>
-            // {
-            //     if (id != todo.Id)
-            //     {
-            //         return Results.BadRequest();
-            //     }
-
-            //     db.Entry(todo).State = EntityState.Modified;
-
-            //     try
-            //     {
-            //         await db.SaveChangesAsync();
-            //     }
-            //     catch (DbUpdateConcurrencyException)
-            //     {
-            //         if (await db.Todos.FindAsync(id) == null)
-            //         {
-            //             return Results.NotFound();
-            //         }
-            //         else
-            //         {
-            //             throw;
-            //         }
-            //     }
-
-            //     return Results.NoContent();
-            // });
-
-            //app.MapDelete("/api/products/{id}", async (int id, PSengineDB db) =>
-            //{
-            //    var product = await db.Todos.FindAsync(id);
-            //    if (product == null)
-            //    {
-            //        return Results.NotFound();
-            //    }
-
-            //    db.Todos.Remove(product);
-            //    await db.SaveChangesAsync();
-
-            //    return Results.NoContent();
-            //});
 
             // Add the endpoint for IndexController
-            app.MapGet("/api/index", async (HttpContext context, [FromServices] IInvertedIndexService invertedIndexService) =>
+            app.MapGet("/api/index", async ([FromBody] SessionCookieDTO userDTO, [FromServices] IInvertedIndexService invertedIndexService, [FromServices] IUserRepository userRepository) =>
             {
-                //var indexService = context.RequestServices.GetRequiredService<InvertedIndexService>;
-                await invertedIndexService.IndexFiles();
+                User? user = await userRepository.GetUserByUsernameAsync(userDTO.username);
+                if (user == null)
+                {
+                    return Results.BadRequest("User not found");
+                }
+                await invertedIndexService.InitializeUser(user);
                 return Results.Ok();
             });
 
-            app.MapGet("/api/search", async ([FromServices] ISearchService searchService, string q = "") =>
+            // Add the endpoint for SearchController
+            app.MapPost("/api/search", async ([FromBody] SearchRequestDTO searchRequest, [FromServices] ISearchService searchService, [FromServices] IUserRepository userRepository) =>
             {
-                List<string> searchQueries = [.. q.ToLower().Split(",")];
-                if (searchQueries.Count() == 0)
+
+                // Check if the search details are empty
+                if (searchRequest.SearchDetails == null || string.IsNullOrEmpty(searchRequest.SearchDetails.searchwords))
                 {
-                    return Results.BadRequest("Invalid search term");
+                    return Results.BadRequest("Search details cannot be empty");
                 }
-                IEnumerable<FileInformation> document = await searchService.SearchDocuments(searchQueries);
-                foreach (var doc in document)
+
+                // Get the user from the session cookie
+                User user = await userRepository.GetUserByUsernameAsync(searchRequest.SessionCookie.username);
+                if (user == null)
                 {
-                    foreach (var index in doc.IndexInformations)
-                    {
-                        index.FileInformation = null;
-                    }
+                    return Results.BadRequest("User not found");
                 }
-                return Results.Ok(document);
+
+                // Call boolsearch for the entire search query
+                var searchResult = await searchService.BoolSearch(searchRequest.SearchDetails.searchwords, user);
+                if (searchResult.TotalResults == 0)
+                {
+                    return Results.NotFound("No valid search terms found");
+                }
+                return Results.Ok(searchResult);
             });
 
+
+            app.MapGet("/api/messages", (SampleData data, string q = "") => data.Data);
+
         }
+    }
+
+    public class SearchRequestDTO
+    {
+        public SessionCookieDTO SessionCookie { get; set; }
+        public SearchDetailsDTO SearchDetails { get; set; }
     }
 }

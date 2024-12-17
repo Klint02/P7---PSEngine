@@ -1,22 +1,23 @@
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace P7_PSEngine.Model;
 
-public class CloudService {
-    [Required]
+public class CloudService
+{
+
     public int Id { get; set; }
 
-    [Required]
+
     public string ServiceType { get; set; }
 
-    [Required, ForeignKey("User")]
-    public User UID { get; set; }
+    public int UserId { get; set; }
 
-    [Required]
+
+    public User User { get; set; }
+
+
     public string UserDefinedServiceName { get; set; }
 
-    [Required]
+
     public string refresh_token { get; set; }
+
+
 }
