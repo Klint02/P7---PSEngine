@@ -1,6 +1,7 @@
 namespace P7_PSEngine.DTO;
 
-public struct DBoxFileDTO {
+public struct DBoxFileDTO
+{
     public string tag { get; set; }
     public string name { get; set; }
     public string path_lower { get; set; }
@@ -8,5 +9,5 @@ public struct DBoxFileDTO {
     public string id { get; set; }
     public string client_modified { get; set; }
     public string server_modified { get; set; }
-    
+
 }

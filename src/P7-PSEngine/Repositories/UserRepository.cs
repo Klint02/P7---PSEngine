@@ -27,17 +27,22 @@ namespace P7_PSEngine.API
 
         public async Task<User?> GetUserByUsernameAsync(string Username)
         {
-            return await _db.Users.FirstOrDefaultAsync(p => p.Username == Username);
+            return await _db.Users.FirstOrDefaultAsync(p => p.UserName == Username);
         }
 
         public async Task AddUserAsync(User user)
         {
-            await _db.Users.AddAsync(user);       
+            await _db.Users.AddAsync(user);
         }
         // Always use after adding or updating or deleting an entity
         public async Task SaveDbChangesAsync()
         {
             await _db.SaveChangesAsync();
+        }
+
+        public async Task<User?> GetUser(User user)
+        {
+            return await _db.Users.FindAsync(user);
         }
 
         public void UpdateUserEntity(User existingUser)
@@ -48,6 +53,15 @@ namespace P7_PSEngine.API
         public void DeleteUserEntity(User user)
         {
             _db.Users.Remove(user);
+        }
+
+        public async Task EnsureUserExistsAsync(int userId)
+        {
+            var userExists = await _db.Users.AnyAsync(u => u.UserId == userId);
+            if (!userExists)
+            {
+                throw new InvalidOperationException($"User with ID {userId} does not exist.");
+            }
         }
     }
 }
