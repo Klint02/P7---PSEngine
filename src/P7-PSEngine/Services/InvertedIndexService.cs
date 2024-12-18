@@ -7,7 +7,7 @@ namespace P7_PSEngine.Services
 {
     public interface IInvertedIndexService
     {
-        Task InitializeUser(User user);
+        //Task InitializeUser(User user);
         Task IndexFileAsync(string fileId, string content, User user);
         Task addOrUpdateTerm(string term, string docId, User user);
     }
@@ -23,43 +23,43 @@ namespace P7_PSEngine.Services
             this.invertedIndexRepository = invertedIndexRepository ?? throw new ArgumentNullException(nameof(invertedIndexRepository));
         }
 
-        public async Task InitializeUser(User user)
-        {
-            string currentDirectory = "./Files";
-            var files = Directory.GetFiles(currentDirectory);
-            string jsonFilePath = "./Files/testgoogle.json";
-            string jsonData = await File.ReadAllTextAsync(jsonFilePath);
-            FileList filelist = JsonConvert.DeserializeObject<FileList>(jsonData);
+        //public async Task InitializeUser(User user)
+        //{
+        //    string currentDirectory = "./Files";
+        //    var files = Directory.GetFiles(currentDirectory);
+        //    string jsonFilePath = "./Files/testgoogle.json";
+        //    string jsonData = await File.ReadAllTextAsync(jsonFilePath);
+        //    FileList filelist = JsonConvert.DeserializeObject<FileList>(jsonData);
 
-            if (filelist == null)
-            {
-                throw new InvalidOperationException("Invalid file data (filelist null)");
-            }
-            else if (filelist.Files == null)
-            {
-                throw new InvalidOperationException("Invalid file data (filelist.Files null)");
-            }
-            else if (filelist.Files.Count == 0)
-            {
-                throw new InvalidOperationException("Invalid file data (filelist.Files empty)");
-            }
-            else
-            {
-                // Creating dictionary to store inverted index of tokens and file IDs
-                // Key: token, Value: list of file IDs (could probably be stored as an integer instead)
-                // var index = new InvertedIndexRepository();
+        //    if (filelist == null)
+        //    {
+        //        throw new InvalidOperationException("Invalid file data (filelist null)");
+        //    }
+        //    else if (filelist.Files == null)
+        //    {
+        //        throw new InvalidOperationException("Invalid file data (filelist.Files null)");
+        //    }
+        //    else if (filelist.Files.Count == 0)
+        //    {
+        //        throw new InvalidOperationException("Invalid file data (filelist.Files empty)");
+        //    }
+        //    else
+        //    {
+        //        // Creating dictionary to store inverted index of tokens and file IDs
+        //        // Key: token, Value: list of file IDs (could probably be stored as an integer instead)
+        //        // var index = new InvertedIndexRepository();
 
-                // Loop through each file
-                foreach (var file in filelist.Files)
-                {
-                    // Tokenize the file name (split by spaces, punctuation, etc.)
-                    // The tokenization process should be more complex also using lemmatization and stemming
-                    string id = file.Id;
-                    string name = file.Name;
-                    await IndexFileAsync(id, name, user);
-                }
-            }
-        }
+        //        // Loop through each file
+        //        foreach (var file in filelist.Files)
+        //        {
+        //            // Tokenize the file name (split by spaces, punctuation, etc.)
+        //            // The tokenization process should be more complex also using lemmatization and stemming
+        //            string id = file.Id;
+        //            string name = file.Name;
+        //            await IndexFileAsync(id, name, user);
+        //        }
+        //    }
+        //}
 
         public async Task addOrUpdateTerm(string term, string fileId, User user)
         {
