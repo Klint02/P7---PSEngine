@@ -1,16 +1,26 @@
-import Lib from "./lib.js";
+import Lib from "../js/lib.js";
+
+export function getFormData (searchDetails) {
+    const username = Lib.GetCookie("username");
+    console.log(username);
+    
+    return {
+        sessionCookie: {
+            username: username,
+        },
+        searchDetails: searchDetails
+    }
+}
+
+
 
 async function saveSearch() {
     console.log("Searching");
     let startTime = Date.now();
     let endTime;
-    const username = Lib.GetCookie("username");
-
-    const formData = {
-        sessionCookie: {
-            username: username,
-        },
-        searchDetails: {
+    let searchDetails;
+    try {
+         searchDetails = {
 
             "searchWords": document.getElementById("searchbar").value,
             "filenameOption": document.getElementById("searchByFilename").checked,
@@ -24,7 +34,10 @@ async function saveSearch() {
             "endDate": document.getElementById("searchIntervalEnd").checked ? document.getElementById("endDate").value : null,
             "dateType": document.getElementById("dateCreated").checked ? "created" : "modified"
         }
+    } catch (error) {
+        
     }
+
 
     fetch ("/api/search", {
         method: "post",
@@ -32,7 +45,7 @@ async function saveSearch() {
             'Accept': "application/json",
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(getFormData(searchDetails))
     })
     .then(function(response) { return response.json();})
     .then(data => {
@@ -77,24 +90,11 @@ async function saveSearch() {
 }
 
 
-getCommands();
-async function getCommands() {
-    fetch("/frontend/commands").then(response => { return response.json(); })
-        .then(data => {
-            const commands = data.slice(0);
 
-            var tablebody = "";
-            for (let i = 0; i < commands.length; i++) {
-                tablebody += `
-            <tr>
-                <th>${commands[i]["keyword"]}</th>
-                <th>${commands[i]["explanation"]}</th>
-            </tr>  
-            `
-            }
-            document.getElementById("commandsTable").innerHTML += tablebody;
-        });
-}
 
 // Attach the saveSearch function to the search button click event
-document.getElementById("searchButton").addEventListener("click", saveSearch);
+try {
+    document.getElementById("searchButton").addEventListener("click", saveSearch);
+} catch (error) {
+    
+}

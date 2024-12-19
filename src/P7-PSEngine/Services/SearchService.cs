@@ -2,6 +2,7 @@
 using P7_PSEngine.Data;
 using P7_PSEngine.Model;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace P7_PSEngine.Services
 {
@@ -36,6 +37,9 @@ namespace P7_PSEngine.Services
 
         public async Task<SearchResult> BoolSearch(string searchTerm, User user)
         {
+            
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             // Process the search query
             Console.WriteLine($"Searching for: {searchTerm}");
             var searchTerms = ProcessSearchQuery(searchTerm);
@@ -46,9 +50,9 @@ namespace P7_PSEngine.Services
             SearchResult searchResults = new SearchResult(searchTerm);
 
             var termData = await FindTerm(searchTerms, user);
-            Console.WriteLine($"TermData count: {termData.Count()}");
+            //Console.WriteLine($"TermData count: {termData.Count()}");
 
-            Console.WriteLine("TJEK:", termData.Count());
+            //Console.WriteLine("TJEK:", termData.Count());
 
             // Dictionary to merge results by file ID
             var resultMap = new Dictionary<string, SearchResultItem>();
@@ -95,7 +99,7 @@ namespace P7_PSEngine.Services
                 foreach (var term in searchTerms)
                 {
                     searchResults.AddSearchResult("0", $"No results found for {term}", "", DateTime.Now, 0, term);
-                    Console.WriteLine($"No search results found for {term}");
+                    //Console.WriteLine($"No search results found for {term}");
                 }
             }
             else
@@ -109,8 +113,11 @@ namespace P7_PSEngine.Services
             searchResults.TotalResults = searchResults.SearchResults.Count;
 
             // Calculate the total number of search results
-            searchResults.DisplaySearchResults();
+            //searchResults.DisplaySearchResults();
             //            Console.WriteLine($"Search results for {searchTerms}: {searchResults.TotalResults}");
+            stopwatch.Stop();
+            Console.WriteLine($"Time taken: {stopwatch.ElapsedMilliseconds} ms");
+            Console.WriteLine($"Time taken (seconds): {stopwatch.Elapsed.TotalSeconds}");
             return searchResults;
         }
 
@@ -133,7 +140,7 @@ namespace P7_PSEngine.Services
 
         public async Task<List<InvertedIndex>> FindTerm(IEnumerable<string> term, User user)
         {
-            Console.WriteLine($"Searching for term: {string.Join(", ", term)}");
+            //Console.WriteLine($"Searching for term: {string.Join(", ", term)}");
             try
             {
                 // List<InvertedIndex> invertedIndices = await _db.InvertedIndex.Include(p => p.TermInformations.Where(p => term.Contains(p.Term)))
