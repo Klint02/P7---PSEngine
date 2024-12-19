@@ -30,9 +30,22 @@ namespace P7_PSEngine.API
             return await _db.Users.FirstOrDefaultAsync(p => p.UserName == Username);
         }
 
-        public async Task AddUserAsync(User user)
+        public async Task RemoveAllUsersAsync()
         {
-            await _db.Users.AddAsync(user);
+            _db.Users.RemoveRange(_db.Users);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task<bool> AddUserAsync(User user)
+        {
+            User? user2 = await GetUserByUsernameAsync(user.UserName);
+            if (user2 == null) {
+                await _db.Users.AddAsync(user);
+                await SaveDbChangesAsync();    
+                return true;
+            } else {
+                return false;
+            }
         }
         // Always use after adding or updating or deleting an entity
         public async Task SaveDbChangesAsync()

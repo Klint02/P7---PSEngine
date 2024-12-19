@@ -42,13 +42,8 @@ public static class FrontendController
     {
         user.Password = HashData(user.Password);
 
-        User? fetched_user = await repo.GetUserByUsernameAsync(user.UserName);
-
-        if (fetched_user == null)
-        {
-            await repo.AddUserAsync(user);
-            await repo.SaveDbChangesAsync();
-            return new DataErrorDTO { Data = HashData(user.UserName + DateTime.Now.ToString("MM/dd/yyyy")), Error = "" };
+        if (await repo.AddUserAsync(user) == true) {
+            return new DataErrorDTO {Data = HashData(user.UserName + DateTime.Now.ToString("MM/dd/yyyy")), Error = "" };
         }
 
         return new DataErrorDTO { Error = $"'{user.UserName}' is already taken", Data = "" };

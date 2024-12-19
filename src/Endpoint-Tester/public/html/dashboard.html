@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body style="margin: auto; width: 70%; padding: 10px;">
+
+
+
+ 
+    </body>
+    <script>
+
+    </script>
+
+    <script type="module">
+        import { FrontendRoutesSuite } from '/js/TestFrontendRoutes.mjs'
+        import { ServiceRoutesTest } from '/js/TestServiceRoutes.mjs'
+        
+        const body = document.body;
+        const globalContext = {
+            SUITES: [FrontendRoutesSuite, ServiceRoutesTest],    
+        }
+
+        window.globalContext = globalContext;
+
+        setInterval(UpdateDOM, 1000)
+
+       function UpdateDOM() {
+            var suite_ui_element = "";
+
+            globalContext.SUITES.forEach((suite, suite_index) => {
+                let tests = "";
+                suite.GetAllTestResults().forEach((test, test_index) => {
+                    tests += `<li>${test.name} - ${test.status}</li>`;
+                });
+
+
+
+                suite_ui_element += `<div style="border: 3px solid green; border-radius: 25px; padding: 1rem;">
+                    <h1 onclick="window.globalContext.SUITES[${suite_index}].ExecuteTests()">${suite.suite_name}</h1>
+                    <hr>
+                    <ol>
+                        ${tests}
+                    </ol>
+                </div>`
+            });
+
+            body.innerHTML = suite_ui_element;
+       }
+
+    </script> 
+</html>
+
+
