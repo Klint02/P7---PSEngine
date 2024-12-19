@@ -4,9 +4,11 @@ using P7_PSEngine.DTO;
 using P7_PSEngine.Model;
 using P7_PSEngine.Services;
 using System.Globalization;
+using System.IO;
+using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 
-//using P7_PSEngine.Migrations;
 
 namespace P7_PSEngine.Handlers;
 
@@ -129,7 +131,6 @@ public class DropBoxHandler : ICloudServiceHandler
         var file_request_task = HttpHandler.JSONAsyncPost(file_request_object, "https://api.dropboxapi.com/2/files/list_folder", access_token);
 
         dynamic files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
-        //List<FileInformation> filelist = new List<FileInformation>();
 
         if (files.entries == null)
         {
@@ -161,19 +162,15 @@ public class DropBoxHandler : ICloudServiceHandler
                     tmp_file.UserId = user.UserId;
                     tmp_file.SID = service;
                     filelist.Add(tmp_file);
-
-
                 }
 
-
-
-                //List<FileInformation> filelist = new List<FileInformation>();
                 //Cursed AF, but shit works. JS code in C# FTW
                 try
                 {
                     for (int i = 0; i < files.entries.Count; i++)
                     {
                         FileInformation tmp_file = new FileInformation();
+                        tmp_file.FileId = Guid.NewGuid().ToString();
                         tmp_file.FileName = files.entries[i]["name"];
                         tmp_file.FilePath = files.entries[i]["path_lower"];
                         tmp_file.FileType = files.entries[i][".tag"];
@@ -236,6 +233,8 @@ public class DropBoxHandler : ICloudServiceHandler
         if (filelist.Any())
         {
             await IndexFiles(filelist, user, indexService);
+        } else {
+            Console.WriteLine("ldsfkjsdlfjlsdjflksdjf");
         }
         return true;
 

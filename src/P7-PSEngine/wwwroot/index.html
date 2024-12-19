@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/stylesheet.css">
-    <script type="module" src="./js/search.mjs"></script>
+    <script type="module" src="shared/search.mjs"></script>
     <title>Search Engine</title>
 </head>
 
@@ -182,6 +182,25 @@
                 button.innerText = "Show Advanced Options";
             }
         }
+
+        getCommands();
+async function getCommands() {
+    fetch("/frontend/commands").then(response => { return response.json(); })
+        .then(data => {
+            const commands = data.slice(0);
+
+            var tablebody = "";
+            for (let i = 0; i < commands.length; i++) {
+                tablebody += `
+            <tr>
+                <th>${commands[i]["keyword"]}</th>
+                <th>${commands[i]["explanation"]}</th>
+            </tr>  
+            `
+            }
+            document.getElementById("commandsTable").innerHTML += tablebody;
+        });
+}
     </script>
 
 
@@ -213,7 +232,7 @@
         <script type="module" src="js/account.mjs"></script>
         <h3 style="margin-top: 0px;" id="account-modal-header">User Settings</h3>
         
-            <button id="dropbox" onclick="OpenDropboxAuth()">
+            <button id="dropbox">
                 <img src="images/dropbox.svg" alt="">
                 Connect Dropbox
             </button>

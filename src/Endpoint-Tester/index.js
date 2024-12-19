@@ -2,12 +2,13 @@ import express from 'express';
 import bodyParser from 'body-parser';
 const app = express();
 app.use(bodyParser.json());
+app.use(express.static('public'))
 
 app.get("/",function(request,response) {
-    response.send("Hello World!");
+    response.sendFile("/app/public/html/dashboard.html");
 });
 
-app.post("/test", (request, response)=> {
+app.post("/test", (request, response) => {
     console.log(request.body);
     response.send(200);
 })
