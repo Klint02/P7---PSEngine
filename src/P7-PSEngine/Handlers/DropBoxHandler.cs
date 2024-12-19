@@ -140,7 +140,7 @@ public class DropBoxHandler : ICloudServiceHandler
         {
             while (incomplete_file_fetch)
             {
-                foreach (var file in files.entries)
+                 foreach (var file in files.entries)
                 {
                     FileInformation tmp_file = new FileInformation();
                     tmp_file.FileId = Guid.NewGuid().ToString();
@@ -163,58 +163,26 @@ public class DropBoxHandler : ICloudServiceHandler
                     tmp_file.SID = service;
                     filelist.Add(tmp_file);
                 }
+                incomplete_file_fetch = files.has_more;
 
-                //Cursed AF, but shit works. JS code in C# FTW
-                try
+                if (incomplete_file_fetch)
                 {
-                    for (int i = 0; i < files.entries.Count; i++)
-                    {
-                        FileInformation tmp_file = new FileInformation();
-                        tmp_file.FileId = Guid.NewGuid().ToString();
-                        tmp_file.FileName = files.entries[i]["name"];
-                        tmp_file.FilePath = files.entries[i]["path_lower"];
-                        tmp_file.FileType = files.entries[i][".tag"];
-                        string client_modified = files.entries[i]["client_modified"];
-                        string server_modified = files.entries[i]["server_modified"];
-                        if (files.entries[i][".tag"] == "folder")
-                        {
-                            tmp_file.ChangedDate = new DateTime();
-                            tmp_file.CreationDate = new DateTime();
-                        }
-                        else
-                        {
-                            //TODO: (nkc) parse date later
-                            tmp_file.ChangedDate = DateTime.ParseExact(client_modified, "MM/dd/yyyy HH:mm:ss", new CultureInfo("en-DK"));
-                            tmp_file.CreationDate = DateTime.ParseExact(server_modified, "MM/dd/yyyy HH:mm:ss", new CultureInfo("en-DK"));
-                        }
-                        tmp_file.UserId = user.UserId;
-                        tmp_file.SID = service;
-                        filelist.Add(tmp_file);
-                    }
-                    incomplete_file_fetch = files.has_more;
-
-                    if (incomplete_file_fetch)
-                    {
-                        string cursor = files.cursor;
-                        file_request_task = HttpHandler.JSONAsyncPost(new { cursor = cursor }, "https://api.dropboxapi.com/2/files/list_folder/continue", access_token);
-                        files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
+                    string cursor = files.cursor;
+                    file_request_task = HttpHandler.JSONAsyncPost(new { cursor = cursor }, "https://api.dropboxapi.com/2/files/list_folder/continue", access_token);
+                    files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
                 }
             }
+
 
 
             await _file_repo.RemoveUserCache(user, service);
             await _file_repo.AddFileInformationRangeAsync(filelist);
             await _file_repo.SaveDbChangesAsync();
 
-        }
-            
-        return filelist;
+            return filelist;
     }
+            
+        
 
     public async Task IndexFiles(List<FileInformation> filelist, User user, IInvertedIndexService indexService)
     {
@@ -226,6 +194,8 @@ public class DropBoxHandler : ICloudServiceHandler
 
     public async Task<bool> ProcessFiles(WebApplication app, User user, string? path, CloudService service, IInvertedIndexService indexService)
     {
+        
+        var currentTime = DateTime.Now;
         // Fetch and save files
         var filelist = await ServiceFileRequest(app, user, path, service);
 
@@ -236,6 +206,7 @@ public class DropBoxHandler : ICloudServiceHandler
         } else {
             Console.WriteLine("ldsfkjsdlfjlsdjflksdjf");
         }
+        Console.WriteLine("Time taken: " + (DateTime.Now - currentTime).TotalSeconds);
         return true;
 
     }
