@@ -165,13 +165,14 @@ public class DropBoxHandler : ICloudServiceHandler
                 }
                 incomplete_file_fetch = files.has_more;
 
-                if (incomplete_file_fetch)
-                {
-                    string cursor = files.cursor;
-                    file_request_task = HttpHandler.JSONAsyncPost(new { cursor = cursor }, "https://api.dropboxapi.com/2/files/list_folder/continue", access_token);
-                    files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
-                }
+                    if (incomplete_file_fetch)
+                    {
+                        string cursor = files.cursor;
+                        file_request_task = HttpHandler.JSONAsyncPost(new { cursor = cursor }, "https://api.dropboxapi.com/2/files/list_folder/continue", access_token);
+                        files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
+                    }
             }
+
 
 
 

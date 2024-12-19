@@ -16,24 +16,24 @@
         <div id="SearchBodyContainer">
             <div id="loginSigninButtons">
                 <h1>Search Engine</h1>
-            <div >
-                
-                <button id="login">Login</button>
-                <button id="signup">Sign Up</button>
-                <button id="account">
-                <img src="images/account.svg" alt="account menu"></button>
-                <button id="logout" hidden>Logout</button>
+                <div class="acc-btn">
+
+                    <button id="login">Login</button>
+                    <button id="signup">Sign Up</button>
+                    <button id="account">
+                        <img src="images/account.svg" alt="account menu"></button>
+                    <button id="logout" hidden>Logout</button>
+                </div>
             </div>
-            </div>
-            
+
             <div id="Search">
 
                 <input type="search" id="searchbar" placeholder="Search for file">
                 <button id="searchButton" onclick="saveSearch()">Search</button>
                 <button id="inlineCommands" onclick="displayCommands()">Inline Commands</button>
             </div>
-            
-           
+
+
             <div id="advancedOptions">
                 <div id="Filter">
                     <div id="searchOptions">
@@ -119,39 +119,23 @@
 
             </div>
         </div>
-        <!-- LOGIN FORM -->
-        <dialog id="loginForm" class="modal-baseline dia dia-div">
-            <h3 style="margin-top: 0px;" id="sign-header">Login or Sign up</h3>
-            <div>
-                <label for="username">Username:</label>
-                <input type="text" id="username" placeholder="Username">
-            </div>
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" placeholder="Password">
-            </div>
-            <div id="display-start">
-                <input type="checkbox" id="showPassword">
-                <label for="showPassword">Show password</label>
-            </div>
-            <div >
-                <button id="closeLogin" class="dia-closebtn">Cancel</button>
-                <button id="submit">Login</button>
-            </div>
-            <script src="js/login.js"></script>
-        </dialog>
+
 
         <!-- Results box -->
         <div id="Results">
             <div id="searchResultsContainer">
-            <h1>Results</h1>
-            <h4 id="searchResults"></h4>
-
+                <h1>Results</h1>
+                <h4 id="searchResults"></h4>
+                <button id="ManualIndexing">Index files</button>
             </div>
-            
             <div id="resTable">
+                <div id="loadercontainer">
+                    <div class="loader"></div>
+                    <p>Loading..</p>
+                </div>
+
                 <table id="resultsTable">
-                   
+
                 </table>
             </div>
         </div>
@@ -170,6 +154,7 @@
                 commandsBlock.style.display = "none";
             }
         }
+
 
         const optionsBlock = document.getElementById("advancedOptions");
         let showOptions = button => {
@@ -206,7 +191,10 @@ async function getCommands() {
 
     <!-- LOGIN FORM -->
     <dialog id="loginForm" class="modal-baseline">
-        <h3 style="margin-top: 0px;" id="sign-header">Login or Sign up</h3>
+        <div id="topDia">
+            <h3 id="sign-header">Login or Sign up</h3>
+            <button class="X-btn" id="Xbtn" aria-label="Close">X</button>
+        </div>
 
         <div>
             <label for="username">Username:</label>
@@ -222,7 +210,7 @@ async function getCommands() {
         </div>
 
         <div class="dia-btns">
-            <button id="closeLogin">Cancel</button>
+            <button id="closeLogin" class="dia-closebtn">Cancel</button>
             <button id="submit">Login</button>
         </div>
         <script type="module" src="js/login.mjs"></script>
@@ -231,7 +219,6 @@ async function getCommands() {
     <dialog id="account-modal" class="modal-baseline">
         <script type="module" src="js/account.mjs"></script>
         <h3 style="margin-top: 0px;" id="account-modal-header">User Settings</h3>
-        
             <button id="dropbox">
                 <img src="images/dropbox.svg" alt="">
                 Connect Dropbox
@@ -249,4 +236,5 @@ async function getCommands() {
 
     </dialog>
 </body>
+
 </html>
