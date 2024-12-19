@@ -33,6 +33,12 @@ namespace P7_PSEngine.API
         {
             await _db.CloudService.AddAsync(cloudService);
         }
+
+        public async Task<CloudService?> GetServiceByUserAsync(User user)
+        {
+            return await _db.CloudService.FirstOrDefaultAsync(p => p.User == user);
+        }
+        
         // Always use after adding or updating or deleting an entity
         public async Task SaveDbChangesAsync()
         {

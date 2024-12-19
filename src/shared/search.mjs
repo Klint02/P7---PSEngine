@@ -1,5 +1,15 @@
 import Lib from "../js/lib.js";
 
+const searchbar = document.getElementById("searchbar");
+const loader = document.getElementById("loadercontainer");
+const loaderdiv = document.getElementById("loaderDiv");
+const loadertext = document.getElementById("loaderText");
+searchbar.addEventListener("keypress", (event) => {
+    if (event.key == "Enter" && searchbar.value != "") {
+        saveSearch();
+    }
+})
+
 export function getFormData (searchDetails) {
     const username = Lib.GetCookie("username");
     console.log(username);
@@ -19,6 +29,11 @@ async function saveSearch() {
     let startTime = Date.now();
     let endTime;
     let searchDetails;
+
+    loader.removeAttribute("hidden");
+    loaderdiv.removeAttribute("hidden");
+    loadertext.removeAttribute("hidden");
+
     try {
          searchDetails = {
 
@@ -87,6 +102,10 @@ async function saveSearch() {
     .catch(error => {
         console.error("Error:", error);
     });
+
+    loader.setAttribute("hidden", true);
+    loaderdiv.setAttribute("hidden", true);
+    loadertext.setAttribute("hidden", true);
 }
 
 
