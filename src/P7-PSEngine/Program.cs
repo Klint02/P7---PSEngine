@@ -7,7 +7,21 @@ using P7_PSEngine.Handlers;
 using P7_PSEngine.Repositories;
 using P7_PSEngine.Services;
 
+var CORSPolicy = "_TestingCors";
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: CORSPolicy,
+                      policy  =>
+                      {
+                          policy.WithOrigins("http://localhost:8072",
+                                              "http://192.122.0.5")
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                      });
+});
 
 var env_file = Path.Combine(Directory.GetCurrentDirectory(), "env");
 if (File.Exists(env_file))
@@ -39,13 +53,17 @@ var app = builder.Build();
 //var indexInitializer = app.Services.GetRequiredService<IndexService>();
 //indexInitializer.Initialize();
 
-app.MapProductEndpoints();
+app.UseCors(CORSPolicy);
 
-app.UseStaticFiles();
+app.MapProductEndpoints();
 
 app.MapFrontendEndpoints();
 
 app.MapServicesEndpoints();
+
+app.MapTestingEndpoints();
+
+app.UseStaticFiles();
 
 app.Run();
 
