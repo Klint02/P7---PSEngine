@@ -29,8 +29,6 @@ public class DropBoxHandler : ICloudServiceHandler
         _index = index;
     }
 
-
-
     private async Task<bool> FetchUserAvatar(WebApplication app, string access_token)
     {
         var user_request = HttpHandler.JSONAsyncPost(new { query = "foo" }, "https://api.dropboxapi.com/2/check/user", access_token);
@@ -165,16 +163,14 @@ public class DropBoxHandler : ICloudServiceHandler
                 }
                 incomplete_file_fetch = files.has_more;
 
-                    if (incomplete_file_fetch)
-                    {
-                        string cursor = files.cursor;
-                        file_request_task = HttpHandler.JSONAsyncPost(new { cursor = cursor }, "https://api.dropboxapi.com/2/files/list_folder/continue", access_token);
-                        files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
-                    }
+                if (incomplete_file_fetch)
+                {
+                    string cursor = files.cursor;
+                    file_request_task = HttpHandler.JSONAsyncPost(new { cursor = cursor }, "https://api.dropboxapi.com/2/files/list_folder/continue", access_token);
+                    files = Newtonsoft.Json.JsonConvert.DeserializeObject(file_request_task.Result.Data);
+                }
             }
-
-
-
+        }
 
             await _file_repo.RemoveUserCache(user, service);
             await _file_repo.AddFileInformationRangeAsync(filelist);

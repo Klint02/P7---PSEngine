@@ -31,3 +31,8 @@ document.addEventListener("visibilitychange", () => {
 account_button.addEventListener('click', () => {
     ToggleAccountModal(true)   
 });
+
+document.getElementById("ManualIndexing").addEventListener('click', () => {
+    let username = Lib.GetCookie("username");
+    Lib.GetRequest(`http://localhost:8070/frontend/forceindex/${username}`).then(alert("Indexing complete"));
+})
