@@ -11,7 +11,7 @@ namespace P7_PSEngine.Services
         Task<IEnumerable<FileInformation>> SearchFiles(IEnumerable<string> search);
         Task<IEnumerable<FileInformation>> GetALlFilesWithIndex();
         List<string> ProcessSearchQuery(string searchTerm);
-        Task<SearchResult> BoolSearch(string searchTerm, User user);
+        Task<SearchResult> BoolSearch(string searchTerm, User user, SearchDetailsDTO searchDetails);
     }
 
     //TODO (djb) If serached with more than 1 word return more inverted terms
@@ -35,7 +35,7 @@ namespace P7_PSEngine.Services
             return searchTerms;
         }
 
-        public async Task<SearchResult> BoolSearch(string searchTerm, User user)
+        public async Task<SearchResult> BoolSearch(string searchTerm, User user, SearchDetailsDTO searchDetails)
         {
             
             Stopwatch stopwatch = new Stopwatch();
@@ -45,81 +45,149 @@ namespace P7_PSEngine.Services
             var searchTerms = ProcessSearchQuery(searchTerm);
             //Console.WriteLine("Search terms: ", searchTerms);
             Console.WriteLine($"Search terms af ProcessSearchQuery: {string.Join(", ", searchTerms)}");
+
+            // Get all documents and calculate total number of documents
+            var allFiles = await GetALlFilesWithIndex();
+
+            // Apply filters to the files searched through
+            if (searchDetails.folderOption)
+            {
+                allFiles = allFiles.Where(f => f.FileType == "Folder");
+            }
+
+            if (searchDetails.startDate != null)
+            {
+                allFiles = allFiles.Where(f => f.CreationDate >= searchDetails.startDate);
+            }
+
+            if (searchDetails.endDate != null)
+            {
+                allFiles = allFiles.Where(f => f.CreationDate <= searchDetails.endDate);
+            }
+
+            if (searchDetails.imageOption)
+            {
+                allFiles = allFiles.Where(f =>
+                    f.FileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) || 
+                    f.FileName.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
+                    f.FileName.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
+                    f.FileName.EndsWith(".gif", StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (searchDetails.docOption)
+            {
+                allFiles = allFiles.Where(f =>
+                    f.FileName.EndsWith(".doc", StringComparison.OrdinalIgnoreCase) ||
+                    f.FileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase) ||
+                    f.FileName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) ||
+                    f.FileName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase));
+            }
+
+
+            int totalDocuments = allFiles.Count();
             // Create a list to store the search results
             // var searchResults = new SearchResult { SearchTerm = searchTerm };
-            SearchResult searchResults = new SearchResult(searchTerm);
 
             var termData = await FindTerm(searchTerms, user);
-            //Console.WriteLine($"TermData count: {termData.Count()}");
+            Console.WriteLine($"Found {termData.Count()} terms in the index");
 
-            //Console.WriteLine("TJEK:", termData.Count());
+            // Initialize result map for cosine similarity calculation
+            var documentVectors = new Dictionary<string, Dictionary<string, double>>();
+            var queryVector = new Dictionary<string, double>();
 
-            // Dictionary to merge results by file ID
-            var resultMap = new Dictionary<string, SearchResultItem>();
-
-            // Find the search term in the inverted index
-            foreach (var data in termData)
+            // Build the query vector
+            foreach (var term in searchTerms)
             {
-                foreach (var termInfo in data.TermInformations)
+                var termEntry = termData.FirstOrDefault(t => t.Term == term);
+                if (termEntry != null)
                 {
-                    string fileId = termInfo.FileInformation.FileId;
-
-                    // If the file ID is not in the search results, add it
-                    if (!resultMap.ContainsKey(fileId))
-                    {
-                        resultMap[fileId] = new SearchResultItem
-                        {
-                            fileId = fileId,
-                            fileName = termInfo.FileInformation.FileName,
-                            path = termInfo.FileInformation.FilePath,
-                            dateCreated = termInfo.FileInformation.CreationDate,
-                            termFrequency = 0,
-                            termFrequencies = new Dictionary<string, int>(),
-                            matchedTerms = new List<string>()
-                        };
-                    }
-
-                    // update the term frequency and matched terms
-                    resultMap[fileId].termFrequency += termInfo.TermFrequency;
-                    if (!resultMap[fileId].termFrequencies.ContainsKey(data.Term))
-                    {
-                        resultMap[fileId].termFrequencies[data.Term] = 0;
-                    }
-                    resultMap[fileId].termFrequencies[data.Term] += termInfo.TermFrequency;
-                    if (!resultMap[fileId].matchedTerms.Contains(data.Term))
-                    {
-                        resultMap[fileId].matchedTerms.Add(termInfo.Term);
-                    }
+                    double idf = Math.Log((double)totalDocuments / (1 + termEntry.TermInformations.Count()));
+                    queryVector[term] = idf;
+                }
+                else
+                {
+                    queryVector[term] = 0;
                 }
             }
 
-            // If no results are found
-            if (!resultMap.Any())
+            // Populate document vectors with TF-IDF scores
+            foreach (var termEntry in termData)
             {
+                foreach (var termInfo in termEntry.TermInformations)
+                {
+                    if (!documentVectors.ContainsKey(termInfo.FileId))
+                    {
+                        documentVectors[termInfo.FileId] = new Dictionary<string, double>();
+                    }
+
+                    double tfidf = CalculateTFIDF(
+                        termInfo.TermFrequency, 
+                        termEntry.FileFrequency, 
+                        totalDocuments);
+                    documentVectors[termInfo.FileId][termEntry.Term] = tfidf;
+                }
+            }
+
+            // Compute cosine similarity scores
+            var documentScores = new Dictionary<string, double>();
+            foreach (var docId in documentVectors.Keys)
+            {
+                double dotProduct = 0, queryMagnitude = 0, docMagnitude = 0;
+
                 foreach (var term in searchTerms)
                 {
-                    searchResults.AddSearchResult("0", $"No results found for {term}", "", DateTime.Now, 0, term);
-                    //Console.WriteLine($"No search results found for {term}");
+                    double queryWeight = queryVector.ContainsKey(term) ? queryVector[term] : 0;
+                    double docWeight = documentVectors[docId].ContainsKey(term) ? documentVectors[docId][term] : 0;
+
+                    dotProduct += queryWeight * docWeight;
+                    queryMagnitude += Math.Pow(queryWeight, 2);
+                    docMagnitude += Math.Pow(docWeight, 2);
+                }
+
+                queryMagnitude = Math.Sqrt(queryMagnitude);
+                docMagnitude = Math.Sqrt(docMagnitude);
+
+                if (queryMagnitude > 0 && docMagnitude > 0)
+                {
+                    documentScores[docId] = dotProduct / (queryMagnitude * docMagnitude);
                 }
             }
-            else
+
+            // Sort the search results by cosine similarity score
+            var sortedResults = documentScores.OrderByDescending(kvp => kvp.Value)
+                .ToList();
+
+            // Build the SearchResult 
+            SearchResult searchResults = new SearchResult(searchTerm);
+            foreach (var (docId, score) in sortedResults)
             {
-                searchResults.SearchResults = resultMap.Values
-                    .OrderByDescending(result => result.termFrequency)
-                    .ToList();
-                searchResults.TotalResults = searchResults.SearchResults.Count;
+                var file = allFiles.FirstOrDefault(f => f.FileId == docId);
+                if (file != null)
+                {
+                    searchResults.AddSearchResult
+                    (
+                        docId,
+                        file.FileName,
+                        file.FilePath,
+                        file.CreationDate,
+                        termFrequency: 0,
+                        term: string.Join(", ", documentVectors[docId].Keys)
+                    );
+
+                    // Add a similarity score to the search result
+                    var resultItem = searchResults.SearchResults.Last();
+                    resultItem.similarityScore = Math.Round(score * 100, 2);
             }
-
-            searchResults.TotalResults = searchResults.SearchResults.Count;
-
-            // Calculate the total number of search results
-            //searchResults.DisplaySearchResults();
-            //            Console.WriteLine($"Search results for {searchTerms}: {searchResults.TotalResults}");
-            stopwatch.Stop();
-            Console.WriteLine($"Time taken: {stopwatch.ElapsedMilliseconds} ms");
-            Console.WriteLine($"Time taken (seconds): {stopwatch.Elapsed.TotalSeconds}");
-            return searchResults;
         }
+        searchResults.TotalResults = searchResults.SearchResults.Count;
+
+        stopwatch.Stop();
+        Console.WriteLine($"Time taken: {stopwatch.ElapsedMilliseconds} ms");
+        Console.WriteLine($"Time taken (seconds): {stopwatch.Elapsed.TotalSeconds}");
+        return searchResults;
+
+    }
+
 
         public async Task<IEnumerable<FileInformation>> SearchFiles(IEnumerable<string> search)
         {
@@ -170,6 +238,25 @@ namespace P7_PSEngine.Services
                 return null;
             }
         }
+    
+
+        // Method to calculate the term frequency-inverse document frequency (TF-IDF) score
+        private double CalculateTFIDF(int termFrequency, int FileFrequency, int totalDocuments)
+        {
+        // Calculate the term frequency-inverse document frequency (TF-IDF) score
+        // TF-IDF = TF * IDF
+        // TF = term frequency in document / total terms in document
+        // IDF = log(total documents / documents with term)
+        // TF-IDF = term frequency * log(total documents / documents with term
+            if (FileFrequency == 0 || totalDocuments == 0)
+            {
+                return 0;
+            }
+
+            double tf = (double)termFrequency;
+            double idf = Math.Log((double)totalDocuments / (1 + FileFrequency));
+            return tf * idf;
+        }
     }
 
     public class SearchResult
@@ -215,9 +302,9 @@ namespace P7_PSEngine.Services
             {
                 Console.WriteLine($"File ID: {result.fileId}, Filename: {result.fileName}, Path: {result.path}, Date: {result.dateCreated}, Term Frequency: {result.termFrequency}");
             }
-        }
-
+        } 
     }
+
 
     // This class is used to store the results of a search
     public class SearchResultItem
@@ -230,5 +317,6 @@ namespace P7_PSEngine.Services
         public int termFrequency { get; set; } = 0;
         public Dictionary<string, int> termFrequencies { get; set; } = new Dictionary<string, int>();
         public List<string> matchedTerms { get; set; } = new List<string>();
+        public double similarityScore { get; set; } = 0;
     }
 }

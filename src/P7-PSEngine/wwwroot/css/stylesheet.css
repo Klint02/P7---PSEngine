@@ -305,12 +305,56 @@ p {
 
 #Results table {
     width: 100%;
-    border-radius: 10px;
-    border-collapse: separate;
+    border-collapse: collapse;
+    table-layout: fixed;
     border-spacing: 0;
     box-shadow: 0 0 .4em rgba(93, 93, 93, 0.553);
 }
 
+#Results table th, #Results table td {
+    padding: 8px;
+    border: 1px solid black;
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+#Results table th:nth-child(1),
+#Results table td:nth-child(1) {
+    width: 10%;
+    text-align: center;
+}
+
+#Results table th:nth-child(2),
+#Results table td:nth-child(2) {
+    width: 40%;
+}
+
+#Results table th:nth-child(3),
+#Results table td:nth-child(3) {
+    width: 30%;
+}
+
+#Results table th:nth-child(4),
+#Results table td:nth-child(4) {
+    width: 15%;
+}
+
+#Results table th:nth-child(5),
+#Results table td:nth-child(5) {
+    width: 10%;
+    text-align: center;
+}
+
+#Results table th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 2;
+    padding: 8px;
+    text-align: left;
+    border: 1px solid black;
+}
 
 /*-------------- TABLES --------------*/
 tbody tr:nth-child(even) {
@@ -335,6 +379,9 @@ th {
     background-color: white;
     border: 1px solid black;
     z-index: 1;
+    word-wrap: break-word;
+    width: 100%;
+    max-width: 50px;
 }
 
 tr {
@@ -348,6 +395,9 @@ td {
     border-inline: 3px solid black;
     padding: 5px;
     border: 1px solid rgb(160 160 160);
+    word-wrap: break-word;
+    max-width: 50px;
+    white-space: normal;
 }
 
 /*-------------- DIALOG (LOGIN) --------------*/

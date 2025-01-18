@@ -67,7 +67,7 @@ namespace P7_PSEngine.API
                 }
 
                 // Call boolsearch for the entire search query
-                var searchResult = await searchService.BoolSearch(searchRequest.SearchDetails.searchwords, user);
+                var searchResult = await searchService.BoolSearch(searchRequest.SearchDetails.searchwords, user, searchRequest.SearchDetails);
                 if (searchResult.TotalResults == 0)
                 {
                     return Results.NotFound("No valid search terms found");

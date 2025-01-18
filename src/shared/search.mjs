@@ -77,6 +77,7 @@ async function saveSearch() {
             console.log("First element in array:", files[0]);
             var tablebody = `
             <tr>
+                <th>Relevancy</th>
                 <th>File Name</th>
                 <th>Path</th>
                 <th>Date Created</th>
@@ -87,6 +88,7 @@ async function saveSearch() {
                 const formattedDate = new Date(files[i].dateCreated).toISOString().split('T')[0];
                 tablebody += `
                 <tr>
+                    <th>${files[i].similarityScore}</th>
                     <th>${files[i].fileName}</th>
                     <th>${files[i].path}</th>
                     <th>${formattedDate}</th>
