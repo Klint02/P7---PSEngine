@@ -6,7 +6,6 @@ const loader = document.getElementById("loadercontainer");
 
 searchbar.addEventListener("keypress", (event) => {
     if (event.key == "Enter" && searchbar.value != "") {
-        loader.style.display = "flex"
         saveSearch();
     }
 })
@@ -30,6 +29,7 @@ async function saveSearch() {
     let startTime = Date.now();
     let endTime;
     let searchDetails;
+    loader.style.display = "flex";
 
     try {
         searchDetails = {
