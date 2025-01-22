@@ -520,7 +520,7 @@ dialog::backdrop {
 
 /*-----------LOADING SYMBOL----------*/
 #loadercontainer{
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-items: center;
     align-items: center;
