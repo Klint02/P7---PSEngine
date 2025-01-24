@@ -17,6 +17,8 @@ namespace P7_PSEngine.Repositories
         Task<User?> FindUserAsync(User user);
         Task AddTermAsync(TermInformation term);
         Task<CloudService?> GetCloudService(User user);
+
+        Task<int> GetFileCount(User user);
     }
     public class InvertedIndexRepository : IInvertedIndexRepository
     {
@@ -29,6 +31,11 @@ namespace P7_PSEngine.Repositories
         public async Task Save()
         {
             await _db.SaveChangesAsync();
+        }
+
+        public async Task<int> GetFileCount(User user)
+        {
+            return await _db.FileInformation.CountAsync(p => p.UserId == user.UserId);
         }
 
         public async Task AddFileAsync(FileInformation file)

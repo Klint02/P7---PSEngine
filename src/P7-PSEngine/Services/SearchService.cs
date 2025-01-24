@@ -164,13 +164,17 @@ namespace P7_PSEngine.Services
                 var file = allFiles.FirstOrDefault(f => f.FileId == docId);
                 if (file != null)
                 {
+                    var termFrequencies = termData
+                    .Where(td => td.TermInformations.Any(ti => ti.FileId == docId))
+                    .ToDictionary(td => td.Term, td => td.TermInformations.First(ti => ti.FileId == docId).TermFrequency);
+                    
                     searchResults.AddSearchResult
                     (
                         docId,
                         file.FileName,
                         file.FilePath,
                         file.CreationDate,
-                        termFrequency: 0,
+                        termFrequency: termFrequencies.Values.Sum(),
                         term: string.Join(", ", documentVectors[docId].Keys)
                     );
 
